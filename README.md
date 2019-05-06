@@ -1,5 +1,6 @@
 # Mantichor Frontend
 ![alt text](https://img.shields.io/travis/com/bptlab/mantichor-frontend.svg "Travis Build")
+![alt text](https://img.shields.io/docker/build/bptlab/mantichor-frontend.svg "Docker Build")
 
 Frontend service for the Mantichor Choreography Execution Engine.
 
@@ -12,7 +13,7 @@ Frontend service for the Mantichor Choreography Execution Engine.
     ```
 
 1. Deploy the service using docker compose / stack:
-    ``````console
+    ```console
     foo@bar:~$ docker-compose up
 
     OR
