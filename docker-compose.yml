@@ -1,0 +1,9 @@
+version: '3'
+services:
+    mantichor-frontend:
+        image: bptlab/mantichor-frontend:latest
+        ports:
+            - 8080:80
+networks:
+    rembrandt-network:
+        driver: overlay
