@@ -5,8 +5,7 @@
     </div>
     <nav>
       <ul>
-        <li class="active"><h1>AA</h1></li>
-        <li><h1>BB</h1></li>
+        <li v-for="model in models" v-bind:class="{active: model.isActive}"><h1>{{ model.text }}</h1></li>
       </ul>
     </nav>
   </aside>
@@ -16,7 +15,26 @@
 import { Component, Vue } from 'vue-property-decorator';
 
 @Component
-export default class Sidebar extends Vue {}
+export default class Sidebar extends Vue {
+  private data() {
+    return {
+      models: [
+        { text: 'AA', isActive: true },
+        { text: 'BB', isActive: false },
+        { text: 'CC', isActive: false },
+        { text: 'DD', isActive: false },
+        { text: 'EE', isActive: false },
+        { text: 'FF', isActive: false },
+        { text: 'GG', isActive: false },
+        { text: 'HH', isActive: false },
+        { text: 'II', isActive: false },
+        { text: 'JJ', isActive: false },
+        { text: 'KK', isActive: false },
+        { text: 'LL', isActive: false },
+      ],
+    };
+  }
+}
 </script>
 
 <style lang="less">
