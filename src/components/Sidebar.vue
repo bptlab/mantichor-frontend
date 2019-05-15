@@ -1,0 +1,77 @@
+<template>
+  <aside>
+    <div class="sidebar-header">
+      <img alt="Vue logo" src="../assets/logo.png">
+    </div>
+    <nav>
+      <ul>
+        <li class="active"><h1>AA</h1></li>
+        <li><h1>BB</h1></li>
+      </ul>
+    </nav>
+  </aside>
+</template>
+
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+
+@Component
+export default class Sidebar extends Vue {}
+</script>
+
+<style lang="less">
+aside {
+  display: block;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  top: 0;
+  background-color: #252527;
+  color: #fff;
+  text-align: left;
+  width: 100px;
+  .sidebar-header {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-around;
+    height: 50px;
+    img {
+      height: 30px;
+      width: auto;
+    }
+  }
+  nav {
+    margin: 0;
+    ul {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      overflow: hidden;
+      li {
+        width: 100%;
+        height: 100px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+      li > h1 {
+        border-radius: 100%;
+        border: 2px solid #3e3f42;
+        background-color: #9e9fa0;
+        text-align: center;
+        margin: 8px 0 0 10px;
+        font-size: 1.6em;
+        line-height: 80px;
+        width: 80px;
+        height: 80px;
+      }
+      li.active {
+        background-color: #515254;
+        box-shadow: 4px 0 0 #75b900 inset;
+      }
+    }
+  }
+}
+</style>
