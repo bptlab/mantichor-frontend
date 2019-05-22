@@ -13,12 +13,19 @@
           <h1>{{ model.text }}</h1>
         </li>
       </ul>
+      <ul>
+        <li
+          class="add"
+          @click="addModel()">
+          <h1>+</h1>
+        </li>
+      </ul>
     </nav>
   </aside>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Model } from 'vue-property-decorator';
 
 interface Model {
   text: string;
@@ -29,13 +36,13 @@ interface Model {
 export default class Sidebar extends Vue {
   private static defaultModels(): Model[] {
     return [
-        { text: 'AA', isActive: true },
-        { text: 'BB', isActive: false },
-        { text: 'CC', isActive: false },
-        { text: 'DD', isActive: false },
-        { text: 'EE', isActive: false },
-        { text: 'FF', isActive: false },
-        { text: 'GG', isActive: false },
+        // { text: 'AA', isActive: true },
+        // { text: 'BB', isActive: false },
+        // { text: 'CC', isActive: false },
+        // { text: 'DD', isActive: false },
+        // { text: 'EE', isActive: false },
+        // { text: 'FF', isActive: false },
+        // { text: 'GG', isActive: false },
       ];
   }
 
@@ -53,6 +60,16 @@ export default class Sidebar extends Vue {
   public selectModel(model: Model): void {
     this.resetModels();
     model.isActive = true;
+  }
+
+  public addModel(): void {
+    const modelNumber = this.models.length + 1;
+    const newModel: Model = {
+      text: String(('0' + modelNumber).slice(-2)),
+      isActive: false,
+    };
+    this.models.push(newModel);
+    this.selectModel(newModel);
   }
 
   private resetModels(): void {
@@ -120,6 +137,10 @@ aside {
       li.active {
         background-color: #515254;
         box-shadow: 4px 0 0 #75b900 inset;
+      }
+      li.add > h1 {
+        background-color: #75b900;
+        border-color: #75b900;
       }
     }
   }
