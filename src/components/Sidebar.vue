@@ -58,6 +58,9 @@ export default class Sidebar extends Vue {
   }
 
   public selectModel(model: Model): void {
+    if (model.isActive === true) {
+      this.removeModel(model);
+    }
     this.resetModels();
     model.isActive = true;
   }
@@ -70,6 +73,15 @@ export default class Sidebar extends Vue {
     };
     this.models.push(newModel);
     this.selectModel(newModel);
+  }
+
+  public removeModel(model: Model): void {
+    for(var i = 0; i < this.models.length; i++) {
+      if (this.models[i] === model) {
+        this.models.splice(i,1);
+        break;
+      }
+    }
   }
 
   private resetModels(): void {
