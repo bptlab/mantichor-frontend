@@ -52,7 +52,7 @@ aside {
   background-color: #252527;
   color: #fff;
   text-align: left;
-  width: 100px;
+  width: 80px;
   .sidebar-header {
     display: flex;
     flex-wrap: nowrap;
@@ -66,29 +66,35 @@ aside {
   }
   nav {
     margin: 0;
+    max-height: 100%;
+    overflow-y: scroll;
     ul {
       display: flex;
       flex-wrap: wrap;
       margin: 0;
       padding: 0;
       list-style: none;
-      overflow: hidden;
       li {
         width: 100%;
-        height: 100px;
+        height: 80px;
         white-space: nowrap;
         text-overflow: ellipsis;
+        cursor: pointer;
+      }
+      li:hover {
+        background-color: #515254;
+        box-shadow: 4px 0 0 #CCCCCC inset;
       }
       li > h1 {
         border-radius: 100%;
         border: 2px solid #3e3f42;
         background-color: #9e9fa0;
         text-align: center;
-        margin: 8px 0 0 10px;
-        font-size: 1.6em;
-        line-height: 80px;
-        width: 80px;
-        height: 80px;
+        margin: 14px 0 0 15px;
+        font-size: 1.4em;
+        line-height: 50px;
+        width: 50px;
+        height: 50px;
       }
       li.active {
         background-color: #515254;

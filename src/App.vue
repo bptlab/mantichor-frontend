@@ -36,7 +36,7 @@ body {
   text-align: center;
   background-color: #fff;
   color: #3e3f42;
-  margin-left: 100px;
+  margin-left: 80px;
 }
 #nav {
   background-color: #252527;
