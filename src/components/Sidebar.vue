@@ -8,7 +8,8 @@
         <li
           v-for="model in models"
           :class="{active: model.isActive}"
-          :key="model.text">
+          :key="model.text"
+          @click="selectModel(model)">
           <h1>{{ model.text }}</h1>
         </li>
       </ul>
@@ -19,11 +20,15 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 
+interface Model {
+  text: string;
+  isActive: boolean;
+}
+
 @Component
 export default class Sidebar extends Vue {
-  private data() {
-    return {
-      models: [
+  private static defaultModels(): Model[] {
+    return [
         { text: 'AA', isActive: true },
         { text: 'BB', isActive: false },
         { text: 'CC', isActive: false },
@@ -31,13 +36,29 @@ export default class Sidebar extends Vue {
         { text: 'EE', isActive: false },
         { text: 'FF', isActive: false },
         { text: 'GG', isActive: false },
-        { text: 'HH', isActive: false },
-        { text: 'II', isActive: false },
-        { text: 'JJ', isActive: false },
-        { text: 'KK', isActive: false },
-        { text: 'LL', isActive: false },
-      ],
-    };
+      ];
+  }
+
+  public models: Model[];
+
+  public get activeModels(): Model[] {
+    return this.models.filter((model) => model.isActive);
+  }
+
+  constructor() {
+    super();
+    this.models = Sidebar.defaultModels();
+  }
+
+  public selectModel(model: Model): void {
+    this.resetModels();
+    model.isActive = true;
+  }
+
+  private resetModels(): void {
+    for (const model of this.models) {
+      model.isActive = false;
+    }
   }
 }
 </script>
