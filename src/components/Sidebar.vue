@@ -5,7 +5,12 @@
     </div>
     <nav>
       <ul>
-        <li v-for="model in models" v-bind:class="{active: model.isActive}"><h1>{{ model.text }}</h1></li>
+        <li
+          v-for="model in models"
+          :class="{active: model.isActive}"
+          :key="model.text">
+          <h1>{{ model.text }}</h1>
+        </li>
       </ul>
     </nav>
   </aside>
