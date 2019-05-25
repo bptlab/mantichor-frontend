@@ -8,9 +8,9 @@
         <li
           v-for="model in models"
           :class="{active: model.isActive}"
-          :key="model.text"
+          :key="model.id"
           @click="selectModel(model)">
-          <h1>{{ model.text }}</h1>
+          <h1>{{ model.name }}</h1>
         </li>
       </ul>
       <ul>
@@ -28,7 +28,8 @@
 import { Component, Vue, Model } from 'vue-property-decorator';
 
 interface Model {
-  text: string;
+  id: string;
+  name: string;
   isActive: boolean;
 }
 
@@ -54,7 +55,19 @@ export default class Sidebar extends Vue {
 
   constructor() {
     super();
-    this.models = Sidebar.defaultModels();
+    this.models = this.loadModels();
+  }
+
+  public loadModels(): Model[] {
+    if (localStorage.models) {
+      return JSON.parse(localStorage.models);
+    }
+    return [];
+  }
+
+  public saveModels() {
+    const parsed = JSON.stringify(this.models);
+    localStorage.setItem('models', parsed);
   }
 
   public selectModel(model: Model): void {
@@ -63,22 +76,30 @@ export default class Sidebar extends Vue {
     }
     this.resetModels();
     model.isActive = true;
+    this.saveModels();
   }
 
   public addModel(): void {
     const modelNumber = this.models.length + 1;
     const newModel: Model = {
-      text: String(('0' + modelNumber).slice(-2)),
+      id: this.generateRandomID(16),
+      name: String(('0' + modelNumber).slice(-2)),
       isActive: false,
     };
+
+    if (!newModel) {
+      return;
+    }
     this.models.push(newModel);
     this.selectModel(newModel);
+    // this.saveModels();
   }
 
   public removeModel(model: Model): void {
     for (let i = 0; i < this.models.length; i++) {
       if (this.models[i] === model) {
         this.models.splice(i, 1);
+        this.saveModels();
         break;
       }
     }
@@ -88,6 +109,16 @@ export default class Sidebar extends Vue {
     for (const model of this.models) {
       model.isActive = false;
     }
+  }
+
+  private generateRandomID(length: number): string {
+    let result = '#';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    // let charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    return result;
   }
 }
 </script>
