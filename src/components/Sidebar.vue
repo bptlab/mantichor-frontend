@@ -76,9 +76,9 @@ export default class Sidebar extends Vue {
   }
 
   public removeModel(model: Model): void {
-    for(var i = 0; i < this.models.length; i++) {
+    for (let i = 0; i < this.models.length; i++) {
       if (this.models[i] === model) {
-        this.models.splice(i,1);
+        this.models.splice(i, 1);
         break;
       }
     }
