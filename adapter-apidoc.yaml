@@ -1,0 +1,149 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: Mantichor Adapter API
+host: localhost:9999
+basePath: /
+schemes:
+  - http
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /choreographies/{choreographyId}/tasks:
+    get:
+      description: All tasks of a choreography that can be executed
+      parameters:
+      - name: choreographyId
+        in: path
+        description: Contract address
+        required: true
+        type: string
+      - name: enabled
+        in: query
+        description: Task state
+        required: true
+        type: boolean
+      responses:
+        "200":
+          description: Enabled tasks
+          schema:
+            type: object
+            properties:
+              tasks:
+                type: array
+                items:
+                  type: array
+                  items:
+                    type: string
+                    example: "tz1hAYfexyzPGG6RhZZMpDvAHifubsbb6kgn"
+        "401":
+          description: Not authenticated
+          schema:
+            $ref: "#/definitions/NotAuthenticatedResponse"
+        "500":
+          description: Internal Error occured
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        default:
+          description: Internal Error occured
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /choreographies:
+    post:
+      description: Deploy a choreography on the blockchain
+      parameters:
+        - name: parameters
+          in: body
+          description: Choreography in XML-format
+          required: true
+          schema:
+            type: object
+            required:
+              - xml
+              - id
+            properties:
+              xml:
+                type: string
+                example: "<?xml version='1.0' encoding='UTF-8'?>..."
+              id:
+                type: string
+      responses:
+        "200":
+          description: Choreography has been deployed successfully
+          schema:
+            type: object
+            properties:
+              address:
+                type: string
+                example: "tz1hAYfexyzPGG6RhZZMpDvAHifubsbb6kgn"
+        "401":
+          description: Not authenticated
+          schema:
+            $ref: "#/definitions/NotAuthenticatedResponse"
+        "500":
+          description: Internal Error occured
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        default:
+          description: Internal Error occured
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /choreographies/{choreographyId}/tasks/execute:
+    post:
+      description: Execute a task of a choreography
+      parameters:
+      - name: choreographyId
+        in: path
+        description: Contract address
+        required: true
+        type: string
+      - name: parameters
+        in: body
+        description: Contract and task identifier
+        required: true
+        schema:
+          type: object
+          required:
+            - task
+          properties:
+            task:
+              type: array
+              items:
+                type: string
+                example: "tz1hAYfexyzPGG6RhZZMpDvAHifubsbb6kgn"
+      responses:
+        "200":
+          description: Successful execution
+        "401":
+          description: Not authenticated
+          schema:
+            $ref: "#/definitions/NotAuthenticatedResponse"
+        "500":
+          description: Internal Error occured
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        default:
+          description: Internal Error occured
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+definitions:
+  NotAuthenticatedResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string
+        example: "Authentication required to execute..."
+  ErrorResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string
+        example: "Internal error..."
