@@ -1,8 +1,6 @@
 <template>
   <div class="modelview">
     <div id="canvas"></div>
-    <h1>{{ message }}</h1>
-    <p>Here, the Chor JS needs to be implemented</p>
     <div class="floating-button">
       Deploy
     </div>
@@ -13,16 +11,16 @@
 import { Component, Vue } from 'vue-property-decorator';
 import ChoreoModeler from 'chor-js';
 
-const modeler = new ChoreoModeler({
-  container: '#canvas',
-});
-
 @Component
 export default class ModelView extends Vue {
-  private data() {
-    return {
-      message: 'This is the Model View',
-    };
+
+  private mounted() {
+    const modeler = new ChoreoModeler({
+      container: '#canvas',
+      keyboard: {
+        bindTo: document,
+      },
+    });
   }
 }
 
@@ -43,6 +41,6 @@ export default class ModelView extends Vue {
     color: #ffffff;
     font-weight: bold;
     cursor: pointer;
-    box-shadow: -4px 4px 4px #3e3f42;
+    box-shadow: -4px 4px 4px #dddddd;
   }
 </style>
