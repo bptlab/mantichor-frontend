@@ -12,7 +12,42 @@ consumes:
 produces:
   - application/json
 paths:
-  /deployChoreography:
+  /choreographies/{choreographyId}/enabledTasks:
+    get:
+      description: All tasks of a choreography that can be executed
+      parameters:
+      - name: choreographyId
+        in: path
+        description: Contract address
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Enabled tasks
+          schema:
+            type: object
+            properties:
+              tasks:
+                type: array
+                items:
+                  type: array
+                  items: 
+                    type: string
+                    example: "tz1hAYfexyzPGG6RhZZMpDvAHifubsbb6kgn"
+        "401":
+          description: Not authenticated
+          schema:
+            $ref: "#/definitions/NotAuthenticatedResponse"        
+        "500":
+          description: Internal Error occured
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        default:
+          description: Internal Error occured
+          schema:
+            $ref: "#/definitions/ErrorResponse"    
+
+  /choreographies/deploy:
     post:
       description: Deploy a choreography on the blockchain
       parameters:
@@ -53,52 +88,15 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
             
-  /enabledTasks:
-    get:
-      description: All tasks of a choreography that can be executed
-      parameters:
-      - name: parameters
-        in: body
-        description: Contract address
-        required: true
-        schema: 
-          type: object
-          required:
-            - address
-          properties:
-            address:
-              type: string
-              example: "tz1hAYfexyzPGG6RhZZMpDvAHifubsbb6kgn"
-      responses:
-        "200":
-          description: Enabled tasks
-          schema:
-            type: object
-            properties:
-              tasks:
-                type: array
-                items:
-                  type: array
-                  items: 
-                    type: string
-                    example: "tz1hAYfexyzPGG6RhZZMpDvAHifubsbb6kgn"
-        "401":
-          description: Not authenticated
-          schema:
-            $ref: "#/definitions/NotAuthenticatedResponse"        
-        "500":
-          description: Internal Error occured
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-        default:
-          description: Internal Error occured
-          schema:
-            $ref: "#/definitions/ErrorResponse"    
-
-  /executeTask:
+  /choreographies/{choreographyId}/execute:
     post:
       description: Execute a task of a choreography
       parameters:
+      - name: choreographyId
+        in: path
+        description: Contract address
+        required: true
+        type: string
       - name: parameters
         in: body
         description: Contract and task identifier
@@ -106,14 +104,13 @@ paths:
         schema: 
           type: object
           required:
-            - address
             - task
           properties:
-            address:
-              type: string
-              example: "tz1hAYfexyzPGG6RhZZMpDvAHifubsbb6kgn"
             task:
-              type: string
+              type: array
+              items:
+                type: string
+                example: "tz1hAYfexyzPGG6RhZZMpDvAHifubsbb6kgn"
       responses:
         "200":
           description: Successful execution
