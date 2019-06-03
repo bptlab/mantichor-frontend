@@ -90,6 +90,9 @@ export default class Sidebar extends Vue {
     if (!newModel) {
       return;
     }
+
+    this.$root.$emit('createNewDiagram');
+
     this.models.push(newModel);
     this.selectModel(newModel);
     // this.saveModels();
