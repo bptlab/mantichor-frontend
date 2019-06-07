@@ -8,14 +8,21 @@
       @click="deploy()">
       Deploy
     </div>
+    <div
+      class="floating-button-2"
+      @click="deleteProject()">
+      Löschen
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Prop } from 'vue-property-decorator';
 import ChoreoModeler from 'chor-js/lib/Modeler';
 import bpmnBlank from 'raw-loader!@/resources/newDiagram.bpmn';
 import bpmnExample from 'raw-loader!@/resources/testDiagram.bpmn';
+// import '@/Projects';
+import Sidebar from './Sidebar.vue';
 require('diagram-js/assets/diagram-js.css');
 require('bpmn-js/dist/assets/bpmn-font/css/bpmn.css');
 require('chor-js/assets/font/include/css/choreography.css');
@@ -34,6 +41,7 @@ requireChor.keys().forEach(requireChor);
 
 @Component
 export default class ModelView extends Vue {
+  private project!: Project;
   private modeler!: any;
 
   public createNewDiagram() {
@@ -62,11 +70,22 @@ export default class ModelView extends Vue {
   }
 
   private saveDiagram(done: any) {
-    this.modeler.saveXML({ format: true });
+    this.modeler.saveXML({ format: true }, (err: any, xml: any) => {
+      done(err, xml);
+    });
   }
 
   private deploy() {
+    const self = this;
     // Temporarily save models
+    this.saveDiagram((err: any, xml: any) => {
+      self.project.bpmnXML = xml;
+      self.$root.$emit('saveProjects');
+    });
+  }
+
+  private deleteProject() {
+    this.$root.$emit('removeProject', this.project);
   }
 
   private mounted() {
@@ -76,14 +95,39 @@ export default class ModelView extends Vue {
         bindTo: document,
       },
     });
-    this.renderModel(bpmnExample);
+    // this.renderModel(bpmnExample);
 
-    this.$root.$on('createNewDiagram', () => {
-      this.createNewDiagram();
+    this.$root.$on('didSelectProject', (project: Project) => {
+      this.project = project;
+      if (this.project.bpmnXML !== '') {
+        this.renderModel(this.project.bpmnXML);
+      } else {
+        this.project.bpmnXML = bpmnBlank;
+        this.$root.$emit('saveProjects');
+      }
     });
 
-    this.$root.$on('loadDiagram', (bpmnXml: any) => {
-      this.renderModel(bpmnXml);
+    const eventBus = this.modeler.get('eventBus');
+    const events = [
+      'element.hover',
+      'element.out',
+      'element.click',
+      'element.dbclick',
+      'element.mousedown',
+      'element.mouseup',
+    ];
+    events.forEach(event => {
+      eventBus.on(event, (e: any) => {
+        if (event == 'element.mouseup') {
+          console.log('save now');
+          const self = this;
+          // Temporarily save models
+          this.saveDiagram((err: any, xml: any) => {
+            self.project.bpmnXML = xml;
+            self.$root.$emit('saveProjects');
+          });
+        }
+      });
     });
   }
 }
@@ -110,6 +154,19 @@ export default class ModelView extends Vue {
     bottom: 26px;
     right: 100px;
     background-color: #75b900;
+    padding: 10px;
+    border-radius: 40px;
+    font-size: 1em;
+    color: #ffffff;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: -4px 4px 4px #dddddd;
+  }
+  .floating-button-2 {
+    position: fixed;
+    bottom: 26px;
+    right: 200px;
+    background-color: #cc1414;
     padding: 10px;
     border-radius: 40px;
     font-size: 1em;
