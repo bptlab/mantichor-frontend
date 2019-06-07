@@ -37,26 +37,6 @@ interface Project {
 
 @Component
 export default class Sidebar extends Vue {
-  // @Prop() projects: Projects;
-
-  // constructor() {
-  //   super();
-  //   this.projects = Projects.loadProjects();
-  // }
-
-  // private static defaultProjects(): Project[] {
-  //   return [
-  //       // { text: 'AA', isActive: true },
-  //       // { text: 'BB', isActive: false },
-  //       // { text: 'CC', isActive: false },
-  //       // { text: 'DD', isActive: false },
-  //       // { text: 'EE', isActive: false },
-  //       // { text: 'FF', isActive: false },
-  //       // { text: 'GG', isActive: false },
-  //     ];
-  // }
-
-
   public projects: Project[];
 
   public get activeProject(): Project {
@@ -65,7 +45,6 @@ export default class Sidebar extends Vue {
 
   constructor() {
     super();
-    // this.projects = Projects.prototype.projects;
     this.projects = this.loadProjects();
   }
 
@@ -82,12 +61,14 @@ export default class Sidebar extends Vue {
   }
 
   public selectProject(project: Project): void {
-    if (project.isActive === true) {
-      this.removeProject(project);
-    }
+    // if (project.isActive === true) {
+    //   this.removeProject(project);
+    // }
     this.resetProjects();
     project.isActive = true;
+
     this.saveProjects();
+    this.$root.$emit('didSelectProject', project);
   }
 
   public addProject(): void {
@@ -103,11 +84,8 @@ export default class Sidebar extends Vue {
       return;
     }
 
-    this.$root.$emit('createNewDiagram');
-
     this.projects.push(newProject);
     this.selectProject(newProject);
-    // this.saveModels();
   }
 
   public removeProject(project: Project): void {
@@ -129,7 +107,6 @@ export default class Sidebar extends Vue {
   private generateRandomID(length: number): string {
     let result = '#';
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    // let charactersLength = characters.length;
     for (let i = 0; i < length; i++) {
       result += characters.charAt(Math.floor(Math.random() * characters.length));
     }
@@ -137,9 +114,12 @@ export default class Sidebar extends Vue {
   }
 
   private mounted() {
-    // this.$root.$on('getActiveDiagram', () => {
-    //   return this.activeProject();
-    // });
+    this.$root.$on('saveProjects', () => {
+      return this.saveProjects();
+    });
+    this.$root.$on('removeProject', (project: Project) => {
+      return this.removeProject(project);
+    });
   }
 }
 </script>
