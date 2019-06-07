@@ -1,7 +1,7 @@
 <template>
   <header>
     <router-link to="/model">Model</router-link>
-    <router-link to="/about">Execution</router-link>
+    <router-link to="/execution">Execution</router-link>
     <router-link to="/user"><img alt="Vue logo" src="../assets/logo.png"></router-link>
   </header>
 </template>
