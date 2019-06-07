@@ -26,8 +26,8 @@ requireChor.keys().forEach(requireChor);
 
 @Component
 export default class ExecutionView extends Vue {
-
-  public modeler: any;
+  private project!: Project;
+  private modeler: any;
 
   private renderModel(newXml: any) {
     this.modeler.setXML(newXml).then((result: any) => {
@@ -53,7 +53,40 @@ export default class ExecutionView extends Vue {
         bindTo: document,
       },
     });
-    this.renderModel(bpmnExample);
+    // this.renderModel(bpmnExample);
+
+    this.$root.$on('didSelectProject', (project: Project) => {
+      this.project = project;
+      if (this.project.bpmnXML !== '') {
+        this.renderModel(this.project.bpmnXML);
+      } else {
+        this.$notify({
+          type: 'error',
+          title: 'Error',
+          text: 'The diagram is empty',
+          duration: 4000,
+        });
+        // this.project.bpmnXML = bpmnBlank;
+        // this.$root.$emit('saveProjects');
+      }
+    });
+
+    const eventBus = this.modeler.get('eventBus');
+    const events = [
+      'element.hover',
+      'element.out',
+      'element.click',
+      'element.dbclick',
+      'element.mousedown',
+      'element.mouseup',
+    ];
+
+    events.forEach(event => {
+      eventBus.on(event, (e: any) => {
+        // console.log('something happens');
+        console.log(event, ' on ', e.element.id);
+      });
+    });
   }
 }
 </script>
