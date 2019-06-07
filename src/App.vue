@@ -5,6 +5,7 @@
       <Header />
     </div>
     <router-view/>
+    <notifications class="notify"/>
   </div>
 </template>
 
@@ -41,4 +42,13 @@ body {
 #nav {
   background-color: #252527;
 }
+.notify {
+  margin-right: 20px;
+  margin-top: 40px;
+}
+// .notify {
+//   .notification-title {
+
+//   }
+// }
 </style>
