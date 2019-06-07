@@ -6,17 +6,17 @@
     <nav>
       <ul>
         <li
-          v-for="model in models"
-          :class="{active: model.isActive}"
-          :key="model.id"
-          @click="selectModel(model)">
-          <h1>{{ model.name }}</h1>
+          v-for="project in projects"
+          :class="{active: project.isActive}"
+          :key="project.id"
+          @click="selectProject(project)">
+          <h1>{{ project.name }}</h1>
         </li>
       </ul>
       <ul>
         <li
           class="add"
-          @click="addModel()">
+          @click="addProject()">
           <h1>+</h1>
         </li>
       </ul>
@@ -25,92 +25,104 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Model } from 'vue-property-decorator';
+import { Component, Vue, Prop, Model } from 'vue-property-decorator';
+// import '@/Projects';
 
-interface Model {
+interface Project {
   id: string;
   name: string;
   isActive: boolean;
+  bpmnXML: string;
 }
 
 @Component
 export default class Sidebar extends Vue {
-  private static defaultModels(): Model[] {
-    return [
-        // { text: 'AA', isActive: true },
-        // { text: 'BB', isActive: false },
-        // { text: 'CC', isActive: false },
-        // { text: 'DD', isActive: false },
-        // { text: 'EE', isActive: false },
-        // { text: 'FF', isActive: false },
-        // { text: 'GG', isActive: false },
-      ];
-  }
+  // @Prop() projects: Projects;
 
-  public models: Model[];
+  // constructor() {
+  //   super();
+  //   this.projects = Projects.loadProjects();
+  // }
 
-  public get activeModels(): Model[] {
-    return this.models.filter((model) => model.isActive);
+  // private static defaultProjects(): Project[] {
+  //   return [
+  //       // { text: 'AA', isActive: true },
+  //       // { text: 'BB', isActive: false },
+  //       // { text: 'CC', isActive: false },
+  //       // { text: 'DD', isActive: false },
+  //       // { text: 'EE', isActive: false },
+  //       // { text: 'FF', isActive: false },
+  //       // { text: 'GG', isActive: false },
+  //     ];
+  // }
+
+
+  public projects: Project[];
+
+  public get activeProject(): Project {
+    return this.projects.filter((project) => project.isActive)[0];
   }
 
   constructor() {
     super();
-    this.models = this.loadModels();
+    // this.projects = Projects.prototype.projects;
+    this.projects = this.loadProjects();
   }
 
-  public loadModels(): Model[] {
-    if (localStorage.models) {
-      return JSON.parse(localStorage.models);
+  public loadProjects(): Project[] {
+    if (localStorage.projects) {
+      return JSON.parse(localStorage.projects);
     }
     return [];
   }
 
-  public saveModels() {
-    const parsed = JSON.stringify(this.models);
-    localStorage.setItem('models', parsed);
+  public saveProjects() {
+    const parsed = JSON.stringify(this.projects);
+    localStorage.setItem('projects', parsed);
   }
 
-  public selectModel(model: Model): void {
-    if (model.isActive === true) {
-      this.removeModel(model);
+  public selectProject(project: Project): void {
+    if (project.isActive === true) {
+      this.removeProject(project);
     }
-    this.resetModels();
-    model.isActive = true;
-    this.saveModels();
+    this.resetProjects();
+    project.isActive = true;
+    this.saveProjects();
   }
 
-  public addModel(): void {
-    const modelNumber = this.models.length + 1;
-    const newModel: Model = {
+  public addProject(): void {
+    const projectNumber = this.projects.length + 1;
+    const newProject: Project = {
       id: this.generateRandomID(16),
-      name: String(('0' + modelNumber).slice(-2)),
+      name: String(('0' + projectNumber).slice(-2)),
       isActive: false,
+      bpmnXML: '',
     };
 
-    if (!newModel) {
+    if (!newProject) {
       return;
     }
 
     this.$root.$emit('createNewDiagram');
 
-    this.models.push(newModel);
-    this.selectModel(newModel);
+    this.projects.push(newProject);
+    this.selectProject(newProject);
     // this.saveModels();
   }
 
-  public removeModel(model: Model): void {
-    for (let i = 0; i < this.models.length; i++) {
-      if (this.models[i] === model) {
-        this.models.splice(i, 1);
-        this.saveModels();
+  public removeProject(project: Project): void {
+    for (let i = 0; i < this.projects.length; i++) {
+      if (this.projects[i] === project) {
+        this.projects.splice(i, 1);
+        this.saveProjects();
         break;
       }
     }
   }
 
-  private resetModels(): void {
-    for (const model of this.models) {
-      model.isActive = false;
+  private resetProjects(): void {
+    for (const project of this.projects) {
+      project.isActive = false;
     }
   }
 
@@ -122,6 +134,12 @@ export default class Sidebar extends Vue {
       result += characters.charAt(Math.floor(Math.random() * characters.length));
     }
     return result;
+  }
+
+  private mounted() {
+    // this.$root.$on('getActiveDiagram', () => {
+    //   return this.activeProject();
+    // });
   }
 }
 </script>
