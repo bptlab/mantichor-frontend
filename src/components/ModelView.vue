@@ -13,6 +13,9 @@
       @click="deleteProject()">
       Löschen
     </div>
+    <!-- <div class="saved-info">
+      Zuletzt gespeichert: {{ project.dateSaved }}
+    </div> -->
   </div>
 </template>
 
@@ -116,14 +119,15 @@ export default class ModelView extends Vue {
       'element.mousedown',
       'element.mouseup',
     ];
-    events.forEach(event => {
+    events.forEach((event) => {
       eventBus.on(event, (e: any) => {
-        if (event == 'element.mouseup') {
-          console.log('save now');
+        if (event === 'element.mouseup') {
+          // console.log('save now');
           const self = this;
           // Temporarily save models
           this.saveDiagram((err: any, xml: any) => {
             self.project.bpmnXML = xml;
+            self.project.dateSaved = new Date();
             self.$root.$emit('saveProjects');
           });
         }
@@ -136,10 +140,7 @@ export default class ModelView extends Vue {
 
 <style scoped lang="less">
   .container {
-    // position: absolute;
     background-color: #ffffff;
-    // width: 94%;
-    // height: 86%;
     position: fixed;
     top: 54px;
     right: 0;
@@ -175,4 +176,18 @@ export default class ModelView extends Vue {
     cursor: pointer;
     box-shadow: -4px 4px 4px #dddddd;
   }
+  // .saved-info {
+  //   position: fixed;
+  //   bottom: 26px;
+  //   right: auto;
+  //   left: 50%;
+  //   background-color: #dddddd;
+  //   padding: 4px;
+  //   border-radius: 40px;
+  //   font-size: 0.7em;
+  //   color: #fff;
+  //   font-weight: normal;
+  //   cursor: pointer;
+  //   box-shadow: -4px 4px 4px #dddddd;
+  // }
 </style>
