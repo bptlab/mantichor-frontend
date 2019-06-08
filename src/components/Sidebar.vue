@@ -33,6 +33,7 @@ interface Project {
   name: string;
   isActive: boolean;
   bpmnXML: string;
+  dateSaved: Date;
 }
 
 @Component
@@ -41,6 +42,13 @@ export default class Sidebar extends Vue {
 
   public get activeProject(): Project {
     return this.projects.filter((project) => project.isActive)[0];
+    // let activeProject: Project = this.projects[0];
+    // this.projects.forEach((project) => {
+    //   if (project.isActive) {
+    //     activeProject = project;
+    //   }
+    // });
+    // return activeProject;
   }
 
   constructor() {
@@ -61,9 +69,6 @@ export default class Sidebar extends Vue {
   }
 
   public selectProject(project: Project): void {
-    // if (project.isActive === true) {
-    //   this.removeProject(project);
-    // }
     this.resetProjects();
     project.isActive = true;
 
@@ -78,6 +83,7 @@ export default class Sidebar extends Vue {
       name: String(('0' + projectNumber).slice(-2)),
       isActive: false,
       bpmnXML: '',
+      dateSaved: new Date(),
     };
 
     if (!newProject) {
@@ -92,6 +98,9 @@ export default class Sidebar extends Vue {
     for (let i = 0; i < this.projects.length; i++) {
       if (this.projects[i] === project) {
         this.projects.splice(i, 1);
+        if (this.projects.length > 0) {
+          this.selectProject(this.projects[0]);
+        }
         this.saveProjects();
         break;
       }
