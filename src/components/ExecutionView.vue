@@ -3,11 +3,15 @@
     <div class="container">
       <div id="canvas"></div>
     </div>
+    <div class="sidebar-right">
+      <p>Element ID:<br>{{ elementID }}</p>
+      <p>Task:<br>{{ elementTask }}</p>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue } from 'vue-property-decorator';
 import ChoreoModeler from 'chor-js';
 import bpmnExample from 'raw-loader!@/resources/testDiagram.bpmn';
 // require('diagram-js/assets/diagram-js.css');
@@ -28,6 +32,14 @@ requireChor.keys().forEach(requireChor);
 export default class ExecutionView extends Vue {
   private project!: Project;
   private modeler: any;
+  @Prop() private elementID!: string;
+  @Prop() private elementTask!: string;
+
+  constructor() {
+    super();
+    this.elementID = 'no selection';
+    this.elementTask = 'no selection';
+  }
 
   private renderModel(newXml: any) {
     this.modeler.setXML(newXml).then((result: any) => {
@@ -47,13 +59,13 @@ export default class ExecutionView extends Vue {
   }
 
   private mounted() {
+    const self = this;
     this.modeler = new ChoreoModeler({
       container: '#canvas',
       keyboard: {
         bindTo: document,
       },
     });
-    // this.renderModel(bpmnExample);
 
     this.$root.$on('didSelectProject', (project: Project) => {
       this.project = project;
@@ -66,8 +78,6 @@ export default class ExecutionView extends Vue {
           text: 'The diagram is empty',
           duration: 4000,
         });
-        // this.project.bpmnXML = bpmnBlank;
-        // this.$root.$emit('saveProjects');
       }
     });
 
@@ -79,12 +89,26 @@ export default class ExecutionView extends Vue {
       'element.dbclick',
       'element.mousedown',
       'element.mouseup',
+      'selection.changed',
     ];
 
-    events.forEach(event => {
+    events.forEach((event) => {
       eventBus.on(event, (e: any) => {
-        // console.log('something happens');
-        console.log(event, ' on ', e.element.id);
+        if (event === 'selection.changed') {
+            const selectedElements = self.modeler.get('selection').get();
+            if (selectedElements.length > 0) {
+              const selectedElement = selectedElements[0];
+              this.elementID = selectedElement.id;
+              this.elementTask = selectedElement.type;
+            } else {
+              this.elementID = 'no selection';
+              this.elementTask = 'no selection';
+            }
+        }
+        // if (event === 'element.mouseup') {
+        //   // const canvas = self.modeler.get('canvas');
+        //   // canvas.addMarker(e.element.id, 'highlight');
+        // }
       });
     });
   }
@@ -93,17 +117,25 @@ export default class ExecutionView extends Vue {
 
 <style scoped lang="less">
   .container {
-    // position: absolute;
     background-color: #ffffff;
-    // width: 94%;
-    // height: 86%;
     position: fixed;
     top: 54px;
-    right: 0;
+    right: 300px;
     bottom: 0;
     left: 80px;
   }
   #canvas {
     height: 100%;
+  }
+  .sidebar-right {
+    position: fixed;
+    top: 54px;
+    right: 0;
+    bottom: 0;
+    width: 300px;
+    background-color: #252527;
+    p {
+      color: #fff;
+    }
   }
 </style>
