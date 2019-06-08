@@ -46,9 +46,8 @@ body {
   margin-right: 20px;
   margin-top: 40px;
 }
-// .notify {
-//   .notification-title {
-
-//   }
-// }
+.selected:not(.djs-connection) .djs-visual > :nth-child(1) {
+  // fill: #01a7c2 !important;
+  stroke: #01a7c2 !important;
+}
 </style>
