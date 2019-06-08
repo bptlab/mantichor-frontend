@@ -4,6 +4,8 @@
       <div id="canvas"></div>
     </div>
     <div class="sidebar-right">
+      <p>Project ID:<br>{{ projectID }}</p>
+      <p>Project Name:<br>{{ projectName }}</p>
       <p>Element ID:<br>{{ elementID }}</p>
       <p>Task:<br>{{ elementTask }}</p>
     </div>
@@ -32,11 +34,15 @@ requireChor.keys().forEach(requireChor);
 export default class ExecutionView extends Vue {
   private project!: Project;
   private modeler: any;
+  @Prop() private projectID!: string;
+  @Prop() private projectName!: string;
   @Prop() private elementID!: string;
   @Prop() private elementTask!: string;
 
   constructor() {
     super();
+    this.projectID = 'no selection';
+    this.projectName = 'no selection';
     this.elementID = 'no selection';
     this.elementTask = 'no selection';
   }
@@ -69,6 +75,8 @@ export default class ExecutionView extends Vue {
 
     this.$root.$on('didSelectProject', (project: Project) => {
       this.project = project;
+      this.projectID = this.project.id;
+      this.projectName = this.project.name;
       if (this.project.bpmnXML !== '') {
         this.renderModel(this.project.bpmnXML);
       } else {
