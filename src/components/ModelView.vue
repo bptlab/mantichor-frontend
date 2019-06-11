@@ -1,5 +1,6 @@
 <template>
   <div class="modelview">
+    <!-- <v-dialog/> -->
     <div class="container">
       <div id="canvas"></div>
     </div>
@@ -12,6 +13,17 @@
       class="floating-button-2"
       @click="deleteProject()">
       Löschen
+    </div>
+    <div class="io-project-tools">
+      <ul class="io-control-list io-horizontal">
+        <li class="io-control">
+          <button
+            title="settings"
+            @click="settings()">
+            <font-awesome-icon icon="cog" />
+          </button>
+        </li>
+      </ul>
     </div>
     <div class="io-zoom-controls">
       <ul class="io-zoom-reset io-control io-control-list">
@@ -118,6 +130,12 @@ export default class ModelView extends Vue {
     this.modeler.get('canvas').zoom(zoomLevel - 0.162);
   }
 
+  private settings() {
+    this.$modal.show('project-settings', {
+      test: 'Test',
+    });
+  }
+
   private deploy() {
     const self = this;
     // Temporarily save models
@@ -221,21 +239,30 @@ export default class ModelView extends Vue {
     position: fixed;
     right: 15px;
     bottom: 90px;
-    .io-control-list {
-      list-style: none;
-      padding: 5px;
-      margin: 0;
-      a, a:visited, button {
-        padding: 0;
-        outline: none;
-        cursor: pointer;
-        font-size: 22px;
-        line-height: 26px;
-        color: #555555;
-        background: none;
-        border: none;
-      }
+  }
+  .io-project-tools {
+    width: auto;
+    position: fixed;
+    right: 15px;
+    top: 70px;
+  }
+  .io-control-list {
+    list-style: none;
+    padding: 5px;
+    margin: 0;
+    a, a:visited, button {
+      padding: 0;
+      outline: none;
+      cursor: pointer;
+      font-size: 22px;
+      line-height: 26px;
+      color: #555555;
+      background: none;
+      border: none;
     }
+  }
+  .io-control-list.io-horizontal, .io-control-list.io-horizontal li {
+    display: inline-block;
   }
   .io-zoom-reset {
     margin-bottom: 10px !important;

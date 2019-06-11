@@ -3,6 +3,7 @@
     <div id="nav">
       <Sidebar />
       <Header />
+      <Modal />
     </div>
     <router-view/>
     <notifications class="notify"/>
@@ -13,11 +14,13 @@
 import { Component, Vue } from 'vue-property-decorator';
 import Header from '@/components/Header.vue';
 import Sidebar from '@/components/Sidebar.vue';
+import Modal from '@/components/Modal.vue';
 
 @Component({
   components: {
     Sidebar,
     Header,
+    Modal,
   },
 })
 export default class App extends Vue {}
