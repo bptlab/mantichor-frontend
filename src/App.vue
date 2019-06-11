@@ -46,6 +46,19 @@ body {
   margin-right: 20px;
   margin-top: 40px;
 }
+.bjs-powered-by,
+.cjs-powered-by,
+.djs-powered-by,
+.io-control {
+  background: #ffffff;
+  border-radius: 2px;
+  border: solid 1px #E0E0E0;
+  padding: 5px;
+  hr {
+    border: none;
+    border-top: solid 1px #EEEEEE;
+  }
+}
 .selected:not(.djs-connection) .djs-visual > :nth-child(1) {
   // fill: #01a7c2 !important;
   stroke: #01a7c2 !important;

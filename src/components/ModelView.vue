@@ -13,9 +13,36 @@
       @click="deleteProject()">
       Löschen
     </div>
-    <!-- <div class="saved-info">
-      Zuletzt gespeichert: {{ project.dateSaved }}
-    </div> -->
+    <div class="io-zoom-controls">
+      <ul class="io-zoom-reset io-control io-control-list">
+        <li>
+          <button
+            title="reset zoom"
+            @click="resetZoom()">
+            <font-awesome-icon icon="crosshairs" />
+          </button>
+        </li>
+      </ul>
+      <ul class="io-zoom io-control io-control-list">
+        <li>
+          <button
+            title="zoom in"
+            @click="zoomIn()">
+            <font-awesome-icon icon="plus" />
+          </button>
+        </li>
+        <li>
+          <hr>
+        </li>
+        <li>
+          <button
+            title="zoom out"
+            @click="zoomOut()">
+            <font-awesome-icon icon="minus" />
+          </button>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -24,11 +51,10 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import ChoreoModeler from 'chor-js/lib/Modeler';
 import bpmnBlank from 'raw-loader!@/resources/newDiagram.bpmn';
 import bpmnExample from 'raw-loader!@/resources/testDiagram.bpmn';
-// import '@/Projects';
 import Sidebar from './Sidebar.vue';
-require('diagram-js/assets/diagram-js.css');
-require('bpmn-js/dist/assets/bpmn-font/css/bpmn.css');
-require('chor-js/assets/font/include/css/choreography.css');
+import 'diagram-js/assets/diagram-js.css';
+import 'bpmn-js/dist/assets/bpmn-font/css/bpmn.css';
+import 'chor-js/assets/font/include/css/choreography.css';
 
 /* bpmn-js includings
  * In this way all existing js files will be included
@@ -76,6 +102,20 @@ export default class ModelView extends Vue {
     this.modeler.saveXML({ format: true }, (err: any, xml: any) => {
       done(err, xml);
     });
+  }
+
+  private resetZoom() {
+    this.modeler.get('canvas').zoom('fit-viewport');
+  }
+
+  private zoomIn() {
+    const zoomLevel = this.modeler.get('canvas').zoom();
+    this.modeler.get('canvas').zoom(zoomLevel + 0.162);
+  }
+
+  private zoomOut() {
+    const zoomLevel = this.modeler.get('canvas').zoom();
+    this.modeler.get('canvas').zoom(zoomLevel - 0.162);
   }
 
   private deploy() {
@@ -176,18 +216,28 @@ export default class ModelView extends Vue {
     cursor: pointer;
     box-shadow: -4px 4px 4px #dddddd;
   }
-  // .saved-info {
-  //   position: fixed;
-  //   bottom: 26px;
-  //   right: auto;
-  //   left: 50%;
-  //   background-color: #dddddd;
-  //   padding: 4px;
-  //   border-radius: 40px;
-  //   font-size: 0.7em;
-  //   color: #fff;
-  //   font-weight: normal;
-  //   cursor: pointer;
-  //   box-shadow: -4px 4px 4px #dddddd;
-  // }
+  .io-zoom-controls {
+    width: auto;
+    position: fixed;
+    right: 15px;
+    bottom: 90px;
+    .io-control-list {
+      list-style: none;
+      padding: 5px;
+      margin: 0;
+      a, a:visited, button {
+        padding: 0;
+        outline: none;
+        cursor: pointer;
+        font-size: 22px;
+        line-height: 26px;
+        color: #555555;
+        background: none;
+        border: none;
+      }
+    }
+  }
+  .io-zoom-reset {
+    margin-bottom: 10px !important;
+  }
 </style>
