@@ -1,5 +1,5 @@
 <template>
-    <modal name="project-settings" transition="pop-out">
+    <modal name="project-settings" transition="pop-out" @before-open="beforeOpen">
         <div class="dialog">
             <h1 class="dialog-title">Project settings</h1>
             <div class="dialog-form">
@@ -27,11 +27,12 @@ export default class ModelView extends Vue {
     constructor() {
         super();
         this.name = '';
-        this.test = '1';
+        this.test = '';
     }
 
     private beforeOpen(event: any) {
-        this.test = event.params.test;
+        // This method is called to set values!
+        // this.test = event.params.test;
     }
 
     private confirm() {
