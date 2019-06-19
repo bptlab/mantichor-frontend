@@ -14,9 +14,43 @@
       @click="deleteProject()">
       Löschen
     </div>
+    <div class="io-import-export">
+      <ul class="io-import io-control io-control-list io-horizontal">
+        <li>
+          <button
+            title="open BPMN diagram from local file system"
+            @click="openLocal()">
+            <font-awesome-icon icon="folder-open" />
+          </button>
+        </li>
+        <li class="vr" style="margin-left: 2px"></li>
+        <li>
+          <button
+            title="download BPMN diagram"
+            @click="saveDiagram()">
+            <font-awesome-icon icon="download" />
+          </button>
+        </li>
+        <li>
+          <button
+            title="download as SVG image"
+            @click="saveSVG()">
+            <font-awesome-icon icon="image" />
+          </button>
+        </li>
+      </ul>
+    </div>
     <div class="io-project-tools">
-      <ul class="io-control-list io-horizontal">
-        <li class="io-control">
+      <ul class="io-control io-control-list io-horizontal">
+        <li>
+          <button
+            title="Share"
+            @click="settings()">
+            <font-awesome-icon icon="share-alt" />
+          </button>
+        </li>
+        <li class="vr" style="margin-left: 2px"></li>
+        <li>
           <button
             title="settings"
             @click="settings()">
@@ -64,6 +98,7 @@ import ChoreoModeler from 'chor-js/lib/Modeler';
 import bpmnBlank from 'raw-loader!@/resources/newDiagram.bpmn';
 import bpmnExample from 'raw-loader!@/resources/testDiagram.bpmn';
 import Sidebar from './Sidebar.vue';
+import Project from '@/interfaces/Project';
 import 'diagram-js/assets/diagram-js.css';
 import 'bpmn-js/dist/assets/bpmn-font/css/bpmn.css';
 import 'chor-js/assets/font/include/css/choreography.css';
@@ -148,6 +183,18 @@ export default class ModelView extends Vue {
   private deleteProject() {
     this.$root.$emit('removeProject', this.project);
   }
+
+  // private debounce(fn: TimerHandler, timeout: number) {
+  //   let timer: number;
+
+  //   return function() {
+  //     if (timer) {
+  //       clearTimeout(timer);
+  //     }
+
+  //     timer = setTimeout(fn, timeout);
+  //   };
+  // }
 
   private mounted() {
     this.modeler = new ChoreoModeler({
@@ -246,12 +293,18 @@ export default class ModelView extends Vue {
     right: 15px;
     top: 70px;
   }
+  .io-import-export {
+    position: fixed;
+    left: 120px;
+    bottom: 25px;
+  }
   .io-control-list {
     list-style: none;
     padding: 5px;
     margin: 0;
     a, a:visited, button {
       padding: 0;
+      height: 25px;
       outline: none;
       cursor: pointer;
       font-size: 22px;
@@ -264,7 +317,14 @@ export default class ModelView extends Vue {
   .io-control-list.io-horizontal, .io-control-list.io-horizontal li {
     display: inline-block;
   }
+  .io-control-list.io-horizontal button {
+    margin: 0 5px;
+  }
   .io-zoom-reset {
     margin-bottom: 10px !important;
+  }
+  .vr {
+    height: 18px;
+    border-right: solid 1px #CCCCCC;
   }
 </style>
