@@ -26,15 +26,8 @@
 
 <script lang="ts">
 import { Component, Vue, Prop, Model } from 'vue-property-decorator';
-// import '@/Projects';
-
-interface Project {
-  id: string;
-  name: string;
-  isActive: boolean;
-  bpmnXML: string;
-  dateSaved: Date;
-}
+import Project from '@/interfaces/Project';
+import ProjectUtils from '@/utils/ProjectUtil';
 
 @Component
 export default class Sidebar extends Vue {
@@ -53,15 +46,17 @@ export default class Sidebar extends Vue {
 
   constructor() {
     super();
-    this.projects = this.loadProjects();
+    // this.projects = this.loadProjects();
+    const projectUtil = new ProjectUtils();
+    this.projects = projectUtil.loadProjects();
   }
 
-  public loadProjects(): Project[] {
-    if (localStorage.projects) {
-      return JSON.parse(localStorage.projects);
-    }
-    return [];
-  }
+  // public loadProjects(): Project[] {
+  //   if (localStorage.projects) {
+  //     return JSON.parse(localStorage.projects);
+  //   }
+  //   return [];
+  // }
 
   public saveProjects() {
     const parsed = JSON.stringify(this.projects);
