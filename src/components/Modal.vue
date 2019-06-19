@@ -1,51 +1,67 @@
 <template>
-    <modal name="project-settings" transition="pop-out" @before-open="beforeOpen" @opened="opened">
-        <div class="dialog">
-            <h1 class="dialog-title">Project settings</h1>
-            <div class="dialog-form">
-                <p>{{ test }}</p>
-                <form autocomplete="false">
-                    <input id="n-name" type="text" placeholder="Name" :value="name">
-                </form>
-                <div style="margin-top:42px;"></div>
-                <div class="button-set">
-                    <button @click="confirm()">Confirm</button>
-                    <button @click="remove()">Delete</button>
-                </div>
-            </div>
+  <modal name="project-settings"
+      transition="pop-out"
+      height="auto"
+      @before-open="beforeOpen"
+      @opened="opened"
+      @closed="closed"
+      @beforeClose="beforeClose">
+    <div class="dialog">
+      <h1 class="dialog-title">Project settings</h1>
+      <div class="dialog-form">
+        <p>{{ test }}</p>
+        <form autocomplete="false">
+          <input id="n-name" type="text" placeholder="Name" :value="name">
+        </form>
+        <div style="margin-top:42px;"></div>
+        <div class="button-set">
+          <button @click="confirm()">Confirm</button>
+          <button @click="remove()">Delete</button>
         </div>
-    </modal>
+      </div>
+    </div>
+  </modal>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component, Vue, Prop, Watch, Emit } from 'vue-property-decorator';
 
 export default class ModelView extends Vue {
-    @Prop() public name!: string;
-    @Prop() public test!: string;
+  public name!: string;
+  public test!: string;
 
-    constructor() {
-        super();
-        this.name = '';
-        this.test = '';
-    }
+  constructor() {
+    super();
+    this.name = '';
+    this.test = '';
+  }
 
-    public beforeOpen(event: any) {
-        // This method is called to set values!
-        // this.test = event.params.test;
-    }
+  public beforeOpen(event: any) {
+    // This method is called to set values!
+    // this.test = event.params.test;
+    // alert(this);
+  }
 
-    public opened(event: any) {
-        this.test = event.params.test;
-    }
+  public opened(event: any) {
+    // this.test = event.params.test;
+    // alert(this);
+  }
 
-    private confirm() {
-        alert('Confirm ...');
-    }
+  public closed(event: any) {
+    // alert(this);
+  }
 
-    private remove() {
-        alert('Remove ...');
-    }
+  public beforeClose(event: any) {
+    // alert(this);
+  }
+
+  private confirm() {
+    alert('Confirm ...');
+  }
+
+  private remove() {
+    alert('Remove ...');
+  }
 }
 
 </script>
