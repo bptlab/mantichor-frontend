@@ -1,7 +1,7 @@
 <template>
   <div class="executionview">
     <div class="container">
-      <div id="canvas"></div>
+      <div id="canvas" class="execution"></div>
     </div>
     <div class="sidebar-right">
       <p>Project ID:<br>{{ projectID }}</p>
@@ -16,6 +16,7 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import ChoreoModeler from 'chor-js';
 import bpmnExample from 'raw-loader!@/resources/testDiagram.bpmn';
+import Project from '@/interfaces/Project';
 // require('diagram-js/assets/diagram-js.css');
 
 /* bpmn-js includings
@@ -142,6 +143,7 @@ export default class ExecutionView extends Vue {
     bottom: 0;
     width: 300px;
     background-color: #252527;
+    // box-shadow: -10px 2px 6px #dddddd;
     p {
       color: #fff;
     }

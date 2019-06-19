@@ -62,7 +62,7 @@ body {
     border-top: solid 1px #EEEEEE;
   }
 }
-.selected:not(.djs-connection) .djs-visual > :nth-child(1) {
+.execution .selected:not(.djs-connection) .djs-visual > :nth-child(1) {
   // fill: #01a7c2 !important;
   stroke: #01a7c2 !important;
 }
