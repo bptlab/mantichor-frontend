@@ -8,9 +8,14 @@ import { faCrosshairs } from '@fortawesome/free-solid-svg-icons';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { faMinus } from '@fortawesome/free-solid-svg-icons';
 import { faCog } from '@fortawesome/free-solid-svg-icons';
+import { faShareAlt } from '@fortawesome/free-solid-svg-icons';
+import { faImage } from '@fortawesome/free-solid-svg-icons';
+import { faDownload } from '@fortawesome/free-solid-svg-icons';
+import { faFolderOpen } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import ProjectUtils from './utils/ProjectUtil';
 
-library.add(faCrosshairs, faPlus, faMinus, faCog);
+library.add(faCrosshairs, faPlus, faMinus, faCog, faShareAlt, faImage, faDownload, faFolderOpen);
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
