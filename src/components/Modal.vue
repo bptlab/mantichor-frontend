@@ -26,7 +26,7 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch, Emit } from 'vue-property-decorator';
 
-export default class ModelView extends Vue {
+export default class Modal extends Vue {
   public name!: string;
   public test!: string;
 
