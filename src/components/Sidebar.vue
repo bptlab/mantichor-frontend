@@ -6,17 +6,15 @@
     <nav>
       <ul>
         <li
-          v-for="project in projects"
+          v-for="project in $projectmanagement.projects"
           :class="{active: project.isActive}"
           :key="project.id"
-          @click="selectProject(project)">
+          @click="$projectmanagement.activeProject = project">
           <h1>{{ project.name }}</h1>
         </li>
-      </ul>
-      <ul>
         <li
           class="add"
-          @click="addProject()">
+          @click="$projectmanagement.addBlankProject()">
           <h1>+</h1>
         </li>
       </ul>
@@ -25,107 +23,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Model } from 'vue-property-decorator';
-import Project from '@/interfaces/Project';
-import ProjectUtils from '@/utils/ProjectUtil';
+import { Component, Vue } from 'vue-property-decorator';
 
 @Component
-export default class Sidebar extends Vue {
-  public projects: Project[];
-
-  public get activeProject(): Project {
-    return this.projects.filter((project) => project.isActive)[0];
-    // let activeProject: Project = this.projects[0];
-    // this.projects.forEach((project) => {
-    //   if (project.isActive) {
-    //     activeProject = project;
-    //   }
-    // });
-    // return activeProject;
-  }
-
-  constructor() {
-    super();
-    // this.projects = this.loadProjects();
-    const projectUtil = new ProjectUtils();
-    this.projects = projectUtil.loadProjects();
-  }
-
-  // public loadProjects(): Project[] {
-  //   if (localStorage.projects) {
-  //     return JSON.parse(localStorage.projects);
-  //   }
-  //   return [];
-  // }
-
-  public saveProjects() {
-    const parsed = JSON.stringify(this.projects);
-    localStorage.setItem('projects', parsed);
-  }
-
-  public selectProject(project: Project): void {
-    this.resetProjects();
-    project.isActive = true;
-
-    this.saveProjects();
-    this.$root.$emit('didSelectProject', project);
-  }
-
-  public addProject(): void {
-    const projectNumber = this.projects.length + 1;
-    const newProject: Project = {
-      id: this.generateRandomID(16),
-      name: String(('0' + projectNumber).slice(-2)),
-      isActive: false,
-      bpmnXML: '',
-      dateSaved: new Date(),
-    };
-
-    if (!newProject) {
-      return;
-    }
-
-    this.projects.push(newProject);
-    this.selectProject(newProject);
-  }
-
-  public removeProject(project: Project): void {
-    for (let i = 0; i < this.projects.length; i++) {
-      if (this.projects[i] === project) {
-        this.projects.splice(i, 1);
-        if (this.projects.length > 0) {
-          this.selectProject(this.projects[0]);
-        }
-        this.saveProjects();
-        break;
-      }
-    }
-  }
-
-  private resetProjects(): void {
-    for (const project of this.projects) {
-      project.isActive = false;
-    }
-  }
-
-  private generateRandomID(length: number): string {
-    let result = '#';
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for (let i = 0; i < length; i++) {
-      result += characters.charAt(Math.floor(Math.random() * characters.length));
-    }
-    return result;
-  }
-
-  private mounted() {
-    this.$root.$on('saveProjects', () => {
-      return this.saveProjects();
-    });
-    this.$root.$on('removeProject', (project: Project) => {
-      return this.removeProject(project);
-    });
-  }
-}
+export default class Sidebar extends Vue {}
 </script>
 
 <style lang="less">
