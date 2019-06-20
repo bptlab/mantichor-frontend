@@ -4,8 +4,8 @@
       <div id="canvas" class="execution"></div>
     </div>
     <div class="sidebar-right">
-      <p>Project ID:<br>{{ projectID }}</p>
-      <p>Project Name:<br>{{ projectName }}</p>
+      <p>Project ID:<br>{{ $projectmanagement.activeProject.id }}</p>
+      <p>Project Name:<br>{{ $projectmanagement.activeProject.name }}</p>
       <p>Element ID:<br>{{ elementID }}</p>
       <p>Task:<br>{{ elementTask }}</p>
     </div>
@@ -32,15 +32,11 @@ requireChor.keys().forEach(requireChor);
 @Component
 export default class ExecutionView extends Vue {
   private modeler: any;
-  @Prop() private projectID!: string;
-  @Prop() private projectName!: string;
-  @Prop() private elementID!: string;
-  @Prop() private elementTask!: string;
+  private elementID!: string;
+  private elementTask!: string;
 
   constructor() {
     super();
-    this.projectID = 'no selection';
-    this.projectName = 'no selection';
     this.elementID = 'no selection';
     this.elementTask = 'no selection';
   }
@@ -48,8 +44,6 @@ export default class ExecutionView extends Vue {
   @Watch('$projectmanagement.activeProject')
   private onChangeProject(project: Project) {
     this.renderModel(project.bpmnXML);
-    this.projectID = project.id;
-    this.projectName = project.name;
   }
 
   private async renderModel(xml: string) {
@@ -81,22 +75,6 @@ export default class ExecutionView extends Vue {
     });
 
     this.renderModel(this.$projectmanagement.activeProject.bpmnXML);
-
-    // this.$root.$on('didSelectProject', (project: Project) => {
-    //   this.project = project;
-    //   this.projectID = this.project.id;
-    //   this.projectName = this.project.name;
-    //   if (this.project.bpmnXML !== '') {
-    //     this.renderModel(this.project.bpmnXML);
-    //   } else {
-    //     this.$notify({
-    //       type: 'error',
-    //       title: 'Error',
-    //       text: 'The diagram is empty',
-    //       duration: 4000,
-    //     });
-    //   }
-    // });
 
     const eventBus = this.modeler.get('eventBus');
     const events = [
