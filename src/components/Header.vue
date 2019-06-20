@@ -2,7 +2,9 @@
   <header>
     <router-link to="/model">Model</router-link>
     <router-link to="/execution">Execution</router-link>
-    <router-link to="/user"><img alt="Vue logo" src="../assets/logo.png"></router-link>
+    <router-link to="/user">
+      <img alt="Vue logo" src="../assets/logo.png">
+    </router-link>
   </header>
 </template>
 
@@ -14,33 +16,41 @@ export default class Header extends Vue {}
 </script>
 
 <style lang="less">
+
+@import '../styles.less';
+
 header {
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    height: 50px;
-    padding: 0;
-    border-bottom: 4px solid #CCCCCC;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  height: @element-size;
+  padding: 0;
+  border-bottom: 4px solid @secondary;
+
   a {
     flex-grow: 1;
     font-weight: bold;
     color: #ffffff;
-    height: 50px;
+    height: @element-size;
     font-size: 1.2rem;
-    line-height: 50px;
+    line-height: @element-size;
     margin: 0 0 0 -1px;
-    border-bottom: 4px solid #CCCCCC;
+    border-bottom: 4px solid @secondary;
     text-decoration: none;
+
     &.router-link-exact-active {
-      color: #75b900;
-      border-bottom-color: #75b900;
+      color: @accent;
+      border-bottom-color: @accent;
+    }
+
+    & > img {
+      height: @element-size;
+    }
+
+    &:last-child {
+      flex-grow: 0.2;
     }
   }
-  a > img {
-    height: 50px;
-  }
-  a:last-child {
-    flex-grow: 0.2;
-  }
 }
+
 </style>
