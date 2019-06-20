@@ -9,7 +9,6 @@
     <div class="dialog">
       <h1 class="dialog-title">Project settings</h1>
       <div class="dialog-form">
-        <p>{{ test }}</p>
         <form autocomplete="false">
           <input id="n-name" type="text" placeholder="Name" :value="name">
         </form>
@@ -27,13 +26,13 @@
 import { Component, Vue, Prop, Watch, Emit } from 'vue-property-decorator';
 
 export default class Modal extends Vue {
-  public name!: string;
-  public test!: string;
+  // public name!: string;
+  // public test!: string;
 
   constructor() {
     super();
-    this.name = '';
-    this.test = '';
+    // this.name = '';
+    // this.test = '';
   }
 
   public beforeOpen(event: any) {
