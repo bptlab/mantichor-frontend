@@ -10,7 +10,7 @@
       <h1 class="dialog-title">Project settings</h1>
       <div class="dialog-form">
         <form autocomplete="false">
-          <input id="n-name" type="text" placeholder="Name" :value="name">
+          <input id="n-name" type="text" placeholder="Project name" :value="$projectmanagement.activeProject.name">
         </form>
         <div style="margin-top:42px;"></div>
         <div class="button-set">
