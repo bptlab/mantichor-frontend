@@ -13,11 +13,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import ChoreoModeler from 'chor-js';
-import bpmnExample from 'raw-loader!@/resources/testDiagram.bpmn';
 import Project from '@/interfaces/Project';
-// require('diagram-js/assets/diagram-js.css');
 
 /* bpmn-js includings
  * In this way all existing js files will be included
@@ -33,7 +31,6 @@ requireChor.keys().forEach(requireChor);
 
 @Component
 export default class ExecutionView extends Vue {
-  private project!: Project;
   private modeler: any;
   @Prop() private projectID!: string;
   @Prop() private projectName!: string;
@@ -48,21 +45,30 @@ export default class ExecutionView extends Vue {
     this.elementTask = 'no selection';
   }
 
-  private renderModel(newXml: any) {
-    this.modeler.setXML(newXml).then((result: any) => {
-      return this.modeler.displayChoreography({
-        // choreoID: '_choreo1'
-      });
-    }).then((result: any) => {
-      this.modeler.get('canvas').zoom('fit-viewport');
-    }).catch((error: any) => {
+  @Watch('$projectmanagement.activeProject')
+  private onChangeProject(project: Project) {
+    this.renderModel(project.bpmnXML);
+    this.projectID = project.id;
+    this.projectName = project.name;
+  }
+
+  private async renderModel(xml: string) {
+    try {
+      await this.modeler.setXML(xml);
+      this.modeler.displayChoreography({});
+      this.resetZoom();
+    } catch (error) {
       this.$notify({
         type: 'error',
         title: 'Error',
         text: error.error.message,
         duration: 4000,
       });
-    });
+    }
+  }
+
+  private resetZoom() {
+    this.modeler.get('canvas').zoom('fit-viewport');
   }
 
   private mounted() {
@@ -74,21 +80,23 @@ export default class ExecutionView extends Vue {
       },
     });
 
-    this.$root.$on('didSelectProject', (project: Project) => {
-      this.project = project;
-      this.projectID = this.project.id;
-      this.projectName = this.project.name;
-      if (this.project.bpmnXML !== '') {
-        this.renderModel(this.project.bpmnXML);
-      } else {
-        this.$notify({
-          type: 'error',
-          title: 'Error',
-          text: 'The diagram is empty',
-          duration: 4000,
-        });
-      }
-    });
+    this.renderModel(this.$projectmanagement.activeProject.bpmnXML);
+
+    // this.$root.$on('didSelectProject', (project: Project) => {
+    //   this.project = project;
+    //   this.projectID = this.project.id;
+    //   this.projectName = this.project.name;
+    //   if (this.project.bpmnXML !== '') {
+    //     this.renderModel(this.project.bpmnXML);
+    //   } else {
+    //     this.$notify({
+    //       type: 'error',
+    //       title: 'Error',
+    //       text: 'The diagram is empty',
+    //       duration: 4000,
+    //     });
+    //   }
+    // });
 
     const eventBus = this.modeler.get('eventBus');
     const events = [
