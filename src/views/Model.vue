@@ -13,8 +13,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from "vue-property-decorator";
-import Modeler from "@/components/Modeler.vue";
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
+import Modeler from '@/components/Modeler.vue';
 
 @Component({
   components: {

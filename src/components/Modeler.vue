@@ -54,18 +54,18 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from "vue-property-decorator";
-import ChoreoModeler from "chor-js/lib/Modeler";
-import Project from "@/interfaces/Project";
-import "diagram-js/assets/diagram-js.css";
-import "bpmn-js/dist/assets/bpmn-font/css/bpmn.css";
-import "chor-js/assets/font/include/css/choreography.css";
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
+import ChoreoModeler from 'chor-js/lib/Modeler';
+import Project from '@/interfaces/Project';
+import 'diagram-js/assets/diagram-js.css';
+import 'bpmn-js/dist/assets/bpmn-font/css/bpmn.css';
+import 'chor-js/assets/font/include/css/choreography.css';
 
 @Component
 export default class Modeler extends Vue {
   private modeler!: any;
 
-  @Watch("$projectmanagement.activeProject")
+  @Watch('$projectmanagement.activeProject')
   private onChangeProject(project: Project) {
     this.renderModel(project.bpmnXML);
   }
@@ -77,10 +77,10 @@ export default class Modeler extends Vue {
       this.resetZoom();
     } catch (error) {
       this.$notify({
-        type: "error",
-        title: "Error",
+        type: 'error',
+        title: 'Error',
         text: error.error.message,
-        duration: 4000
+        duration: 4000,
       });
     }
   }
@@ -94,31 +94,32 @@ export default class Modeler extends Vue {
   }
 
   private resetZoom() {
-    this.modeler.get("canvas").zoom("fit-viewport");
+    this.modeler.get('canvas').zoom('fit-viewport');
   }
 
   private zoomIn() {
-    const zoomLevel = this.modeler.get("canvas").zoom();
-    this.modeler.get("canvas").zoom(zoomLevel + 0.162);
+    const zoomLevel = this.modeler.get('canvas').zoom();
+    this.modeler.get('canvas').zoom(zoomLevel + 0.162);
   }
 
   private zoomOut() {
-    const zoomLevel = this.modeler.get("canvas").zoom();
-    this.modeler.get("canvas").zoom(zoomLevel - 0.162);
+    const zoomLevel = this.modeler.get('canvas').zoom();
+    this.modeler.get('canvas').zoom(zoomLevel - 0.162);
   }
 
   private async getXML(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.modeler.saveXML({ format: true }, (err: any, xml: string) => {
-        if (err) reject(err);
-        else resolve(xml);
+        err ? reject(err) : resolve(xml);
+        // if (err) reject(err);
+        // else resolve(xml);
       });
     });
   }
 
   private settings() {
-    this.$modal.show("project-settings", {
-      test: "Test"
+    this.$modal.show('project-settings', {
+      test: 'Test',
     });
   }
 
@@ -128,16 +129,16 @@ export default class Modeler extends Vue {
 
   private mounted() {
     this.modeler = new ChoreoModeler({
-      container: "#canvas",
+      container: '#canvas',
       keyboard: {
-        bindTo: document
-      }
+        bindTo: document,
+      },
     });
 
     this.renderModel(this.$projectmanagement.activeProject.bpmnXML);
 
-    const eventBus = this.modeler.get("eventBus");
-    eventBus.on("element.mouseup", () => {
+    const eventBus = this.modeler.get('eventBus');
+    eventBus.on('element.mouseup', () => {
       (async () => {
         this.$projectmanagement.activeProject.bpmnXML = await this.getXML();
         this.$projectmanagement.activeProject.dateSaved = new Date();
