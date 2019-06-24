@@ -21,7 +21,7 @@
       </li>
       <li class="vr"></li>
       <li>
-        <button title="Share" @click="settings()">
+        <button title="Share" @click="share()">
           <font-awesome-icon icon="share-alt"/>
         </button>
       </li>
@@ -120,6 +120,26 @@ export default class Modeler extends Vue {
   private settings() {
     this.$modal.show('project-settings', {
       test: 'Test',
+    });
+  }
+
+  private async share() {
+    const shareResponse = await fetch('http://localhost:3000/choreographies/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: this.$projectmanagement.activeProject.name,
+        xml: this.$projectmanagement.activeProject.bpmnXML,
+      }),
+    });
+
+    const shareId = await shareResponse.text();
+
+    this.$modal.show('dialog', {
+      title: 'Share',
+      text: `Use this id to share your model ${shareId}`,
     });
   }
 

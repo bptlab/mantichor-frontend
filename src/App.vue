@@ -4,6 +4,7 @@
       <Sidebar />
       <Header />
       <Modal />
+      <v-dialog/>
     </div>
     <router-view/>
     <notifications class="notify"/>

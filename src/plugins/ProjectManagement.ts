@@ -94,6 +94,7 @@ export class  ProjectManagement {
     this.activeProject = this.projects[0];
   }
 
+
   public saveProjects() {
     const parsedProjects = JSON.stringify(this.projects);
     localStorage.setItem('projects', parsedProjects);
