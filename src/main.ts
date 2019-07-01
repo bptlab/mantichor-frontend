@@ -13,9 +13,11 @@ import { faShareAlt } from '@fortawesome/free-solid-svg-icons';
 import { faImage } from '@fortawesome/free-solid-svg-icons';
 import { faDownload } from '@fortawesome/free-solid-svg-icons';
 import { faFolderOpen } from '@fortawesome/free-solid-svg-icons';
+import { faCloudDownloadAlt } from '@fortawesome/free-solid-svg-icons';
+import { faCloudUploadAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
-library.add(faCrosshairs, faPlus, faMinus, faCog, faShareAlt, faImage, faDownload, faFolderOpen);
+library.add(faCrosshairs, faPlus, faMinus, faCog, faShareAlt, faImage, faDownload, faFolderOpen, faCloudDownloadAlt, faCloudUploadAlt);
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 

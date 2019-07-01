@@ -1,9 +1,9 @@
 <template>
   <modal name="url-import-modal">
-    <div class="vue-dialog">
+    <div class="vue-dialog dialog">
       <div class="dialog-content">
-        <div class="dialog-c-title">Import shared Diagram</div>
-        <div class="dialog-c-text">
+        <h1 class="dialog-title">Import Project</h1>
+        <div class="dialog-form">
           <input type="text" placeholder="Share-ID" v-model="shareId">
         </div>
       </div>
@@ -41,4 +41,7 @@ export default {
 </script>
 
 <style lang="less">
+.v--modal-overlay .v--modal-box {
+  height: unset !important;
+}
 </style>

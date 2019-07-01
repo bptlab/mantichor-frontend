@@ -8,22 +8,21 @@
     @closed="closed"
     @beforeClose="beforeClose"
   >
-    <div class="dialog">
-      <h1 class="dialog-title">Project settings</h1>
-      <div class="dialog-form">
-        <form autocomplete="false">
+    <div class="vue-dialog dialog">
+      <div class="dialog-content">
+        <h1 class="dialog-title">Project settings</h1>
+        <div class="dialog-form">
           <input
             id="n-name"
             type="text"
             placeholder="Project name"
             :value="$projectmanagement.activeProject.name"
           >
-        </form>
-        <div style="margin-top:42px;"></div>
-        <div class="button-set">
-          <button @click="confirm()">Confirm</button>
-          <button @click="remove()">Delete</button>
         </div>
+      </div>
+      <div class="vue-dialog-buttons">
+        <button class="vue-dialog-button" @click="confirm()">Confirm</button>
+        <button class="vue-dialog-button" @click="remove()">Delete</button>
       </div>
     </div>
   </modal>
@@ -108,37 +107,12 @@ export default class ProjectSettingsModal extends Vue {
     transition: 0.5s all;
     outline: none;
   }
+
   button {
-    flex-grow: 1;
-    flex-basis: auto;
-    box-sizing: border-box;
-    background: #ffffff;
-    border-radius: 4px;
-    padding: 10px;
-    letter-spacing: 1px;
-    font-family: "Open Sans", sans-serif;
-    font-weight: 400;
-    min-width: 140px;
-    max-width: 48%;
-    // margin: 8px;
-    color: #8b8c8d;
-    cursor: pointer;
-    border: 1px solid #dddedf;
-    text-transform: uppercase;
-    transition: 0.1s all;
-    font-size: 10px;
-    outline: none;
-    &:hover {
-      border-color: mix(#dddedf, #000000, 90%);
-      color: mix(#8b8c8d, #000000, 80%);
-    }
+    flex: 1 1 100%;
   }
-  .button-set {
-    margin-bottom: 8px;
-    width: 100%;
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: space-between;
+  .vue-dialog-buttons {
+    margin-top: 20px;
   }
 }
 </style>

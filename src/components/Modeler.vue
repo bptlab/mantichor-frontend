@@ -22,7 +22,7 @@
       <li class="vr"></li>
       <li>
         <button title="Share" @click="share()">
-          <font-awesome-icon icon="share-alt"/>
+          <font-awesome-icon icon="cloud-upload-alt"/>
         </button>
       </li>
       <li>

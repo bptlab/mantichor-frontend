@@ -16,8 +16,10 @@
         <li class="add" @click="$projectmanagement.addBlankProject()">
           <h1>+</h1>
         </li>
-        <li class="add" @click="openUrlImportModal()">
-          <h1>L</h1>
+        <li class="download" @click="openUrlImportModal()">
+          <h1>
+            <font-awesome-icon icon="cloud-download-alt"/>
+          </h1>
         </li>
       </ul>
     </nav>
@@ -99,6 +101,14 @@ aside {
       li.add > h1 {
         background-color: #75b900;
         border-color: #75b900;
+      }
+      li.download > h1 {
+        background-color: #75b900;
+        border-color: #75b900;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
     }
   }
