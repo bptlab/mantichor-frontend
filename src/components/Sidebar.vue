@@ -9,13 +9,15 @@
           v-for="project in $projectmanagement.projects"
           :class="{active: project.isActive}"
           :key="project.id"
-          @click="$projectmanagement.activeProject = project">
+          @click="$projectmanagement.activeProject = project"
+        >
           <h1>{{ project.name }}</h1>
         </li>
-        <li
-          class="add"
-          @click="$projectmanagement.addBlankProject()">
+        <li class="add" @click="$projectmanagement.addBlankProject()">
           <h1>+</h1>
+        </li>
+        <li class="add" @click="openUrlImportModal()">
+          <h1>L</h1>
         </li>
       </ul>
     </nav>
@@ -24,9 +26,16 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import UrlImportModal from '@/components/UrlImportModal.vue';
 
 @Component
-export default class Sidebar extends Vue {}
+export default class Sidebar extends Vue {
+
+  public openUrlImportModal(): void {
+    this.$modal.show('url-import-modal');
+  }
+
+}
 </script>
 
 <style lang="less">
@@ -70,7 +79,7 @@ aside {
       }
       li:hover {
         background-color: #515254;
-        box-shadow: 4px 0 0 #CCCCCC inset;
+        box-shadow: 4px 0 0 #cccccc inset;
       }
       li > h1 {
         border-radius: 100%;

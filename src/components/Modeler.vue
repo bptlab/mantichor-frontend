@@ -111,31 +111,16 @@ export default class Modeler extends Vue {
     return new Promise((resolve, reject) => {
       this.modeler.saveXML({ format: true }, (err: any, xml: string) => {
         err ? reject(err) : resolve(xml);
-        // if (err) reject(err);
-        // else resolve(xml);
       });
     });
   }
 
   private settings() {
-    this.$modal.show('project-settings', {
-      test: 'Test',
-    });
+    this.$modal.show('project-settings');
   }
 
   private async share() {
-    const shareResponse = await fetch('http://localhost:3000/choreographies/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        name: this.$projectmanagement.activeProject.name,
-        xml: this.$projectmanagement.activeProject.bpmnXML,
-      }),
-    });
-
-    const shareId = await shareResponse.text();
+    const shareId = await this.$projectmanagement.shareProject();
 
     this.$modal.show('dialog', {
       title: 'Share',

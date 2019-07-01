@@ -1,9 +1,10 @@
 <template>
   <div id="app">
     <div id="nav">
-      <Sidebar />
-      <Header />
-      <Modal />
+      <Sidebar/>
+      <Header/>
+      <project-settings-modal/>
+      <url-import-modal/>
       <v-dialog/>
     </div>
     <router-view/>
@@ -15,16 +16,19 @@
 import { Component, Vue } from 'vue-property-decorator';
 import Header from '@/components/Header.vue';
 import Sidebar from '@/components/Sidebar.vue';
-import Modal from '@/components/Modal.vue';
+import ProjectSettingsModal from '@/components/ProjectSettingsModal.vue';
+import UrlImportModal from '@/components/UrlImportModal.vue';
+
 
 @Component({
   components: {
     Sidebar,
     Header,
-    Modal,
+    ProjectSettingsModal,
+    UrlImportModal,
   },
 })
-export default class App extends Vue {}
+export default class App extends Vue { }
 </script>
 
 
@@ -35,7 +39,7 @@ body {
   background-color: #3e3f42;
 }
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -56,11 +60,11 @@ body {
 .io-control {
   background: #ffffff;
   border-radius: 2px;
-  border: solid 1px #E0E0E0;
+  border: solid 1px #e0e0e0;
   padding: 5px;
   hr {
     border: none;
-    border-top: solid 1px #EEEEEE;
+    border-top: solid 1px #eeeeee;
   }
 }
 .execution .selected:not(.djs-connection) .djs-visual > :nth-child(1) {
