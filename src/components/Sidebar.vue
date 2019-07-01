@@ -11,7 +11,7 @@
           :key="project.id"
           @click="$projectmanagement.activeProject = project"
         >
-          <h1>{{ project.name }}</h1>
+          <h1>{{ project.initials }}</h1>
         </li>
         <li class="add" @click="$projectmanagement.addBlankProject()">
           <h1>+</h1>

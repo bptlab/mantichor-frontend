@@ -1,73 +1,39 @@
 <template>
-  <modal
-    name="project-settings"
-    transition="pop-out"
-    height="auto"
-    @before-open="beforeOpen"
-    @opened="opened"
-    @closed="closed"
-    @beforeClose="beforeClose"
-  >
+  <modal name="project-settings" transition="pop-out">
     <div class="vue-dialog dialog">
       <div class="dialog-content">
-        <h1 class="dialog-title">Project settings</h1>
+        <h1 class="dialog-title">Project Settings</h1>
         <div class="dialog-form">
-          <input
-            id="n-name"
-            type="text"
-            placeholder="Project name"
-            :value="$projectmanagement.activeProject.name"
-          >
+          <input type="text" placeholder="Project Name" v-model="name">
         </div>
       </div>
       <div class="vue-dialog-buttons">
         <button class="vue-dialog-button" @click="confirm()">Confirm</button>
-        <button class="vue-dialog-button" @click="remove()">Delete</button>
+        <button class="vue-dialog-button" @click="cancel()">Cancel</button>
       </div>
     </div>
   </modal>
 </template>
 
-<script lang="ts">
-import { Component, Vue, Prop, Watch, Emit } from 'vue-property-decorator';
+<script lang="js">
 
-export default class ProjectSettingsModal extends Vue {
-  // public name!: string;
-  // public test!: string;
-
-  constructor() {
-    super();
-    // this.name = '';
-    // this.test = '';
-  }
-
-  public beforeOpen(event: any) {
-    // This method is called to set values!
-    // this.test = event.params.test;
-    // alert(this);
-  }
-
-  public opened(event: any) {
-    // this.test = event.params.test;
-    // alert(this);
-  }
-
-  public closed(event: any) {
-    // alert(this);
-  }
-
-  public beforeClose(event: any) {
-    // alert(this);
-  }
-
-  private confirm() {
-    alert('Confirm ...');
-  }
-
-  private remove() {
-    alert('Remove ...');
-  }
-}
+export default {
+  name: 'ProjectSettingsModal',
+  data: () => {
+    return {
+      name: this.$projectmanagement.activeProject.name,
+    };
+  },
+  methods: {
+    confirm() {
+      this.$projectmanagement.activeProject.name = this.name;
+      this.$modal.hide('project-settings');
+    },
+    remove() {
+      this.$modal.hide('project-settings');
+    },
+  },
+};
 
 </script>
 

@@ -20,23 +20,21 @@
 </template>
 
 <script lang="js">
-import { Component, Vue, Prop } from 'vue-property-decorator';
 
 export default {
   name: 'UrlImportModal',
-  data: function () {
+  data: () => {
     return {
-      shareId: ''
-    }
+      shareId: '',
+    };
   },
   methods: {
     importFromUrl() {
-      console.log(this.shareId);
       this.$projectmanagement.importSharedProject(this.shareId);
       this.$modal.hide('url-import-modal');
-    }
-  }
-}
+    },
+  },
+};
 
 </script>
 

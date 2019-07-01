@@ -68,13 +68,13 @@ export class ProjectManagement {
 
   // region public methods
   public addBlankProject(): Project {
-    const blankProject: Project = {
+    const blankProject: Project = new Project({
       id: ProjectManagement.createRandomId(),
       name: ('0' + (this.projects.length + 1)).slice(-2),
       isActive: true,
       bpmnXML: bpmnBlank,
       dateSaved: new Date(),
-    };
+    });
     this.projects.push(blankProject);
     this.activeProject = blankProject;
     return blankProject;
@@ -82,13 +82,13 @@ export class ProjectManagement {
 
   public async importSharedProject(id: string): Promise<void> {
     const sharedProject = await Choreographies.getOne(id);
-    const importedProject: Project = {
+    const importedProject: Project = new Project({
       id: ProjectManagement.createRandomId(),
       name: sharedProject.name,
       isActive: true,
       bpmnXML: sharedProject.bpmnXML,
       dateSaved: sharedProject.dateSaved,
-    };
+    });
     this.projects.push(importedProject);
     this.activeProject = importedProject;
   }
@@ -123,7 +123,7 @@ export class ProjectManagement {
   // region private methods
   private loadProjects() {
     if (localStorage.projects) {
-      this.projects = JSON.parse(localStorage.projects);
+      this.projects = JSON.parse(localStorage.projects).map((project: any) => new Project(project));
       return;
     }
     this.addBlankProject();

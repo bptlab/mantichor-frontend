@@ -19,7 +19,6 @@ import Sidebar from '@/components/Sidebar.vue';
 import ProjectSettingsModal from '@/components/ProjectSettingsModal.vue';
 import UrlImportModal from '@/components/UrlImportModal.vue';
 
-
 @Component({
   components: {
     Sidebar,
