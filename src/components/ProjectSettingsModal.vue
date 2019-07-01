@@ -1,5 +1,5 @@
 <template>
-  <modal name="project-settings" transition="pop-out">
+  <modal name="project-settings" transition="pop-out" @before-open="beforeOpen">
     <div class="vue-dialog dialog">
       <div class="dialog-content">
         <h1 class="dialog-title">Project Settings</h1>
@@ -21,15 +21,18 @@ export default {
   name: 'ProjectSettingsModal',
   data: () => {
     return {
-      name: this.$projectmanagement.activeProject.name,
+      name: '',
     };
   },
   methods: {
+    beforeOpen() {
+      this.name = this.$projectmanagement.activeProject.name;
+    },
     confirm() {
       this.$projectmanagement.activeProject.name = this.name;
       this.$modal.hide('project-settings');
     },
-    remove() {
+    cancel() {
       this.$modal.hide('project-settings');
     },
   },
