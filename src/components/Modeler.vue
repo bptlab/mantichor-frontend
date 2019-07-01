@@ -120,12 +120,7 @@ export default class Modeler extends Vue {
   }
 
   private async share() {
-    const shareId = await this.$projectmanagement.shareProject();
-
-    this.$modal.show('dialog', {
-      title: 'Share',
-      text: `Use this id to share your model ${shareId}`,
-    });
+    this.$modal.show('share-modal');
   }
 
   private deploy() {

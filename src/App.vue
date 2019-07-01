@@ -5,6 +5,7 @@
       <Header/>
       <project-settings-modal/>
       <url-import-modal/>
+      <share-modal/>
       <v-dialog/>
     </div>
     <router-view/>
@@ -18,6 +19,7 @@ import Header from '@/components/Header.vue';
 import Sidebar from '@/components/Sidebar.vue';
 import ProjectSettingsModal from '@/components/ProjectSettingsModal.vue';
 import UrlImportModal from '@/components/UrlImportModal.vue';
+import ShareModal from '@/components/ShareModal.vue';
 
 @Component({
   components: {
@@ -25,6 +27,7 @@ import UrlImportModal from '@/components/UrlImportModal.vue';
     Header,
     ProjectSettingsModal,
     UrlImportModal,
+    ShareModal,
   },
 })
 export default class App extends Vue { }
