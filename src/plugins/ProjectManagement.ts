@@ -2,13 +2,14 @@
 import _Vue from 'vue';
 import Project from '@/interfaces/Project';
 import bpmnBlank from 'raw-loader!@/resources/newDiagram.bpmn';
+import { Choreographies } from '@/apis/mantichor/mantichor';
 
 export default function install(Vue: typeof _Vue, options = {}) {
   Vue.prototype.$projectmanagement = new ProjectManagement();
 }
 
 // tslint:disable-next-line: max-classes-per-file
-export class  ProjectManagement {
+export class ProjectManagement {
   // region public static methods
   // endregion
 
@@ -77,6 +78,24 @@ export class  ProjectManagement {
     this.projects.push(blankProject);
     this.activeProject = blankProject;
     return blankProject;
+  }
+
+  public async importSharedProject(id: string): Promise<void> {
+    const sharedProject = await Choreographies.getOne(id);
+    const importedProject: Project = {
+      id: ProjectManagement.createRandomId(),
+      name: sharedProject.name,
+      isActive: true,
+      bpmnXML: sharedProject.bpmnXML,
+      dateSaved: sharedProject.dateSaved,
+    };
+    this.projects.push(importedProject);
+    this.activeProject = importedProject;
+  }
+
+  public async shareProject(): Promise<string> {
+    const shareResponse = await Choreographies.create(this.activeProject);
+    return shareResponse.shareId;
   }
 
   public removeProject(projectToRemove: Project): void {
