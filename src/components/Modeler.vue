@@ -86,11 +86,53 @@ export default class Modeler extends Vue {
   }
 
   private saveSVG(done: any) {
-    // ToDo: Export Diagram as SVG
+    this.modeler.saveSVG({format: true}, (err: any, svg: string) => {
+      if (!err) {
+        const encodedData = encodeURIComponent(svg);
+        this.downloadDiagram('svg', 'diagram.svg', encodedData);
+      } else {
+        this.$notify({
+          type: 'error',
+          title: 'Error',
+          text: err.message,
+          duration: 4000,
+        });
+      }
+    });
   }
 
   private saveDiagram(done: any) {
-    // ToDo: Export Diagram as XML
+    this.modeler.saveXML({format: true}, (err: any, xml: string) => {
+      if (!err) {
+        const encodedData = encodeURIComponent(xml);
+        this.downloadDiagram('bpmn', 'diagram.bpmn', encodedData);
+      } else {
+        this.$notify({
+          type: 'error',
+          title: 'Error',
+          text: err.message,
+          duration: 4000,
+        });
+      }
+    });
+  }
+
+  private downloadDiagram(fileType: string, fileName: string, data: string) {
+    const a = document.createElement('a');
+    a.download = fileName;
+    a.href = 'data:application/bpmn20-xml;charset=UTF-8,' + data;
+    a.dataset.downloadurl = [fileType, a.download, a.href].join(':');
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => {
+      URL.revokeObjectURL(a.href);
+    }, 500);
+  }
+
+  private openLocal() {
+    // bla
   }
 
   private resetZoom() {
