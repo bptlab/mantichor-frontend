@@ -38,7 +38,7 @@ export default class App extends Vue { }
 body {
   margin: 0;
   padding: 0;
-  background-color: #3e3f42;
+  background-color: #252527;
 }
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
@@ -46,7 +46,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   background-color: #fff;
-  color: #3e3f42;
+  color: #252527;
   margin-left: 80px;
 }
 #nav {

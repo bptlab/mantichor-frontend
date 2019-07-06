@@ -36,9 +36,9 @@ export default {
     },
     copyShareId() {
       this.$refs.shareInput.select();
-      document.execCommand("copy");
+      document.execCommand('copy');
       this.$modal.hide('share-modal');
-    }
+    },
   },
 };
 

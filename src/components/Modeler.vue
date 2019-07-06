@@ -174,6 +174,9 @@ section.modeler {
       padding: 6px;
       justify-content: center;
       align-items: center;
+      button {
+        background-color: transparent;
+      }
     }
 
     button {

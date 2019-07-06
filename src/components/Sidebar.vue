@@ -41,6 +41,8 @@ export default class Sidebar extends Vue {
 </script>
 
 <style lang="less">
+@import '../styles.less';
+
 aside {
   display: block;
   position: fixed;
@@ -56,7 +58,7 @@ aside {
     flex-wrap: nowrap;
     align-items: center;
     justify-content: space-around;
-    height: 50px;
+    height: @element-size;
     img {
       height: 30px;
       width: auto;
@@ -64,8 +66,9 @@ aside {
   }
   nav {
     margin: 0;
-    max-height: 100%;
+    max-height: calc(100% - @element-size);
     overflow-y: scroll;
+    scrollbar-width: none;
     ul {
       display: flex;
       flex-wrap: wrap;
@@ -111,6 +114,9 @@ aside {
         justify-content: center;
       }
     }
+  }
+  nav::-webkit-scrollbar {
+    display: none;
   }
 }
 </style>
