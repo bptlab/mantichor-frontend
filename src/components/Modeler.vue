@@ -50,6 +50,9 @@
         </button>
       </li>
     </ul>
+
+    <input id="inpLoadModel" type="file" name="name" accept=".bpmn, .xml" @change="loadModel()">
+
   </section>
 </template>
 
@@ -132,7 +135,27 @@ export default class Modeler extends Vue {
   }
 
   private openLocal() {
-    // bla
+    document.getElementById('inpLoadModel')!.click();
+  }
+
+  private loadModel() {
+    const reader = new FileReader();
+    const fileInput = document.getElementById('inpLoadModel') as HTMLInputElement;
+
+    const files = fileInput.files;
+    const file = files === null ? undefined : files[0];
+
+    reader.addEventListener('load', () => {
+      const newXML = reader.result;
+      if (typeof newXML === 'string') {
+        this.renderModel(newXML);
+      }
+    }, false);
+
+    if (file) {
+      reader.readAsText(file);
+      this.$projectmanagement.saveProjects();
+    }
   }
 
   private resetZoom() {
