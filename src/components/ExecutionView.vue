@@ -4,10 +4,15 @@
       <div id="canvas" class="execution"></div>
     </div>
     <div class="sidebar-right">
-      <p>Project ID:<br>{{ $projectmanagement.activeProject.id }}</p>
-      <p>Project Name:<br>{{ $projectmanagement.activeProject.name }}</p>
-      <p>Element ID:<br>{{ elementID }}</p>
-      <p>Task:<br>{{ elementTask }}</p>
+      <div v-if="isSelected">
+        <p>Project ID:<br>{{ $projectmanagement.activeProject.id }}</p>
+        <p>Project Name:<br>{{ $projectmanagement.activeProject.name }}</p>
+        <p>Element ID:<br>{{ elementID }}</p>
+        <p>Task:<br>{{ elementTask }}</p>
+      </div>
+      <div v-else>
+        <p>Please select an element.</p>
+      </div>
     </div>
   </div>
 </template>
@@ -34,11 +39,13 @@ export default class ExecutionView extends Vue {
   private modeler: any;
   private elementID!: string;
   private elementTask!: string;
+  private isSelected!: boolean;
 
   constructor() {
     super();
     this.elementID = 'no selection';
     this.elementTask = 'no selection';
+    this.isSelected = false;
   }
 
   @Watch('$projectmanagement.activeProject')
@@ -95,9 +102,11 @@ export default class ExecutionView extends Vue {
               const selectedElement = selectedElements[0];
               this.elementID = selectedElement.id;
               this.elementTask = selectedElement.type;
+              this.isSelected = true;
             } else {
               this.elementID = 'no selection';
               this.elementTask = 'no selection';
+              this.isSelected = false;
             }
         }
         // if (event === 'element.mouseup') {
