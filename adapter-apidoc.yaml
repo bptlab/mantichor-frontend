@@ -13,7 +13,7 @@ produces:
   - application/json
 paths:
   /choreographies/{choreographyId}/tasks:
-    get:
+    post:
       description: All tasks of a choreography that can be executed
       parameters:
       - name: choreographyId
@@ -65,12 +65,24 @@ paths:
             required:
               - xml
               - id
+              - mappings
             properties:
               xml:
                 type: string
                 example: "<?xml version='1.0' encoding='UTF-8'?>..."
               id:
                 type: string
+              mappings:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    role:
+                      type: string
+                      example: "Participant_XYZ"
+                    address:
+                      type: string
+                      example: "tz1g..."
       responses:
         "200":
           description: Choreography has been deployed successfully
@@ -104,13 +116,29 @@ paths:
         type: string
       - name: parameters
         in: body
-        description: Contract and task identifier
+        description: Contract and task identifier, with account address and mapping
         required: true
         schema:
           type: object
           required:
             - task
+            - address
+            - mappings
           properties:
+            address:
+              type: string
+              example: "tz1g..."
+            mappings:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    role:
+                      type: string
+                      example: "Participant_XYZ"
+                    address:
+                      type: string
+                      example: "tz1g..."
             task:
               type: array
               items:
