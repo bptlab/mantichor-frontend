@@ -52,6 +52,29 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
 
+  /accounts:
+    get:
+      description: Get all active accounts from the adapter
+      responses:
+        "200":
+          description: Activated Accounts
+          schema:
+            type: object
+            properties:
+              accounts:
+                type: array
+                items:
+                  type: string
+                  example: "tz1g..."
+        "500":
+          description: Internal Error occured
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        default:
+          description: Internal Error occured
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
   /choreographies:
     post:
       description: Deploy a choreography on the blockchain
