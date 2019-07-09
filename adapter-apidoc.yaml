@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: "0.0.1"
+  version: "0.0.2"
   title: Mantichor Adapter API
 host: localhost:9999
 basePath: /
@@ -13,7 +13,7 @@ produces:
   - application/json
 paths:
   /choreographies/{choreographyId}/tasks:
-    get:
+    post:
       description: All tasks of a choreography that can be executed
       parameters:
       - name: choreographyId
@@ -26,6 +26,18 @@ paths:
         description: Task state
         required: true
         type: boolean
+      - name: parameters
+        in: body
+        description: Choreography in XML-format
+        required: true
+        schema:
+          type: object
+          required:
+            - xml
+          properties:
+            xml:
+              type: string
+              example: "<?xml version='1.0' encoding='UTF-8'?>..."
       responses:
         "200":
           description: Enabled tasks
@@ -52,6 +64,29 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
 
+  /accounts:
+    get:
+      description: Get all active accounts from the adapter
+      responses:
+        "200":
+          description: Activated Accounts
+          schema:
+            type: object
+            properties:
+              accounts:
+                type: array
+                items:
+                  type: string
+                  example: "tz1g..."
+        "500":
+          description: Internal Error occured
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        default:
+          description: Internal Error occured
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
   /choreographies:
     post:
       description: Deploy a choreography on the blockchain
@@ -65,12 +100,24 @@ paths:
             required:
               - xml
               - id
+              - mappings
             properties:
               xml:
                 type: string
                 example: "<?xml version='1.0' encoding='UTF-8'?>..."
               id:
                 type: string
+              mappings:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    role:
+                      type: string
+                      example: "Participant_XYZ"
+                    address:
+                      type: string
+                      example: "tz1g..."
       responses:
         "200":
           description: Choreography has been deployed successfully
@@ -104,18 +151,27 @@ paths:
         type: string
       - name: parameters
         in: body
-        description: Contract and task identifier
+        description: Contract and task identifier, with xml, account address and mapping
         required: true
         schema:
           type: object
           required:
             - task
+            - address
+            - mappings
+            - xml
           properties:
+            address:
+              type: string
+              example: "tz1g..."
             task:
               type: array
               items:
                 type: string
                 example: "tz1hAYfexyzPGG6RhZZMpDvAHifubsbb6kgn"
+            xml:
+              type: string
+              example: "<?xml version='1.0' encoding='UTF-8'?>..."
       responses:
         "200":
           description: Successful execution
