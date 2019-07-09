@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: "0.0.1"
+  version: "0.0.2"
   title: Mantichor Adapter API
 host: localhost:9999
 basePath: /
@@ -26,6 +26,18 @@ paths:
         description: Task state
         required: true
         type: boolean
+      - name: parameters
+        in: body
+        description: Choreography in XML-format
+        required: true
+        schema:
+          type: object
+          required:
+            - xml
+          properties:
+            xml:
+              type: string
+              example: "<?xml version='1.0' encoding='UTF-8'?>..."
       responses:
         "200":
           description: Enabled tasks
@@ -139,7 +151,7 @@ paths:
         type: string
       - name: parameters
         in: body
-        description: Contract and task identifier, with account address and mapping
+        description: Contract and task identifier, with xml, account address and mapping
         required: true
         schema:
           type: object
@@ -147,26 +159,19 @@ paths:
             - task
             - address
             - mappings
+            - xml
           properties:
             address:
               type: string
               example: "tz1g..."
-            mappings:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    role:
-                      type: string
-                      example: "Participant_XYZ"
-                    address:
-                      type: string
-                      example: "tz1g..."
             task:
               type: array
               items:
                 type: string
                 example: "tz1hAYfexyzPGG6RhZZMpDvAHifubsbb6kgn"
+            xml:
+              type: string
+              example: "<?xml version='1.0' encoding='UTF-8'?>..."
       responses:
         "200":
           description: Successful execution
