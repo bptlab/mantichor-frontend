@@ -2,12 +2,8 @@
   <main class="model">
     <Modeler />
     <ul class="floating-buttons">
-      <li @click="deploy()" class="green">
-        Deploy
-      </li>
-      <li @click="remove()" class="red">
-        Delete
-      </li>
+      <li @click="deploy()" class="green">Deploy</li>
+      <li @click="remove()" class="red">Delete</li>
     </ul>
   </main>
 </template>
@@ -15,6 +11,7 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import Modeler from '@/components/Modeler.vue';
+import { ChoreographyInstances } from '../apis/mantichor-blockchain/mantichor-blockchain';
 
 @Component({
   components: {
@@ -22,8 +19,11 @@ import Modeler from '@/components/Modeler.vue';
   },
 })
 export default class Model extends Vue {
-  private deploy() {
-    // ToDo: Deploy Project
+  private async deploy() {
+    const instance = await ChoreographyInstances.create(this.$projectmanagement.activeProject.bpmnXML);
+    console.log(instance);
+    const enabledTasks = await ChoreographyInstances.getEnabledTasks(instance);
+    console.log(enabledTasks);
   }
   private remove() {
     this.$projectmanagement.removeProject(this.$projectmanagement.activeProject);
@@ -32,7 +32,7 @@ export default class Model extends Vue {
 </script>
 
 <style scoped lang="less">
-@import '../styles.less';
+@import "../styles.less";
 
 main.model {
   .floating-buttons {
