@@ -2,7 +2,7 @@
 import _Vue from 'vue';
 import Project from '@/interfaces/Project';
 import bpmnBlank from 'raw-loader!@/resources/newDiagram.bpmn';
-import { Choreographies } from '@/apis/mantichor/mantichor';
+import { Choreographies } from '@/apis/mantichor-share/mantichor-share';
 
 export default function install(Vue: typeof _Vue, options = {}) {
   Vue.prototype.$projectmanagement = new ProjectManagement();
