@@ -48,7 +48,7 @@ export default class ApiUtils {
       throw new Error('Connection to server failed. Please try again.');
     }
 
-    if (response.statusText === 'No Content') {
+    if (response.status === 204) {
       return;
     }
 

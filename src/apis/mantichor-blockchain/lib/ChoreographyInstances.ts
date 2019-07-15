@@ -7,33 +7,41 @@ export interface Mapping {
 
 export interface ChoreographyInstance {
   address: string;
-  id?: string;
   xml: string;
+  id?: string;
   mappings?: Mapping[];
 }
 
 // tslint:disable-next-line: max-classes-per-file
 export class ChoreographyInstances {
   // region public static methods
-  public static baseUrl = 'http://localhost:7320/choreographies';
+  public static baseUrl = 'http://localhost:7320';
 
-  public static async create(xml: string): Promise<ChoreographyInstance> {
-    const instanceResponse = await ApiUtils.postJsonResource(ChoreographyInstances.baseUrl, { xml });
+  public static async create(xml: string, id?: string, mappings?: Mapping[]): Promise<ChoreographyInstance> {
+    const instanceResponse = await ApiUtils.postJsonResource(`${this.baseUrl}/choreographies`, { xml });
     const instance: ChoreographyInstance = {
       address: instanceResponse.address,
       xml,
+      id,
+      mappings,
     };
-    await ChoreographyInstances.executeTask(instance, 'init');
+    const accounts = await ChoreographyInstances.getAccounts();
+    await ChoreographyInstances.executeTask(instance, accounts[0], 'init');
     return instance;
   }
 
-  public static async getEnabledTasks(instance: ChoreographyInstance): Promise<string[]> {
-    return ApiUtils.getJsonResource(`${this.baseUrl}/${instance.id}/tasks`);
+  public static async getEnabledTasks(instance: ChoreographyInstance): Promise<string[][]> {
+    return ApiUtils.postJsonResource(`${this.baseUrl}/choreographies/${instance.address}/tasks`, { xml: instance.xml });
   }
 
-  public static async executeTask(instance: ChoreographyInstance, taskId: string): Promise<void> {
-    ApiUtils.postJsonResource(`${this.baseUrl}/${instance.address}/tasks/execute`, {
-      address: instance.address,
+  public static async getAccounts(): Promise<string[]> {
+    const accountsResponse = await ApiUtils.getJsonResource(`${this.baseUrl}/accounts`);
+    return accountsResponse.accounts;
+  }
+
+  public static async executeTask(instance: ChoreographyInstance, account: string, taskId: string): Promise<void> {
+    await ApiUtils.postJsonResource(`${this.baseUrl}/choreographies/${instance.address}/tasks/execute`, {
+      address: account,
       xml: instance.xml,
       task: [
         taskId,
