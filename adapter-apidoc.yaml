@@ -173,7 +173,7 @@ paths:
               type: string
               example: "<?xml version='1.0' encoding='UTF-8'?>..."
       responses:
-        "200":
+        "204":
           description: Successful execution
         "401":
           description: Not authenticated
