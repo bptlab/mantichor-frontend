@@ -3,6 +3,7 @@ import _Vue from 'vue';
 import Project from '@/interfaces/Project';
 import bpmnBlank from 'raw-loader!@/resources/newDiagram.bpmn';
 import { Choreographies } from '@/apis/mantichor-share/mantichor-share';
+import parser from 'fast-xml-parser';
 
 export default function install(Vue: typeof _Vue, options = {}) {
   Vue.prototype.$projectmanagement = new ProjectManagement();
@@ -113,10 +114,19 @@ export class ProjectManagement {
     this.activeProject = this.projects[0];
   }
 
-
   public saveProjects() {
     const parsedProjects = JSON.stringify(this.projects);
     localStorage.setItem('projects', parsedProjects);
+  }
+
+  public getParticipants(project: Project): any {
+    const parserOptions = {
+      attributeNamePrefix: '',
+      ignoreAttributes: false,
+      ignoreNameSpace: true,
+    };
+    const jsonObj = parser.parse(project.bpmnXML, parserOptions);
+    return jsonObj.definitions.choreography.participant;
   }
   // endregion
 

@@ -5,6 +5,14 @@
     </div>
     <div class="sidebar-right">
       <div v-if="isSelected">
+        <p>Participants:<br>
+          <select>
+            <option v-for="participant in participants"
+              :value="participant.id"
+              :key="participant.id">{{ participant.name }}
+            </option>
+          </select>
+        </p>
         <p>Project ID:<br>{{ $projectmanagement.activeProject.id }}</p>
         <p>Project Name:<br>{{ $projectmanagement.activeProject.name }}</p>
         <p>Element ID:<br>{{ elementID }}</p>
@@ -21,6 +29,7 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import ChoreoModeler from 'chor-js';
 import Project from '@/interfaces/Project';
+// import parser from 'fast-xml-parser';
 
 /* bpmn-js includings
  * In this way all existing js files will be included
@@ -40,6 +49,7 @@ export default class ExecutionView extends Vue {
   private elementID!: string;
   private elementTask!: string;
   private isSelected!: boolean;
+  private participants!: [];
 
   constructor() {
     super();
@@ -80,6 +90,9 @@ export default class ExecutionView extends Vue {
         bindTo: document,
       },
     });
+
+    this.participants = this.$projectmanagement.getParticipants(this.$projectmanagement.activeProject);
+    console.log(this.participants);
 
     this.renderModel(this.$projectmanagement.activeProject.bpmnXML);
 
