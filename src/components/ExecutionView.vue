@@ -17,6 +17,7 @@
         <p>Project Name:<br>{{ $projectmanagement.activeProject.name }}</p>
         <p>Element ID:<br>{{ elementID }}</p>
         <p>Task:<br>{{ elementTask }}</p>
+        <button title="publish on Blockchain" @click="publish()">Publish</button>
       </div>
       <div v-else>
         <p>Please select an element.</p>
@@ -80,6 +81,10 @@ export default class ExecutionView extends Vue {
 
   private resetZoom() {
     this.modeler.get('canvas').zoom('fit-viewport');
+  }
+
+  private publish() {
+    // Backend request ...
   }
 
   private mounted() {
