@@ -4,19 +4,38 @@
       <div id="canvas" class="execution"></div>
     </div>
     <div class="sidebar-right">
-      <div v-if="isSelected">
-        <p>Participants:<br>
+      <div v-if="isSelected && $instancemanagement.activeProject">
+        <p>
+          Participants:
+          <br />
           <select>
-            <option v-for="participant in participants"
+            <option
+              v-for="participant in participants"
               :value="participant.id"
-              :key="participant.id">{{ participant.name }}
-            </option>
+              :key="participant.id"
+            >{{ participant.name }}</option>
           </select>
         </p>
-        <p>Project ID:<br>{{ $projectmanagement.activeProject.id }}</p>
-        <p>Project Name:<br>{{ $projectmanagement.activeProject.name }}</p>
-        <p>Element ID:<br>{{ elementID }}</p>
-        <p>Task:<br>{{ elementTask }}</p>
+        <p>
+          Project ID:
+          <br />
+          {{ $instancemanagement.activeProject.id }}
+        </p>
+        <p>
+          Project Name:
+          <br />
+          {{ $instancemanagement.activeProject.name }}
+        </p>
+        <p>
+          Element ID:
+          <br />
+          {{ elementID }}
+        </p>
+        <p>
+          Task:
+          <br />
+          {{ elementTask }}
+        </p>
         <button title="publish on Blockchain" @click="publish()">Publish</button>
       </div>
       <div v-else>
@@ -59,7 +78,7 @@ export default class ExecutionView extends Vue {
     this.isSelected = false;
   }
 
-  @Watch('$projectmanagement.activeProject')
+  @Watch('$instancemanagement.activeProject')
   private onChangeProject(project: Project) {
     this.renderModel(project.bpmnXML);
   }
@@ -96,10 +115,11 @@ export default class ExecutionView extends Vue {
       },
     });
 
-    this.participants = this.$projectmanagement.getParticipants(this.$projectmanagement.activeProject);
+    if (!this.$instancemanagement.activeProject) { return; }
+    this.participants = this.$instancemanagement.activeProject.getParticipants();
     console.log(this.participants);
 
-    this.renderModel(this.$projectmanagement.activeProject.bpmnXML);
+    this.renderModel(this.$instancemanagement.activeProject.bpmnXML);
 
     const eventBus = this.modeler.get('eventBus');
     const events = [
@@ -115,17 +135,17 @@ export default class ExecutionView extends Vue {
     events.forEach((event) => {
       eventBus.on(event, (e: any) => {
         if (event === 'selection.changed') {
-            const selectedElements = self.modeler.get('selection').get();
-            if (selectedElements.length > 0) {
-              const selectedElement = selectedElements[0];
-              this.elementID = selectedElement.id;
-              this.elementTask = selectedElement.type;
-              this.isSelected = true;
-            } else {
-              this.elementID = 'no selection';
-              this.elementTask = 'no selection';
-              this.isSelected = false;
-            }
+          const selectedElements = self.modeler.get('selection').get();
+          if (selectedElements.length > 0) {
+            const selectedElement = selectedElements[0];
+            this.elementID = selectedElement.id;
+            this.elementTask = selectedElement.type;
+            this.isSelected = true;
+          } else {
+            this.elementID = 'no selection';
+            this.elementTask = 'no selection';
+            this.isSelected = false;
+          }
         }
         // if (event === 'element.mouseup') {
         //   // const canvas = self.modeler.get('canvas');
@@ -138,27 +158,27 @@ export default class ExecutionView extends Vue {
 </script>
 
 <style scoped lang="less">
-  .container {
-    background-color: #ffffff;
-    position: fixed;
-    top: 54px;
-    right: 300px;
-    bottom: 0;
-    left: 80px;
+.container {
+  background-color: #ffffff;
+  position: fixed;
+  top: 54px;
+  right: 300px;
+  bottom: 0;
+  left: 80px;
+}
+#canvas {
+  height: 100%;
+}
+.sidebar-right {
+  position: fixed;
+  top: 54px;
+  right: 0;
+  bottom: 0;
+  width: 300px;
+  background-color: #252527;
+  // box-shadow: -10px 2px 6px #dddddd;
+  p {
+    color: #fff;
   }
-  #canvas {
-    height: 100%;
-  }
-  .sidebar-right {
-    position: fixed;
-    top: 54px;
-    right: 0;
-    bottom: 0;
-    width: 300px;
-    background-color: #252527;
-    // box-shadow: -10px 2px 6px #dddddd;
-    p {
-      color: #fff;
-    }
-  }
+}
 </style>

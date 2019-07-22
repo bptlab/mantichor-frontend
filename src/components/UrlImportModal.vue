@@ -4,7 +4,7 @@
       <div class="dialog-content">
         <h1 class="dialog-title">Import Project</h1>
         <div class="dialog-form">
-          <input type="text" placeholder="Share-ID" v-model="shareId">
+          <input type="text" placeholder="Share-ID" v-model="shareId" />
         </div>
       </div>
       <div class="vue-dialog-buttons">
@@ -30,7 +30,7 @@ export default {
   },
   methods: {
     importFromUrl() {
-      this.$projectmanagement.importSharedProject(this.shareId);
+      this.$modelmanagement.importSharedProject(this.shareId);
       this.$modal.hide('url-import-modal');
     },
   },

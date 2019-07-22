@@ -10,7 +10,7 @@
             placeholder="Share-ID"
             v-model="shareId"
             readonly="readonly"
-          >
+          />
         </div>
       </div>
       <div class="vue-dialog-buttons">
@@ -31,7 +31,7 @@ export default {
   },
   methods: {
     async getShareId() {
-      this.shareId = await this.$projectmanagement.shareProject();
+      this.shareId = await this.$modelmanagement.shareProject();
       this.$refs.shareInput.select();
     },
     copyShareId() {

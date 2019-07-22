@@ -1,148 +1,94 @@
 
 import _Vue from 'vue';
-import Project from '@/interfaces/Project';
-import bpmnBlank from 'raw-loader!@/resources/newDiagram.bpmn';
+import { ProjectObject, Instance, Model } from '@/interfaces/Project';
 import { Choreographies } from '@/apis/mantichor-share/mantichor-share';
-import parser from 'fast-xml-parser';
+
 
 export default function install(Vue: typeof _Vue, options = {}) {
-  Vue.prototype.$projectmanagement = new ProjectManagement();
+  Vue.prototype.$modelmanagement = new ProjectManagement<Model>(Model);
+  Vue.prototype.$instancemanagement = new ProjectManagement<Instance>(Instance);
 }
 
-// tslint:disable-next-line: max-classes-per-file
-export class ProjectManagement {
-  // region public static methods
-  // endregion
+export class ProjectManagement<T extends ProjectObject> {
+  public c: new (p: any) => T;
 
-  // region private static methods
-  public static createRandomId(): string {
-    return Math.random().toString(36).substr(2, 9);
-  }
-  // endregion
-
-  // region public members
   public storeVM = new _Vue({
     data() {
       return {
         projects: [],
-        projectNumber: 0,
+        activeProject: undefined,
       };
     },
   });
 
-  get projects(): Project[] {
+  get projects(): T[] {
     return this.storeVM.$data.projects;
   }
 
-  set projects(projects: Project[]) {
+  set projects(projects: T[]) {
     this.storeVM.$data.projects = projects;
-  }
-
-  get activeProject(): Project {
-    const activeProject = this.projects.find((project) => project.isActive);
-    if (!activeProject) {
-      if (this.projects.length <= 0) {
-        return this.addBlankProject();
-      }
-      this.activeProject = this.projects[0];
-      return this.projects[0];
-    }
-    return activeProject;
-  }
-
-  set activeProject(project: Project) {
-    this.resetActiveProject();
-    project.isActive = true;
-
     this.saveProjects();
   }
-  // endregion
 
-  // region private members
-  // endregion
+  get activeProject(): T | undefined {
+    if (this.projects.length <= 0) {
+      return undefined;
+    }
+    if (!this.storeVM.$data.activeProject) {
+      this.activeProject = this.projects[0];
+    }
+    return this.storeVM.$data.activeProject;
+  }
 
-  // region constructor
-  constructor() {
+  set activeProject(project: T | undefined) {
+    this.storeVM.$data.activeProject = project;
+    this.saveProjects();
+  }
+
+  constructor(c: new (p: any) => T) {
+    this.c = c;
     this.loadProjects();
   }
-  // endregion
 
-  // region public methods
-  public addBlankProject(): Project {
-    const blankProject: Project = new Project({
-      id: ProjectManagement.createRandomId(),
-      name: ('0' + (this.projects.length + 1)).slice(-2),
-      isActive: true,
-      bpmnXML: bpmnBlank,
-      dateSaved: new Date(),
-    });
-    this.projects.push(blankProject);
-    this.activeProject = blankProject;
-    return blankProject;
+  public addProject(project: T): void {
+    if (this.projects.find((p) => p === project)) { return; }
+    this.projects.push(project);
+    this.activeProject = project;
   }
 
-  public async importSharedProject(id: string): Promise<void> {
-    const sharedProject = await Choreographies.getOne(id);
-    const importedProject: Project = new Project({
-      id: ProjectManagement.createRandomId(),
-      name: sharedProject.name,
-      isActive: true,
-      bpmnXML: sharedProject.bpmnXML,
-      dateSaved: sharedProject.dateSaved,
-    });
-    this.projects.push(importedProject);
-    this.activeProject = importedProject;
+  public removeProject(project: T): void {
+    const projectIndex = this.projects.findIndex((p) => project.id === p.id);
+
+    if (projectIndex < 0) { return; }
+
+    if (this.activeProject === project) {
+      this.activeProject = undefined;
+    }
+    this.projects.splice(projectIndex, 1);
   }
 
   public async shareProject(): Promise<string> {
+    if (!this.activeProject) { return ''; }
     const shareResponse = await Choreographies.create(this.activeProject);
     return shareResponse.shareId;
   }
 
-  public removeProject(projectToRemove: Project): void {
-    const projectIndex = this.projects.findIndex((project) => project.id === projectToRemove.id);
-    if (projectIndex < 0) {
-      return;
-    }
-
-    this.projects.splice(projectIndex, 1);
-    if (this.projects.length <= 0) {
-      this.addBlankProject();
-      return;
-    }
-
-    this.activeProject = this.projects[0];
+  public async importProject(id: string): Promise<void> {
+    const sharedProject = await Choreographies.getOne(id);
+    const importedProject = new this.c(sharedProject);
+    this.addProject(importedProject);
   }
 
-  public saveProjects() {
+  public saveProjects(): void {
     const parsedProjects = JSON.stringify(this.projects);
-    localStorage.setItem('projects', parsedProjects);
+    localStorage.setItem(this.constructor.name, parsedProjects);
   }
 
-  public getParticipants(project: Project): any {
-    const parserOptions = {
-      attributeNamePrefix: '',
-      ignoreAttributes: false,
-      ignoreNameSpace: true,
-    };
-    const jsonObj = parser.parse(project.bpmnXML, parserOptions);
-    return jsonObj.definitions.choreography.participant;
-  }
-  // endregion
-
-  // region private methods
   private loadProjects() {
-    if (localStorage.projects) {
-      this.projects = JSON.parse(localStorage.projects).map((project: any) => new Project(project));
-      return;
-    }
-    this.addBlankProject();
-  }
+    if (!localStorage[this.constructor.name]) { return; }
 
-  private resetActiveProject(): void {
-    for (const project of this.projects) {
-      project.isActive = false;
-    }
+    this.projects = JSON
+      .parse(localStorage[this.constructor.name])
+      .map((project: ProjectObject) => new this.c(project));
   }
-  // endregion
 }
