@@ -4,7 +4,7 @@
       <div class="dialog-content">
         <h1 class="dialog-title">Project Settings</h1>
         <div class="dialog-form">
-          <input type="text" placeholder="Project Name" v-model="name">
+          <input type="text" placeholder="Project Name" v-model="name" />
         </div>
       </div>
       <div class="vue-dialog-buttons">
@@ -26,10 +26,10 @@ export default {
   },
   methods: {
     beforeOpen() {
-      this.name = this.$projectmanagement.activeProject.name;
+      this.name = this.$modelmanagement.activeProject.name;
     },
     confirm() {
-      this.$projectmanagement.activeProject.name = this.name;
+      this.$modelmanagement.activeProject.name = this.name;
       this.$modal.hide('project-settings');
     },
     cancel() {

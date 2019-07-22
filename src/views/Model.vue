@@ -23,13 +23,15 @@ import { ChoreographyInstances } from '../apis/mantichor-blockchain/mantichor-bl
 })
 export default class Model extends Vue {
   private async deploy() {
-    const instance = await ChoreographyInstances.create(this.$projectmanagement.activeProject.bpmnXML);
+    if (!this.$modelmanagement.activeProject) { return; }
+    const instance = await this.$modelmanagement.activeProject.deploy([]);
     console.log(instance);
     const enabledTasks = await ChoreographyInstances.getEnabledTasks(instance);
     console.log(enabledTasks);
   }
   private remove() {
-    this.$projectmanagement.removeProject(this.$projectmanagement.activeProject);
+    if (!this.$modelmanagement.activeProject) { return; }
+    this.$modelmanagement.removeProject(this.$modelmanagement.activeProject);
   }
 }
 </script>
