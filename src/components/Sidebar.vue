@@ -13,10 +13,10 @@
         >
           <h1>{{ project.initials }}</h1>
         </li>
-        <li class="add" @click="$projectmanagement.addBlankProject()">
+        <li v-if="isModeler" class="add" @click="$projectmanagement.addBlankProject()">
           <h1>+</h1>
         </li>
-        <li class="download" @click="openUrlImportModal()">
+        <li v-if="isModeler" class="download" @click="openUrlImportModal()">
           <h1>
             <font-awesome-icon icon="cloud-download-alt"/>
           </h1>
@@ -27,11 +27,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Prop } from 'vue-property-decorator';
 import UrlImportModal from '@/components/UrlImportModal.vue';
 
 @Component
 export default class Sidebar extends Vue {
+
+  @Prop( { type: Boolean } )
+  public isModeler!: boolean;
 
   public openUrlImportModal(): void {
     this.$modal.show('url-import-modal');

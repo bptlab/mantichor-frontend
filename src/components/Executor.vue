@@ -1,5 +1,5 @@
 <template>
-  <div class="executionview">
+  <div class="executor">
     <div class="container">
       <div id="canvas" class="execution"></div>
     </div>
