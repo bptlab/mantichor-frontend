@@ -1,16 +1,19 @@
 <template>
   <div class="model">
-    <ExecutionView />
+    <Sidebar />
+    <Executor />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import ExecutionView from '@/components/ExecutionView.vue';
+import Executor from '@/components/Executor.vue';
+import Sidebar from '@/components/Sidebar.vue';
 
 @Component({
   components: {
-    ExecutionView,
+    Sidebar,
+    Executor,
   },
 })
 export default class Execution extends Vue {}

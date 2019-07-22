@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <div id="nav">
-      <Sidebar/>
       <Header/>
       <project-settings-modal/>
       <url-import-modal/>
@@ -16,14 +15,12 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import Header from '@/components/Header.vue';
-import Sidebar from '@/components/Sidebar.vue';
 import ProjectSettingsModal from '@/components/ProjectSettingsModal.vue';
 import UrlImportModal from '@/components/UrlImportModal.vue';
 import ShareModal from '@/components/ShareModal.vue';
 
 @Component({
   components: {
-    Sidebar,
     Header,
     ProjectSettingsModal,
     UrlImportModal,
