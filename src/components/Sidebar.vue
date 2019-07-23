@@ -1,7 +1,7 @@
 <template>
   <aside>
     <div class="sidebar-header">
-      <img alt="Vue logo" src="../assets/logo.png">
+      <img alt="Mantichor logo" src="../assets/logo.svg">
     </div>
     <nav>
       <ul>
