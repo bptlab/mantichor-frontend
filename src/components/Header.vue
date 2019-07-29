@@ -3,7 +3,7 @@
     <router-link to="/model">Model</router-link>
     <router-link to="/execution">Execution</router-link>
     <router-link to="/user">
-      <img alt="Vue logo" src="../assets/logo.png">
+      <img alt="Mantichor logo" src="../assets/logo.svg">
     </router-link>
   </header>
 </template>
