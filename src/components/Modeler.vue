@@ -202,10 +202,10 @@ export default class Modeler extends Vue {
     const eventBus = this.modeler.get('eventBus');
     eventBus.on('commandStack.changed', () => {
       (async () => {
+        this.$modelmanagement.saveProjects();
         if (!this.$modelmanagement.activeProject) { return; }
         this.$modelmanagement.activeProject.bpmnXML = await this.getXML();
         this.$modelmanagement.activeProject.dateSaved = new Date();
-        this.$modelmanagement.saveProjects();
       })();
     });
   }

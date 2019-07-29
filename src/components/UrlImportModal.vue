@@ -30,7 +30,7 @@ export default {
   },
   methods: {
     importFromUrl() {
-      this.$modelmanagement.importSharedProject(this.shareId);
+      this.$modelmanagement.importProject(this.shareId);
       this.$modal.hide('url-import-modal');
     },
   },
