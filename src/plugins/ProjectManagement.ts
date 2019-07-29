@@ -1,16 +1,18 @@
 
 import _Vue from 'vue';
 import { ProjectObject, Instance, Model } from '@/interfaces/Project';
-import { Choreographies } from '@/apis/mantichor-share/mantichor-share';
+import { Models, Instances } from '@/apis/mantichor-share/mantichor-share';
+import CRUDResource from '@/apis/crud-wrapper/CRUDResource';
 
 
 export default function install(Vue: typeof _Vue, options = {}) {
-  Vue.prototype.$modelmanagement = new ProjectManagement<Model>(Model);
-  Vue.prototype.$instancemanagement = new ProjectManagement<Instance>(Instance);
+  Vue.prototype.$modelmanagement = new ProjectManagement<Model>(Model, Models);
+  Vue.prototype.$instancemanagement = new ProjectManagement<Instance>(Instance, Instances);
 }
 
 export class ProjectManagement<T extends ProjectObject> {
   public c: new (p: any) => T;
+  public share: CRUDResource<ProjectObject>;
 
   public storeVM = new _Vue({
     data() {
@@ -44,8 +46,9 @@ export class ProjectManagement<T extends ProjectObject> {
     this.saveProjects();
   }
 
-  constructor(c: new (p: any) => T) {
+  constructor(c: new (p: any) => T, share: CRUDResource<ProjectObject>) {
     this.c = c;
+    this.share = share;
     this.loadProjects();
   }
 
@@ -70,12 +73,12 @@ export class ProjectManagement<T extends ProjectObject> {
 
   public async shareProject(): Promise<string> {
     if (!this.activeProject) { return ''; }
-    const shareResponse = await Choreographies.create(this.activeProject);
+    const shareResponse = await this.share.create(this.activeProject);
     return shareResponse.shareId;
   }
 
   public async importProject(id: string): Promise<void> {
-    const sharedProject = await Choreographies.getOne(id);
+    const sharedProject = await this.share.getOne(id);
     const importedProject = new this.c(sharedProject);
     this.addProject(importedProject);
   }
