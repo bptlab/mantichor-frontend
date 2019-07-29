@@ -187,10 +187,6 @@ export default class Modeler extends Vue {
     this.$modal.show('share-modal');
   }
 
-  private deploy() {
-    // ToDo: Deploy Project
-  }
-
   private mounted() {
     this.modeler = new ChoreoModeler({
       container: '#canvas',
@@ -204,7 +200,7 @@ export default class Modeler extends Vue {
     }
 
     const eventBus = this.modeler.get('eventBus');
-    eventBus.on('element.mouseup', () => {
+    eventBus.on('commandStack.changed', () => {
       (async () => {
         if (!this.$modelmanagement.activeProject) { return; }
         this.$modelmanagement.activeProject.bpmnXML = await this.getXML();
