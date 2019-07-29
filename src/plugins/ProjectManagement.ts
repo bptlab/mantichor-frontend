@@ -27,7 +27,6 @@ export class ProjectManagement<T extends ProjectObject> {
 
   set projects(projects: T[]) {
     this.storeVM.$data.projects = projects;
-    this.saveProjects();
   }
 
   get activeProject(): T | undefined {
@@ -35,7 +34,7 @@ export class ProjectManagement<T extends ProjectObject> {
       return undefined;
     }
     if (!this.storeVM.$data.activeProject) {
-      this.activeProject = this.projects[0];
+      return undefined;
     }
     return this.storeVM.$data.activeProject;
   }
@@ -54,6 +53,7 @@ export class ProjectManagement<T extends ProjectObject> {
     if (this.projects.find((p) => p === project)) { return; }
     this.projects.push(project);
     this.activeProject = project;
+    this.saveProjects();
   }
 
   public removeProject(project: T): void {
@@ -65,6 +65,7 @@ export class ProjectManagement<T extends ProjectObject> {
       this.activeProject = undefined;
     }
     this.projects.splice(projectIndex, 1);
+    this.saveProjects();
   }
 
   public async shareProject(): Promise<string> {
@@ -81,14 +82,18 @@ export class ProjectManagement<T extends ProjectObject> {
 
   public saveProjects(): void {
     const parsedProjects = JSON.stringify(this.projects);
-    localStorage.setItem(this.constructor.name, parsedProjects);
+    localStorage.setItem(this.c.name, parsedProjects);
+    const activeProject = JSON.stringify({ activeProject: this.activeProject });
+    localStorage.setItem(this.c.name + '.activeProject', activeProject);
   }
 
   private loadProjects() {
-    if (!localStorage[this.constructor.name]) { return; }
-
+    if (!localStorage[this.c.name]) { return; }
     this.projects = JSON
-      .parse(localStorage[this.constructor.name])
+      .parse(localStorage[this.c.name])
       .map((project: ProjectObject) => new this.c(project));
+
+    if (!localStorage[this.c.name + '.activeProject']) { return; }
+    this.activeProject = new this.c(JSON.parse(localStorage[this.c.name + '.activeProject']).activeProject);
   }
 }
