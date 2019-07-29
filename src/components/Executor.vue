@@ -109,12 +109,21 @@ export default class ExecutionView extends Vue {
     if (!this.$instancemanagement.activeProject) { return; }
     const accounts = await ChoreographyInstances.getAccounts();
     await ChoreographyInstances.executeTask(this.$instancemanagement.activeProject, accounts[0], [this.elementID]);
-    let enabledtasks = await ChoreographyInstances.getEnabledTasks(this.$instancemanagement.activeProject);
+    this.loadAndDisplayEnabledTasks();
+  }
+
+  private async loadAndDisplayEnabledTasks() {
+    if (!this.$instancemanagement.activeProject) { return; }
+    const enabledtasks = await ChoreographyInstances.getEnabledTasks(this.$instancemanagement.activeProject);
     this.modeler.importXML(this.$instancemanagement.activeProject.bpmnXML, () => {
       const canvas = this.modeler.get('canvas');
       if (!enabledtasks) { return; }
-      enabledtasks.forEach(tasks => {
-        canvas.addMarker(tasks[0], 'enabled');
+      enabledtasks.forEach((tasks) => {
+        try {
+          canvas.addMarker(tasks[0], 'enabled');
+        } catch (error) {
+          console.log(error);
+        }
       });
     });
   }
@@ -131,14 +140,7 @@ export default class ExecutionView extends Vue {
     if (!this.$instancemanagement.activeProject) { return; }
     this.renderModel(this.$instancemanagement.activeProject.bpmnXML);
 
-    let enabledtasks = await ChoreographyInstances.getEnabledTasks(this.$instancemanagement.activeProject);
-    this.modeler.importXML(this.$instancemanagement.activeProject.bpmnXML, () => {
-      const canvas = this.modeler.get('canvas');
-      if (!enabledtasks) { return; }
-      enabledtasks.forEach(tasks => {
-        canvas.addMarker(tasks[0], 'enabled');
-      });
-    });
+    this.loadAndDisplayEnabledTasks();
 
     const eventBus = this.modeler.get('eventBus');
     eventBus.on('selection.changed', () => {
