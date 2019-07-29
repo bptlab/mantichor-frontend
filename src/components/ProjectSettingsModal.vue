@@ -30,6 +30,7 @@ export default {
     },
     confirm() {
       this.$modelmanagement.activeProject.name = this.name;
+      this.$modelmanagement.saveProjects();
       this.$modal.hide('project-settings');
     },
     cancel() {
