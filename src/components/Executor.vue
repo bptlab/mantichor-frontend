@@ -49,6 +49,7 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import ChoreoModeler from 'chor-js';
 import Project from '@/interfaces/Project';
+import { ChoreographyInstances } from '../apis/mantichor-blockchain/mantichor-blockchain';
 // import parser from 'fast-xml-parser';
 
 /* bpmn-js includings
@@ -88,6 +89,8 @@ export default class ExecutionView extends Vue {
       await this.modeler.setXML(xml);
       this.modeler.displayChoreography({});
       this.resetZoom();
+      if (!this.$instancemanagement.activeProject) { return; }
+      this.participants = this.$instancemanagement.activeProject.getParticipants();
     } catch (error) {
       this.$notify({
         type: 'error',
@@ -116,42 +119,21 @@ export default class ExecutionView extends Vue {
     });
 
     if (!this.$instancemanagement.activeProject) { return; }
-    this.participants = this.$instancemanagement.activeProject.getParticipants();
-    console.log(this.participants);
-
     this.renderModel(this.$instancemanagement.activeProject.bpmnXML);
 
     const eventBus = this.modeler.get('eventBus');
-    const events = [
-      'element.hover',
-      'element.out',
-      'element.click',
-      'element.dbclick',
-      'element.mousedown',
-      'element.mouseup',
-      'selection.changed',
-    ];
-
-    events.forEach((event) => {
-      eventBus.on(event, (e: any) => {
-        if (event === 'selection.changed') {
-          const selectedElements = self.modeler.get('selection').get();
-          if (selectedElements.length > 0) {
-            const selectedElement = selectedElements[0];
-            this.elementID = selectedElement.id;
-            this.elementTask = selectedElement.type;
-            this.isSelected = true;
-          } else {
-            this.elementID = 'no selection';
-            this.elementTask = 'no selection';
-            this.isSelected = false;
-          }
-        }
-        // if (event === 'element.mouseup') {
-        //   // const canvas = self.modeler.get('canvas');
-        //   // canvas.addMarker(e.element.id, 'highlight');
-        // }
-      });
+    eventBus.on('selection.changed', () => {
+      const selectedElements = self.modeler.get('selection').get();
+      if (selectedElements.length > 0) {
+        const selectedElement = selectedElements[0];
+        this.elementID = selectedElement.id;
+        this.elementTask = selectedElement.type;
+        this.isSelected = true;
+      } else {
+        this.elementID = 'no selection';
+        this.elementTask = 'no selection';
+        this.isSelected = false;
+      }
     });
   }
 }
