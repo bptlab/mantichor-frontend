@@ -35,6 +35,7 @@ export default class App extends Vue { }
 
 
 <style lang="less">
+@import "styles.less";
 body {
   margin: 0;
   padding: 0;
@@ -69,15 +70,11 @@ body {
     border-top: solid 1px #eeeeee;
   }
 }
-.execution .selected:not(.djs-connection) .djs-visual > :nth-child(1) {
-  // fill: #01a7c2 !important;
-  stroke: #01a7c2 !important;
-}
 .execution .enabled:not(.djs-connection) .djs-visual > :nth-child(1) {
-  fill: #01a7c2 !important;
-  stroke: #7ee926 !important;
+  // fill: #01a7c2 !important;
+  stroke: @accent !important;
 }
-.execution .deployed:not(.djs-connection) .djs-visual > :nth-child(1) {
+.execution .deployed:not(.djs-connection) .djs-visual > g > path {
   fill: #cc2222 !important;
   stroke: #cc2222 !important;
 }

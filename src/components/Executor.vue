@@ -33,7 +33,18 @@
             </ul>
           </li>
           <li>
-            <button title="Execute selected task" @click="execute()">Execute</button>
+            <div v-if="true != false">
+              <button
+                :disabled="deploying"
+                title="Execute selected task"
+                @click="execute()">
+                {{ deploying ? 'Your project is being deployed, this can take a few minutes.' : 'Execute' }}
+                <div v-if="deploying" class="loader">Loading...</div>
+              </button>
+            </div>
+            <div v-else>
+              <p>This element is not enabled</p>
+            </div>
           </li>
         </ul>
       </div>
@@ -68,13 +79,16 @@ export default class ExecutionView extends Vue {
   private elementID!: string;
   private elementTask!: string;
   private isSelected!: boolean;
-  private participants!: [];
+  private deploying!: boolean;
+  private participants!: string[];
+  private enabledTasks!: string[][];
 
   constructor() {
     super();
     this.elementID = 'no selection';
     this.elementTask = 'no selection';
     this.isSelected = false;
+    this.deploying = false;
   }
 
   @Watch('$instancemanagement.activeProject')
@@ -89,6 +103,7 @@ export default class ExecutionView extends Vue {
       this.resetZoom();
       if (!this.$instancemanagement.activeProject) { return; }
       this.participants = this.$instancemanagement.activeProject.getParticipants();
+      this.loadAndDisplayEnabledTasks();
     } catch (error) {
       this.$notify({
         type: 'error',
@@ -104,25 +119,37 @@ export default class ExecutionView extends Vue {
   }
 
   private async execute() {
+    if (this.deploying) { return; }
+    this.deploying = true;
     if (!this.$instancemanagement.activeProject) { return; }
     const accounts = await ChoreographyInstances.getAccounts();
     await ChoreographyInstances.executeTask(this.$instancemanagement.activeProject, accounts[0], [this.elementID]);
+    this.deploying = false;
     this.loadAndDisplayEnabledTasks();
   }
 
   private async loadAndDisplayEnabledTasks() {
     if (!this.$instancemanagement.activeProject) { return; }
-    const enabledtasks = await ChoreographyInstances.getEnabledTasks(this.$instancemanagement.activeProject);
-    this.modeler.importXML(this.$instancemanagement.activeProject.bpmnXML, () => {
-      const canvas = this.modeler.get('canvas');
-      if (!enabledtasks) { return; }
-      enabledtasks.forEach((tasks) => {
-        try {
-          canvas.addMarker(tasks[0], 'enabled');
-        } catch (error) {
-          console.log(error);
-        }
-      });
+    this.enabledTasks = await ChoreographyInstances.getEnabledTasks(this.$instancemanagement.activeProject);
+
+    const canvas = this.modeler.get('canvas');
+    let enabledTasksClassList = document.querySelector('.enabled');
+    if (enabledTasksClassList) {
+      enabledTasksClassList.classList.remove('enabled');
+    }
+    if (!this.enabledTasks) { return; }
+    this.enabledTasks.forEach((tasks) => {
+      try {
+        if (tasks[0] === 'finished') { return; }
+        canvas.addMarker(tasks[0], 'enabled');
+      } catch (error) {
+        this.$notify({
+            type: 'error',
+            title: 'Error',
+            text: 'Could not highlight enabled tasks. Possibly, there are no executable task.',
+            duration: 4000,
+          });
+      }
     });
   }
 
@@ -177,7 +204,7 @@ export default class ExecutionView extends Vue {
   right: 0;
   bottom: 0;
   width: 300px;
-  background-color: #252527;
+  background-color: @primary;
   max-height: calc(100% - @element-size);
   overflow-y: scroll;
   scrollbar-width: none;
@@ -214,10 +241,92 @@ export default class ExecutionView extends Vue {
         font-weight: bold;
         cursor: pointer;
       }
+      button:disabled {
+        background-color: @primary;
+      }
     }
     & > *:last-child {
       border-bottom: none;
     }
+  }
+}
+.loader {
+  font-size: 10px;
+  display: inline-block;
+  text-indent: -9999em;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #8b8c8d;
+  background: -moz-linear-gradient(
+    left,
+    #8b8c8d 10%,
+    rgba(255, 255, 255, 0) 42%
+  );
+  background: -webkit-linear-gradient(
+    left,
+    #8b8c8d 10%,
+    rgba(255, 255, 255, 0) 42%
+  );
+  background: -o-linear-gradient(left, #8b8c8d 10%, rgba(255, 255, 255, 0) 42%);
+  background: -ms-linear-gradient(
+    left,
+    #8b8c8d 10%,
+    rgba(255, 255, 255, 0) 42%
+  );
+  background: linear-gradient(
+    to right,
+    #8b8c8d 10%,
+    rgba(255, 255, 255, 0) 42%
+  );
+  position: relative;
+  -webkit-animation: load3 1.4s infinite linear;
+  animation: load3 1.4s infinite linear;
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+}
+.loader:before {
+  width: 50%;
+  height: 50%;
+  background: #8b8c8d;
+  border-radius: 100% 0 0 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  content: "";
+}
+.loader:after {
+  width: 75%;
+  height: 75%;
+  background-color: @primary;
+  border-radius: 50%;
+  content: "";
+  margin: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+@-webkit-keyframes load3 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes load3 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
   }
 }
 </style>
