@@ -20,8 +20,9 @@ export class ChoreographyInstances {
   }
 
   public static async getEnabledTasks(instance: Instance): Promise<string[][]> {
-    return ApiUtils
+    const tasksResponse = await ApiUtils
       .postJsonResource(`${this.baseUrl}/choreographies/${instance.address}/tasks`, { xml: instance.bpmnXML });
+    return tasksResponse.tasks;
   }
 
   public static async getAccounts(): Promise<string[]> {
