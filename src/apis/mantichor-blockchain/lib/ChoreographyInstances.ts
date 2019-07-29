@@ -8,10 +8,12 @@ export class ChoreographyInstances {
 
   public static async create(model: Model, mappings: Mapping[]): Promise<Instance> {
     const instanceResponse = await ApiUtils.postJsonResource(`${this.baseUrl}/choreographies`, { xml: model.bpmnXML });
+    const modelSnapshot = Object.assign({}, model);
+    modelSnapshot.id = Instance.createRandomId();
     const instance = new Instance(Object.assign({
       address: instanceResponse.address,
       mappings,
-    }, model));
+    }, modelSnapshot));
     const accounts = await ChoreographyInstances.getAccounts();
     await ChoreographyInstances.executeTask(instance, accounts[0], ['init']);
     return instance;
