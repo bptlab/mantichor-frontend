@@ -36,7 +36,7 @@
           <br />
           {{ elementTask }}
         </p>
-        <button title="publish on Blockchain" @click="publish()">Publish</button>
+        <button title="publish on Blockchain" @click="publish()">Deploy</button>
       </div>
       <div v-else>
         <p>Please select an element.</p>
@@ -109,7 +109,7 @@ export default class ExecutionView extends Vue {
     // Backend request ...
   }
 
-  private mounted() {
+  private async mounted() {
     const self = this;
     this.modeler = new ChoreoModeler({
       container: '#canvas',
@@ -120,6 +120,18 @@ export default class ExecutionView extends Vue {
 
     if (!this.$instancemanagement.activeProject) { return; }
     this.renderModel(this.$instancemanagement.activeProject.bpmnXML);
+
+    let enabledtasks = await ChoreographyInstances.getEnabledTasks(this.$instancemanagement.activeProject);
+    this.modeler.importXML(this.$instancemanagement.activeProject.bpmnXML, () => {
+      const canvas = this.modeler.get('canvas');
+      if (!enabledtasks) { return; }
+      enabledtasks.forEach(tasks => {
+        canvas.addMarker(tasks[0], 'enabled');
+      });
+      // canvas.addMarker('ChoreographyTask_0u0boyl', 'enabled');
+    });
+
+
 
     const eventBus = this.modeler.get('eventBus');
     eventBus.on('selection.changed', () => {

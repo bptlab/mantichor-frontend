@@ -70,4 +70,12 @@ body {
   // fill: #01a7c2 !important;
   stroke: #01a7c2 !important;
 }
+.execution .enabled:not(.djs-connection) .djs-visual > :nth-child(1) {
+  fill: #01a7c2 !important;
+  stroke: #7ee926 !important;
+}
+.execution .deployed:not(.djs-connection) .djs-visual > :nth-child(1) {
+  fill: #cc2222 !important;
+  stroke: #cc2222 !important;
+}
 </style>
