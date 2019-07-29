@@ -179,6 +179,9 @@ export default class ExecutionView extends Vue {
   bottom: 0;
   width: 300px;
   background-color: #252527;
+  max-height: calc(100% - @element-size);
+  overflow-y: scroll;
+  scrollbar-width: none;
   // box-shadow: -10px 2px 6px #dddddd;
   p {
     color: #fff;
@@ -186,8 +189,7 @@ export default class ExecutionView extends Vue {
   ul.overview-list {
     list-style: none;
     padding: 0;
-    margin-top: 0;
-    margin-bottom: 12px;
+    margin: 0;
     &>li {
       padding: 12px;
       text-align: left;
