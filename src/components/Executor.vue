@@ -46,10 +46,9 @@
 
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
-import ChoreoModeler from 'chor-js';
+import ChoreoModeler from 'chor-js/lib/NavigatedViewer';
 import Project from '@/interfaces/Project';
 import { ChoreographyInstances } from '../apis/mantichor-blockchain/mantichor-blockchain';
-// import parser from 'fast-xml-parser';
 
 /* bpmn-js includings
  * In this way all existing js files will be included
