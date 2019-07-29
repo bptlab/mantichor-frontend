@@ -2,9 +2,6 @@
   <header>
     <router-link to="/model">Model</router-link>
     <router-link to="/execution">Execution</router-link>
-    <router-link to="/user">
-      <img alt="Mantichor logo" src="../assets/logo.svg">
-    </router-link>
   </header>
 </template>
 
@@ -12,12 +9,11 @@
 import { Component, Vue } from 'vue-property-decorator';
 
 @Component
-export default class Header extends Vue {}
+export default class Header extends Vue { }
 </script>
 
 <style lang="less">
-
-@import '../styles.less';
+@import "../styles.less";
 
 header {
   display: flex;
@@ -46,11 +42,6 @@ header {
     & > img {
       height: @element-size;
     }
-
-    &:last-child {
-      flex-grow: 0.2;
-    }
   }
 }
-
 </style>
