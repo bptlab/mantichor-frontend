@@ -4,6 +4,7 @@
       <Header/>
       <project-settings-modal/>
       <url-import-modal/>
+      <deploy-modal/>
       <share-modal/>
       <v-dialog/>
     </div>
@@ -17,6 +18,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import Header from '@/components/Header.vue';
 import ProjectSettingsModal from '@/components/ProjectSettingsModal.vue';
 import UrlImportModal from '@/components/UrlImportModal.vue';
+import DeployModal from '@/components/DeployModal.vue';
 import ShareModal from '@/components/ShareModal.vue';
 
 @Component({
@@ -24,6 +26,7 @@ import ShareModal from '@/components/ShareModal.vue';
     Header,
     ProjectSettingsModal,
     UrlImportModal,
+    DeployModal,
     ShareModal,
   },
 })
