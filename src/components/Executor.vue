@@ -5,38 +5,37 @@
     </div>
     <div class="sidebar-right">
       <div v-if="isSelected && $instancemanagement.activeProject">
-        <p>
-          Participants:
-          <br />
-          <select>
-            <option
-              v-for="participant in participants"
-              :value="participant.id"
-              :key="participant.id"
-            >{{ participant.name }}</option>
-          </select>
-        </p>
-        <p>
-          Project ID:
-          <br />
-          {{ $instancemanagement.activeProject.id }}
-        </p>
-        <p>
-          Project Name:
-          <br />
-          {{ $instancemanagement.activeProject.name }}
-        </p>
-        <p>
-          Element ID:
-          <br />
-          {{ elementID }}
-        </p>
-        <p>
-          Task:
-          <br />
-          {{ elementTask }}
-        </p>
-        <button title="publish on Blockchain" @click="publish()">Deploy</button>
+        <ul class="overview-list">
+          <li>
+            <h4>Project ID</h4>
+            <p>{{ $instancemanagement.activeProject.id }}</p>
+          </li>
+          <li>
+            <h4>Project name</h4>
+            <p>{{ $instancemanagement.activeProject.name }}</p>
+          </li>
+          <li>
+            <h4>Selected element ID</h4>
+            <p>{{ elementID }}</p>
+          </li>
+          <li>
+            <h4>Selected task</h4>
+            <p>{{ elementTask }}</p>
+          </li>
+          <li>
+            <h4>Participants</h4>
+            <ul>
+              <li
+                v-for="participant in participants"
+                :key="participant.id">
+                <p>{{ participant.name }}</p>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <div class="button-container">
+          <button title="Execute selected task" @click="execute()">Execute</button>
+        </div>
       </div>
       <div v-else>
         <p>Please select an element.</p>
@@ -105,7 +104,7 @@ export default class ExecutionView extends Vue {
     this.modeler.get('canvas').zoom('fit-viewport');
   }
 
-  private async publish() {
+  private async execute() {
     if (!this.$instancemanagement.activeProject) { return; }
     const accounts = await ChoreographyInstances.getAccounts();
     await ChoreographyInstances.executeTask(this.$instancemanagement.activeProject, accounts[0], [this.elementID]);
@@ -161,6 +160,7 @@ export default class ExecutionView extends Vue {
 </script>
 
 <style scoped lang="less">
+@import "../styles.less";
 .container {
   background-color: #ffffff;
   position: fixed;
@@ -182,6 +182,40 @@ export default class ExecutionView extends Vue {
   // box-shadow: -10px 2px 6px #dddddd;
   p {
     color: #fff;
+  }
+  ul.overview-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 0;
+    margin-bottom: 12px;
+    &>li {
+      padding: 12px;
+      text-align: left;
+      color: #fff;
+      border-bottom: 1px solid #fff;
+      h4 {
+        font-size: 12px;
+        margin: 0 0 12px 0;
+      }
+      p {
+        font-size: 12px;
+        line-height: 16px;
+        margin: 0;
+      }
+    }
+  }
+  .button-container {
+    width: 100%;
+    button {
+      background-color: @accent;
+      border-radius: 5px;
+      font-size: 1em;
+      padding: 10px;
+      color: #fff;
+      font-weight: bold;
+      margin: 0 12px;
+      border: none;
+    }
   }
 }
 </style>
