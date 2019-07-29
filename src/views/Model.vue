@@ -25,9 +25,8 @@ export default class Model extends Vue {
   private async deploy() {
     if (!this.$modelmanagement.activeProject) { return; }
     const instance = await this.$modelmanagement.activeProject.deploy([]);
-    console.log(instance);
+    this.$instancemanagement.addProject(instance);
     const enabledTasks = await ChoreographyInstances.getEnabledTasks(instance);
-    console.log(enabledTasks);
   }
   private remove() {
     if (!this.$modelmanagement.activeProject) { return; }
