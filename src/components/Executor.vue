@@ -105,8 +105,18 @@ export default class ExecutionView extends Vue {
     this.modeler.get('canvas').zoom('fit-viewport');
   }
 
-  private publish() {
-    // Backend request ...
+  private async publish() {
+    if (!this.$instancemanagement.activeProject) { return; }
+    const accounts = await ChoreographyInstances.getAccounts();
+    await ChoreographyInstances.executeTask(this.$instancemanagement.activeProject, accounts[0], [this.elementID]);
+    let enabledtasks = await ChoreographyInstances.getEnabledTasks(this.$instancemanagement.activeProject);
+    this.modeler.importXML(this.$instancemanagement.activeProject.bpmnXML, () => {
+      const canvas = this.modeler.get('canvas');
+      if (!enabledtasks) { return; }
+      enabledtasks.forEach(tasks => {
+        canvas.addMarker(tasks[0], 'enabled');
+      });
+    });
   }
 
   private async mounted() {
@@ -128,10 +138,7 @@ export default class ExecutionView extends Vue {
       enabledtasks.forEach(tasks => {
         canvas.addMarker(tasks[0], 'enabled');
       });
-      // canvas.addMarker('ChoreographyTask_0u0boyl', 'enabled');
     });
-
-
 
     const eventBus = this.modeler.get('eventBus');
     eventBus.on('selection.changed', () => {
