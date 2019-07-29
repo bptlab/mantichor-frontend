@@ -32,10 +32,10 @@
               </li>
             </ul>
           </li>
+          <li>
+            <button title="Execute selected task" @click="execute()">Execute</button>
+          </li>
         </ul>
-        <div class="button-container">
-          <button title="Execute selected task" @click="execute()">Execute</button>
-        </div>
       </div>
       <div v-else>
         <p>Please select an element.</p>
@@ -202,19 +202,20 @@ export default class ExecutionView extends Vue {
         line-height: 16px;
         margin: 0;
       }
+      button {
+        width: 100%;
+        background-color: @accent;
+        border: none;
+        border-radius: 5px;
+        color: #fff;
+        padding: 10px;
+        font-size: 12px;
+        font-weight: bold;
+        cursor: pointer;
+      }
     }
-  }
-  .button-container {
-    width: 100%;
-    button {
-      background-color: @accent;
-      border-radius: 5px;
-      font-size: 1em;
-      padding: 10px;
-      color: #fff;
-      font-weight: bold;
-      margin: 0 12px;
-      border: none;
+    & > *:last-child {
+      border-bottom: none;
     }
   }
 }
