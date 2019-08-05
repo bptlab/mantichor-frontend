@@ -1,5 +1,5 @@
 <template>
-  <modal name="share-modal" @before-open="getShareId">
+  <modal name="share-modal" @before-open="beforeOpen">
     <div class="vue-dialog dialog">
       <div class="dialog-content">
         <h1 class="dialog-title">Share Project</h1>
@@ -27,11 +27,16 @@ export default {
   data: () => {
     return {
       shareId: '',
+      projectmanagement: undefined,
     };
   },
   methods: {
+    beforeOpen(event) {
+      this.projectmanagement = event.params.projectmanagement;
+      this.getShareId();
+    },
     async getShareId() {
-      this.shareId = await this.$modelmanagement.shareProject();
+      this.shareId = await this.projectmanagement.shareProject();
       this.$refs.shareInput.select();
     },
     copyShareId() {

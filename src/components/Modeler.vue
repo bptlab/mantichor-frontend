@@ -184,7 +184,7 @@ export default class Modeler extends Vue {
   }
 
   private async share() {
-    this.$modal.show('share-modal');
+    this.$modal.show('share-modal', { projectmanagement: this.$modelmanagement });
   }
 
   private mounted() {
