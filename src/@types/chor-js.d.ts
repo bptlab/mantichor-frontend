@@ -1,4 +1,4 @@
-declare module 'chor-js';
+declare module 'chor-js/lib/NavigatedViewer';
 declare module 'chor-js/lib/Modeler';
 
 declare module '*.bpmn' {

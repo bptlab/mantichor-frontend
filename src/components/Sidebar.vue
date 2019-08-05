@@ -6,19 +6,19 @@
     <nav>
       <ul>
         <li
-          v-for="project in $projectmanagement.projects"
-          :class="{active: project.isActive}"
+          v-for="project in projectmanagement.projects"
+          :class="{active: projectmanagement.activeProject ? project.id == projectmanagement.activeProject.id : false}"
           :key="project.id"
-          @click="$projectmanagement.activeProject = project"
+          @click="projectmanagement.activeProject = project"
         >
           <h1>{{ project.initials }}</h1>
         </li>
-        <li class="add" @click="$projectmanagement.addBlankProject()">
+        <li v-if="isModeler" class="add" @click="addNewProject()">
           <h1>+</h1>
         </li>
-        <li class="download" @click="openUrlImportModal()">
+        <li v-if="isModeler" class="download" @click="openUrlImportModal()">
           <h1>
-            <font-awesome-icon icon="cloud-download-alt"/>
+            <font-awesome-icon icon="cloud-download-alt" />
           </h1>
         </li>
       </ul>
@@ -27,21 +27,41 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Prop } from 'vue-property-decorator';
 import UrlImportModal from '@/components/UrlImportModal.vue';
+import Project, { Model } from '@/interfaces/Project';
+import { ProjectManagement } from '../plugins/ProjectManagement';
 
 @Component
 export default class Sidebar extends Vue {
 
+  @Prop({ type: Boolean })
+  public isModeler!: boolean;
+
+  public projectmanagement: ProjectManagement<Project>;
+
+  constructor() {
+    super();
+    if (this.isModeler) {
+      this.projectmanagement = this.$modelmanagement;
+    } else {
+      this.projectmanagement = this.$instancemanagement;
+    }
+  }
+
   public openUrlImportModal(): void {
     this.$modal.show('url-import-modal');
+  }
+
+  public addNewProject(): void {
+    this.$modelmanagement.addProject(new Model());
   }
 
 }
 </script>
 
 <style lang="less">
-@import '../styles.less';
+@import "../styles.less";
 
 aside {
   display: block;

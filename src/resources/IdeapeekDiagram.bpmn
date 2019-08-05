@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:ext="http://org.eclipse.bpmn2/ext" xmlns:xs="http://www.w3.org/2001/XMLSchema" id="_tTv5YOycEeiHGOQ2NkJZNQ" exporter="org.eclipse.bpmn2.modeler.core" exporterVersion="1.4.3.Final-v20180418-1358-B1">
+  <bpmn2:message id="Message_0gpe36q" />
+  <bpmn2:message id="Message_1av4cgn" />
+  <bpmn2:message id="Message_09n32wa" />
+  <bpmn2:message id="Message_0a60dhg" />
+  <bpmn2:message id="Message_07xxq9b" />
+  <bpmn2:message id="Message_1jmtizz" />
+  <bpmn2:message id="Message_0p6ttjc" />
+  <bpmn2:message id="Message_136w1z2" />
+  <bpmn2:message id="Message_0i59heg" />
+  <bpmn2:message id="Message_1pfei4y" />
+  <bpmn2:choreography id="_choreo1">
+    <bpmn2:participant id="Participant_1w58jbv" name="Creative" />
+    <bpmn2:participant id="Participant_0h5ey1c" name="Platform" />
+    <bpmn2:participant id="Participant_1ifwfyl" name="Evaluator" />
+    <bpmn2:participant id="Participant_0n97mcu" name="Company" />
+    <bpmn2:messageFlow id="MessageFlow_1gsuuup" sourceRef="Participant_0n97mcu" targetRef="Participant_1w58jbv" messageRef="Message_0gpe36q" />
+    <bpmn2:messageFlow id="MessageFlow_1wbko37" sourceRef="Participant_0h5ey1c" targetRef="Participant_0n97mcu" messageRef="Message_1av4cgn" />
+    <bpmn2:messageFlow id="MessageFlow_08hd5f6" sourceRef="Participant_0h5ey1c" targetRef="Participant_1w58jbv" messageRef="Message_09n32wa" />
+    <bpmn2:messageFlow id="MessageFlow_1luj8jl" sourceRef="Participant_0n97mcu" targetRef="Participant_0h5ey1c" messageRef="Message_0a60dhg" />
+    <bpmn2:messageFlow id="MessageFlow_0b56trv" sourceRef="Participant_0n97mcu" targetRef="Participant_0h5ey1c" messageRef="Message_07xxq9b" />
+    <bpmn2:messageFlow id="MessageFlow_1mdy972" sourceRef="Participant_0h5ey1c" targetRef="Participant_0n97mcu" messageRef="Message_1jmtizz" />
+    <bpmn2:messageFlow id="MessageFlow_16lkkos" sourceRef="Participant_1ifwfyl" targetRef="Participant_0h5ey1c" messageRef="Message_0p6ttjc" />
+    <bpmn2:messageFlow id="MessageFlow_1wu2yxb" sourceRef="Participant_1ifwfyl" targetRef="Participant_0h5ey1c" messageRef="Message_136w1z2" />
+    <bpmn2:messageFlow id="MessageFlow_1s8775j" sourceRef="Participant_0h5ey1c" targetRef="Participant_1ifwfyl" messageRef="Message_0i59heg" />
+    <bpmn2:messageFlow id="MessageFlow_1vnbulh" sourceRef="Participant_1w58jbv" targetRef="Participant_0h5ey1c" messageRef="Message_1pfei4y" />
+    <bpmn2:startEvent id="StartEvent_0qguacl">
+      <bpmn2:outgoing>SequenceFlow_1dnup4u</bpmn2:outgoing>
+    </bpmn2:startEvent>
+    <bpmn2:choreographyTask id="ChoreographyTask_1t6m2bx" name="Send idea" initiatingParticipantRef="Participant_1w58jbv">
+      <bpmn2:incoming>SequenceFlow_1dnup4u</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_0rt1fi5</bpmn2:outgoing>
+      <bpmn2:participantRef>Participant_1w58jbv</bpmn2:participantRef>
+      <bpmn2:participantRef>Participant_0h5ey1c</bpmn2:participantRef>
+      <bpmn2:messageFlowRef>MessageFlow_1vnbulh</bpmn2:messageFlowRef>
+    </bpmn2:choreographyTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_1dnup4u" sourceRef="StartEvent_0qguacl" targetRef="ChoreographyTask_1t6m2bx" />
+    <bpmn2:choreographyTask id="ChoreographyTask_0e02mq3" name="Request evaluation" initiatingParticipantRef="Participant_0h5ey1c">
+      <bpmn2:incoming>SequenceFlow_0rt1fi5</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_1pzwi64</bpmn2:outgoing>
+      <bpmn2:participantRef>Participant_0h5ey1c</bpmn2:participantRef>
+      <bpmn2:participantRef>Participant_1ifwfyl</bpmn2:participantRef>
+      <bpmn2:messageFlowRef>MessageFlow_1s8775j</bpmn2:messageFlowRef>
+    </bpmn2:choreographyTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_0rt1fi5" sourceRef="ChoreographyTask_1t6m2bx" targetRef="ChoreographyTask_0e02mq3" />
+    <bpmn2:eventBasedGateway id="EventBasedGateway_1hyykf8">
+      <bpmn2:incoming>SequenceFlow_1pzwi64</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_10n3e3z</bpmn2:outgoing>
+      <bpmn2:outgoing>SequenceFlow_1228oyh</bpmn2:outgoing>
+    </bpmn2:eventBasedGateway>
+    <bpmn2:sequenceFlow id="SequenceFlow_1pzwi64" sourceRef="ChoreographyTask_0e02mq3" targetRef="EventBasedGateway_1hyykf8" />
+    <bpmn2:choreographyTask id="ChoreographyTask_07jjcfg" name="Send approval" initiatingParticipantRef="Participant_1ifwfyl">
+      <bpmn2:incoming>SequenceFlow_10n3e3z</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_131nz28</bpmn2:outgoing>
+      <bpmn2:participantRef>Participant_1ifwfyl</bpmn2:participantRef>
+      <bpmn2:participantRef>Participant_0h5ey1c</bpmn2:participantRef>
+      <bpmn2:messageFlowRef>MessageFlow_1wu2yxb</bpmn2:messageFlowRef>
+    </bpmn2:choreographyTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_10n3e3z" sourceRef="EventBasedGateway_1hyykf8" targetRef="ChoreographyTask_07jjcfg" />
+    <bpmn2:choreographyTask id="ChoreographyTask_0qvrxec" name="Send rejection" initiatingParticipantRef="Participant_1ifwfyl">
+      <bpmn2:incoming>SequenceFlow_1228oyh</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_0gguxbi</bpmn2:outgoing>
+      <bpmn2:participantRef>Participant_1ifwfyl</bpmn2:participantRef>
+      <bpmn2:participantRef>Participant_0h5ey1c</bpmn2:participantRef>
+      <bpmn2:messageFlowRef>MessageFlow_16lkkos</bpmn2:messageFlowRef>
+    </bpmn2:choreographyTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_1228oyh" sourceRef="EventBasedGateway_1hyykf8" targetRef="ChoreographyTask_0qvrxec" />
+    <bpmn2:endEvent id="EndEvent_1dq8qfz">
+      <bpmn2:incoming>SequenceFlow_0gguxbi</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:sequenceFlow id="SequenceFlow_0gguxbi" sourceRef="ChoreographyTask_0qvrxec" targetRef="EndEvent_1dq8qfz" />
+    <bpmn2:choreographyTask id="ChoreographyTask_103lpiz" name="Send idea" initiatingParticipantRef="Participant_0h5ey1c">
+      <bpmn2:incoming>SequenceFlow_131nz28</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_02c7yui</bpmn2:outgoing>
+      <bpmn2:participantRef>Participant_0h5ey1c</bpmn2:participantRef>
+      <bpmn2:participantRef>Participant_0n97mcu</bpmn2:participantRef>
+      <bpmn2:messageFlowRef>MessageFlow_1mdy972</bpmn2:messageFlowRef>
+    </bpmn2:choreographyTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_131nz28" sourceRef="ChoreographyTask_07jjcfg" targetRef="ChoreographyTask_103lpiz" />
+    <bpmn2:eventBasedGateway id="EventBasedGateway_0yni4pf">
+      <bpmn2:incoming>SequenceFlow_02c7yui</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_1iffqo7</bpmn2:outgoing>
+      <bpmn2:outgoing>SequenceFlow_1l4gcnl</bpmn2:outgoing>
+    </bpmn2:eventBasedGateway>
+    <bpmn2:sequenceFlow id="SequenceFlow_02c7yui" sourceRef="ChoreographyTask_103lpiz" targetRef="EventBasedGateway_0yni4pf" />
+    <bpmn2:choreographyTask id="ChoreographyTask_0b860r2" name="Send approval" initiatingParticipantRef="Participant_0n97mcu">
+      <bpmn2:incoming>SequenceFlow_1iffqo7</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_08gwdxf</bpmn2:outgoing>
+      <bpmn2:participantRef>Participant_0n97mcu</bpmn2:participantRef>
+      <bpmn2:participantRef>Participant_0h5ey1c</bpmn2:participantRef>
+      <bpmn2:messageFlowRef>MessageFlow_0b56trv</bpmn2:messageFlowRef>
+    </bpmn2:choreographyTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_1iffqo7" sourceRef="EventBasedGateway_0yni4pf" targetRef="ChoreographyTask_0b860r2" />
+    <bpmn2:choreographyTask id="ChoreographyTask_0hew00r" name="Send rejection" initiatingParticipantRef="Participant_0n97mcu">
+      <bpmn2:incoming>SequenceFlow_1l4gcnl</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_1awk8tt</bpmn2:outgoing>
+      <bpmn2:participantRef>Participant_0n97mcu</bpmn2:participantRef>
+      <bpmn2:participantRef>Participant_0h5ey1c</bpmn2:participantRef>
+      <bpmn2:messageFlowRef>MessageFlow_1luj8jl</bpmn2:messageFlowRef>
+    </bpmn2:choreographyTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_1l4gcnl" sourceRef="EventBasedGateway_0yni4pf" targetRef="ChoreographyTask_0hew00r" />
+    <bpmn2:choreographyTask id="ChoreographyTask_0pm2b4k" name="Send rejection" initiatingParticipantRef="Participant_0h5ey1c">
+      <bpmn2:incoming>SequenceFlow_1awk8tt</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_01zq7i5</bpmn2:outgoing>
+      <bpmn2:participantRef>Participant_0h5ey1c</bpmn2:participantRef>
+      <bpmn2:participantRef>Participant_1w58jbv</bpmn2:participantRef>
+      <bpmn2:messageFlowRef>MessageFlow_08hd5f6</bpmn2:messageFlowRef>
+    </bpmn2:choreographyTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_1awk8tt" sourceRef="ChoreographyTask_0hew00r" targetRef="ChoreographyTask_0pm2b4k" />
+    <bpmn2:endEvent id="EndEvent_05qibuk">
+      <bpmn2:incoming>SequenceFlow_01zq7i5</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:sequenceFlow id="SequenceFlow_01zq7i5" sourceRef="ChoreographyTask_0pm2b4k" targetRef="EndEvent_05qibuk" />
+    <bpmn2:choreographyTask id="ChoreographyTask_1ctxfip" name="Send user data" initiatingParticipantRef="Participant_0h5ey1c">
+      <bpmn2:incoming>SequenceFlow_08gwdxf</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_0hbb9rw</bpmn2:outgoing>
+      <bpmn2:participantRef>Participant_0h5ey1c</bpmn2:participantRef>
+      <bpmn2:participantRef>Participant_0n97mcu</bpmn2:participantRef>
+      <bpmn2:messageFlowRef>MessageFlow_1wbko37</bpmn2:messageFlowRef>
+    </bpmn2:choreographyTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_08gwdxf" sourceRef="ChoreographyTask_0b860r2" targetRef="ChoreographyTask_1ctxfip" />
+    <bpmn2:choreographyTask id="ChoreographyTask_0o6b54d" name="Buy idea" initiatingParticipantRef="Participant_0n97mcu">
+      <bpmn2:incoming>SequenceFlow_0hbb9rw</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_14iucj7</bpmn2:outgoing>
+      <bpmn2:participantRef>Participant_0n97mcu</bpmn2:participantRef>
+      <bpmn2:participantRef>Participant_1w58jbv</bpmn2:participantRef>
+      <bpmn2:messageFlowRef>MessageFlow_1gsuuup</bpmn2:messageFlowRef>
+    </bpmn2:choreographyTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_0hbb9rw" sourceRef="ChoreographyTask_1ctxfip" targetRef="ChoreographyTask_0o6b54d" />
+    <bpmn2:endEvent id="EndEvent_1wokesy">
+      <bpmn2:incoming>SequenceFlow_14iucj7</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:sequenceFlow id="SequenceFlow_14iucj7" sourceRef="ChoreographyTask_0o6b54d" targetRef="EndEvent_1wokesy" />
+  </bpmn2:choreography>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_Choreography_1" bpmnElement="_choreo1">
+      <bpmndi:BPMNShape id="StartEvent_0qguacl_di" bpmnElement="StartEvent_0qguacl">
+        <dc:Bounds x="176" y="297" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ChoreographyTask_1t6m2bx_di" bpmnElement="ChoreographyTask_1t6m2bx">
+        <dc:Bounds x="262" y="275" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0svqmy2" bpmnElement="Participant_1w58jbv" isMessageVisible="false" participantBandKind="top_initiating" choreographyActivityShape="ChoreographyTask_1t6m2bx_di">
+        <dc:Bounds x="262" y="275" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1u1shpf" bpmnElement="Participant_0h5ey1c" isMessageVisible="false" participantBandKind="bottom_non_initiating" choreographyActivityShape="ChoreographyTask_1t6m2bx_di">
+        <dc:Bounds x="262" y="335" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1dnup4u_di" bpmnElement="SequenceFlow_1dnup4u">
+        <di:waypoint x="212" y="315" />
+        <di:waypoint x="261" y="315" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ChoreographyTask_0e02mq3_di" bpmnElement="ChoreographyTask_0e02mq3">
+        <dc:Bounds x="412" y="275" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0depfdp" bpmnElement="Participant_0h5ey1c" isMessageVisible="false" participantBandKind="top_initiating" choreographyActivityShape="ChoreographyTask_0e02mq3_di">
+        <dc:Bounds x="412" y="275" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0th6m5w" bpmnElement="Participant_1ifwfyl" isMessageVisible="false" participantBandKind="bottom_non_initiating" choreographyActivityShape="ChoreographyTask_0e02mq3_di">
+        <dc:Bounds x="412" y="335" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0rt1fi5_di" bpmnElement="SequenceFlow_0rt1fi5">
+        <di:waypoint x="363" y="315" />
+        <di:waypoint x="411" y="315" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="EventBasedGateway_1hyykf8_di" bpmnElement="EventBasedGateway_1hyykf8">
+        <dc:Bounds x="562" y="290" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1pzwi64_di" bpmnElement="SequenceFlow_1pzwi64">
+        <di:waypoint x="513" y="315" />
+        <di:waypoint x="562" y="315" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ChoreographyTask_07jjcfg_di" bpmnElement="ChoreographyTask_07jjcfg">
+        <dc:Bounds x="662" y="275" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0g59dqt" bpmnElement="Participant_1ifwfyl" isMessageVisible="false" participantBandKind="top_initiating" choreographyActivityShape="ChoreographyTask_07jjcfg_di">
+        <dc:Bounds x="662" y="275" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1g9bum1" bpmnElement="Participant_0h5ey1c" isMessageVisible="false" participantBandKind="bottom_non_initiating" choreographyActivityShape="ChoreographyTask_07jjcfg_di">
+        <dc:Bounds x="662" y="335" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_10n3e3z_di" bpmnElement="SequenceFlow_10n3e3z">
+        <di:waypoint x="612" y="315" />
+        <di:waypoint x="661" y="315" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ChoreographyTask_0qvrxec_di" bpmnElement="ChoreographyTask_0qvrxec">
+        <dc:Bounds x="662" y="385" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1pzy9hh" bpmnElement="Participant_1ifwfyl" isMessageVisible="false" participantBandKind="top_initiating" choreographyActivityShape="ChoreographyTask_0qvrxec_di">
+        <dc:Bounds x="662" y="385" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_020fb6z" bpmnElement="Participant_0h5ey1c" isMessageVisible="false" participantBandKind="bottom_non_initiating" choreographyActivityShape="ChoreographyTask_0qvrxec_di">
+        <dc:Bounds x="662" y="445" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1228oyh_di" bpmnElement="SequenceFlow_1228oyh">
+        <di:waypoint x="587" y="340" />
+        <di:waypoint x="587" y="425" />
+        <di:waypoint x="661" y="425" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="EndEvent_1dq8qfz_di" bpmnElement="EndEvent_1dq8qfz">
+        <dc:Bounds x="812" y="407" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0gguxbi_di" bpmnElement="SequenceFlow_0gguxbi">
+        <di:waypoint x="763" y="425" />
+        <di:waypoint x="812" y="425" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ChoreographyTask_103lpiz_di" bpmnElement="ChoreographyTask_103lpiz">
+        <dc:Bounds x="812" y="275" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0f7kxwl" bpmnElement="Participant_0h5ey1c" isMessageVisible="false" participantBandKind="top_initiating" choreographyActivityShape="ChoreographyTask_103lpiz_di">
+        <dc:Bounds x="812" y="275" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1u35543" bpmnElement="Participant_0n97mcu" isMessageVisible="false" participantBandKind="bottom_non_initiating" choreographyActivityShape="ChoreographyTask_103lpiz_di">
+        <dc:Bounds x="812" y="335" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_131nz28_di" bpmnElement="SequenceFlow_131nz28">
+        <di:waypoint x="763" y="315" />
+        <di:waypoint x="811" y="315" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="EventBasedGateway_0yni4pf_di" bpmnElement="EventBasedGateway_0yni4pf">
+        <dc:Bounds x="962" y="290" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_02c7yui_di" bpmnElement="SequenceFlow_02c7yui">
+        <di:waypoint x="913" y="315" />
+        <di:waypoint x="962" y="315" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ChoreographyTask_0b860r2_di" bpmnElement="ChoreographyTask_0b860r2">
+        <dc:Bounds x="1062" y="275" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1ay17no" bpmnElement="Participant_0n97mcu" isMessageVisible="false" participantBandKind="top_initiating" choreographyActivityShape="ChoreographyTask_0b860r2_di">
+        <dc:Bounds x="1062" y="275" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0q4biza" bpmnElement="Participant_0h5ey1c" isMessageVisible="false" participantBandKind="bottom_non_initiating" choreographyActivityShape="ChoreographyTask_0b860r2_di">
+        <dc:Bounds x="1062" y="335" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1iffqo7_di" bpmnElement="SequenceFlow_1iffqo7">
+        <di:waypoint x="1012" y="315" />
+        <di:waypoint x="1061" y="315" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ChoreographyTask_0hew00r_di" bpmnElement="ChoreographyTask_0hew00r">
+        <dc:Bounds x="1062" y="385" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1bac5op" bpmnElement="Participant_0n97mcu" isMessageVisible="false" participantBandKind="top_initiating" choreographyActivityShape="ChoreographyTask_0hew00r_di">
+        <dc:Bounds x="1062" y="385" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1y2t6fk" bpmnElement="Participant_0h5ey1c" isMessageVisible="false" participantBandKind="bottom_non_initiating" choreographyActivityShape="ChoreographyTask_0hew00r_di">
+        <dc:Bounds x="1062" y="445" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1l4gcnl_di" bpmnElement="SequenceFlow_1l4gcnl">
+        <di:waypoint x="987" y="340" />
+        <di:waypoint x="987" y="425" />
+        <di:waypoint x="1061" y="425" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ChoreographyTask_0pm2b4k_di" bpmnElement="ChoreographyTask_0pm2b4k">
+        <dc:Bounds x="1212" y="385" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1mg7mkk" bpmnElement="Participant_0h5ey1c" isMessageVisible="false" participantBandKind="top_initiating" choreographyActivityShape="ChoreographyTask_0pm2b4k_di">
+        <dc:Bounds x="1212" y="385" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1lg0lmp" bpmnElement="Participant_1w58jbv" isMessageVisible="false" participantBandKind="bottom_non_initiating" choreographyActivityShape="ChoreographyTask_0pm2b4k_di">
+        <dc:Bounds x="1212" y="445" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1awk8tt_di" bpmnElement="SequenceFlow_1awk8tt">
+        <di:waypoint x="1163" y="425" />
+        <di:waypoint x="1211" y="425" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="EndEvent_05qibuk_di" bpmnElement="EndEvent_05qibuk">
+        <dc:Bounds x="1362" y="407" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_01zq7i5_di" bpmnElement="SequenceFlow_01zq7i5">
+        <di:waypoint x="1313" y="425" />
+        <di:waypoint x="1362" y="425" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ChoreographyTask_1ctxfip_di" bpmnElement="ChoreographyTask_1ctxfip">
+        <dc:Bounds x="1212" y="275" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0s9507i" bpmnElement="Participant_0h5ey1c" isMessageVisible="false" participantBandKind="top_initiating" choreographyActivityShape="ChoreographyTask_1ctxfip_di">
+        <dc:Bounds x="1212" y="275" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0yd08sk" bpmnElement="Participant_0n97mcu" isMessageVisible="false" participantBandKind="bottom_non_initiating" choreographyActivityShape="ChoreographyTask_1ctxfip_di">
+        <dc:Bounds x="1212" y="335" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_08gwdxf_di" bpmnElement="SequenceFlow_08gwdxf">
+        <di:waypoint x="1163" y="315" />
+        <di:waypoint x="1211" y="315" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ChoreographyTask_0o6b54d_di" bpmnElement="ChoreographyTask_0o6b54d">
+        <dc:Bounds x="1362" y="275" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1hwep7y" bpmnElement="Participant_0n97mcu" isMessageVisible="false" participantBandKind="top_initiating" choreographyActivityShape="ChoreographyTask_0o6b54d_di">
+        <dc:Bounds x="1362" y="275" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0rdtgz5" bpmnElement="Participant_1w58jbv" isMessageVisible="false" participantBandKind="bottom_non_initiating" choreographyActivityShape="ChoreographyTask_0o6b54d_di">
+        <dc:Bounds x="1362" y="335" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0hbb9rw_di" bpmnElement="SequenceFlow_0hbb9rw">
+        <di:waypoint x="1313" y="315" />
+        <di:waypoint x="1361" y="315" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="EndEvent_1wokesy_di" bpmnElement="EndEvent_1wokesy">
+        <dc:Bounds x="1512" y="297" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_14iucj7_di" bpmnElement="SequenceFlow_14iucj7">
+        <di:waypoint x="1463" y="315" />
+        <di:waypoint x="1512" y="315" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+    <bpmndi:BPMNLabelStyle id="BPMNLabelStyle_1">
+      <dc:Font name="arial" size="9" />
+    </bpmndi:BPMNLabelStyle>
+  </bpmndi:BPMNDiagram>
+</bpmn2:definitions>
