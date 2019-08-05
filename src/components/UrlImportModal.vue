@@ -1,5 +1,5 @@
 <template>
-  <modal name="url-import-modal">
+  <modal name="url-import-modal" @before-open="beforeOpen">
     <div class="vue-dialog dialog">
       <div class="dialog-content">
         <h1 class="dialog-title">Import Project</h1>
@@ -26,11 +26,15 @@ export default {
   data: () => {
     return {
       shareId: '',
+      projectmanagement: undefined,
     };
   },
   methods: {
+    beforeOpen(event) {
+      this.projectmanagement = event.params.projectmanagement;
+    },
     importFromUrl() {
-      this.$modelmanagement.importProject(this.shareId);
+      this.projectmanagement.importProject(this.shareId);
       this.$modal.hide('url-import-modal');
     },
   },

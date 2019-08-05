@@ -1,8 +1,15 @@
 <template>
-  <div class="executor">
+  <section class="executor">
     <div class="container">
       <div id="canvas" class="execution"></div>
     </div>
+    <ul class="io-control io-project-tools">
+      <li>
+        <button title="Share" @click="share()">
+          <font-awesome-icon icon="cloud-upload-alt" />
+        </button>
+      </li>
+    </ul>
     <div class="sidebar-right">
       <div v-if="isSelected && $instancemanagement.activeProject">
         <ul class="overview-list">
@@ -52,7 +59,7 @@
         <p>Please select an element.</p>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script lang="ts">
@@ -60,6 +67,11 @@ import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import ChoreoModeler from 'chor-js/lib/NavigatedViewer';
 import Project from '@/interfaces/Project';
 import { ChoreographyInstances } from '../apis/mantichor-blockchain/mantichor-blockchain';
+
+export interface Mapping {
+  role: string;
+  address: string;
+}
 
 /* bpmn-js includings
  * In this way all existing js files will be included
@@ -80,8 +92,10 @@ export default class ExecutionView extends Vue {
   private elementTask!: string;
   private isSelected!: boolean;
   private deploying!: boolean;
-  private participants!: string[];
+  private participants!: Mapping[];
   private enabledTasks!: string[][];
+  private executingParticipant!: Mapping;
+  private interval!: any;
 
   constructor() {
     super();
@@ -153,6 +167,10 @@ export default class ExecutionView extends Vue {
     });
   }
 
+  private async share() {
+    this.$modal.show('share-modal', { projectmanagement: this.$instancemanagement });
+  }
+
   private async mounted() {
     const self = this;
     this.modeler = new ChoreoModeler({
@@ -166,6 +184,10 @@ export default class ExecutionView extends Vue {
     this.renderModel(this.$instancemanagement.activeProject.bpmnXML);
 
     this.loadAndDisplayEnabledTasks();
+
+    this.interval = setInterval( () => {
+      this.loadAndDisplayEnabledTasks();
+    }, 3000);
 
     const eventBus = this.modeler.get('eventBus');
     eventBus.on('selection.changed', () => {
@@ -181,6 +203,10 @@ export default class ExecutionView extends Vue {
         this.isSelected = false;
       }
     });
+  }
+
+  private beforeDestroy() {
+    clearInterval( this.interval );
   }
 }
 </script>
@@ -329,4 +355,51 @@ export default class ExecutionView extends Vue {
     transform: rotate(360deg);
   }
 }
+
+
+ul.io-control {
+  list-style: none;
+  margin: 0;
+  padding: 5px;
+  font-size: 22px;
+  color: @primary-variant;
+
+  li {
+    display: flex;
+    padding: 6px;
+    justify-content: center;
+    align-items: center;
+    button {
+      background-color: transparent;
+    }
+  }
+
+  button {
+    padding: 0;
+    border: 0;
+    font-size: inherit;
+  }
+
+  .hr {
+    width: 100%;
+    padding: 0;
+    margin: 5px 0;
+    border-bottom: solid 1px #cccccc;
+  }
+
+  .vr {
+    height: 38px;
+    padding: 0;
+    margin: 0 5px;
+    border-right: solid 1px #cccccc;
+  }
+}
+
+.io-project-tools {
+  position: fixed;
+  top: @spacing * 3.5;
+  right: @spacing + 300px;
+  display: flex;
+}
+
 </style>
