@@ -133,7 +133,7 @@ export default class ExecutionView extends Vue {
     this.enabledTasks = await ChoreographyInstances.getEnabledTasks(this.$instancemanagement.activeProject);
 
     const canvas = this.modeler.get('canvas');
-    let enabledTasksClassList = document.querySelector('.enabled');
+    const enabledTasksClassList = document.querySelector('.enabled');
     if (enabledTasksClassList) {
       enabledTasksClassList.classList.remove('enabled');
     }

@@ -49,7 +49,7 @@ export default {
   },
   mounted: async function() {
     this.mapping = this.$modelmanagement.activeProject.getParticipants();
-    this.mapping.map(participant => participant.role = participant.name);
+    this.mapping.map((participant) => participant.role = participant.name);
     this.accounts = await ChoreographyInstances.getAccounts();
   },
   methods: {
