@@ -96,6 +96,7 @@ export default class ExecutionView extends Vue {
   private enabledTasks!: string[][];
   private executingParticipant!: Mapping;
   private interval!: any;
+  private eventBusHandler!: any;
 
   constructor() {
     super();
@@ -116,8 +117,35 @@ export default class ExecutionView extends Vue {
       this.modeler.displayChoreography({});
       this.resetZoom();
       if (!this.$instancemanagement.activeProject) { return; }
+      // Get the participants
       this.participants = this.$instancemanagement.activeProject.getParticipants();
-      this.loadAndDisplayEnabledTasks();
+
+      // Initialize request interval
+      if ( this.interval ) {
+        clearInterval( this.interval );
+      }
+      this.interval = setInterval( () => {
+        this.loadAndDisplayEnabledTasks();
+      }, 2000);
+
+      // Initialize Event Handler
+      const eventBus = this.modeler.get('eventBus');
+      if ( !this.eventBusHandler ) {
+        this.eventBusHandler = eventBus.on('selection.changed', () => {
+          console.log('EVENT!');
+          const selectedElements = this.modeler.get('selection').get();
+          if (selectedElements.length > 0) {
+            const selectedElement = selectedElements[0];
+            this.elementID = selectedElement.id;
+            this.elementTask = selectedElement.type;
+            this.isSelected = true;
+          } else {
+            this.elementID = 'no selection';
+            this.elementTask = 'no selection';
+            this.isSelected = false;
+          }
+        });
+      }
     } catch (error) {
       this.$notify({
         type: 'error',
@@ -182,27 +210,6 @@ export default class ExecutionView extends Vue {
 
     if (!this.$instancemanagement.activeProject) { return; }
     this.renderModel(this.$instancemanagement.activeProject.bpmnXML);
-
-    this.loadAndDisplayEnabledTasks();
-
-    this.interval = setInterval( () => {
-      this.loadAndDisplayEnabledTasks();
-    }, 3000);
-
-    const eventBus = this.modeler.get('eventBus');
-    eventBus.on('selection.changed', () => {
-      const selectedElements = self.modeler.get('selection').get();
-      if (selectedElements.length > 0) {
-        const selectedElement = selectedElements[0];
-        this.elementID = selectedElement.id;
-        this.elementTask = selectedElement.type;
-        this.isSelected = true;
-      } else {
-        this.elementID = 'no selection';
-        this.elementTask = 'no selection';
-        this.isSelected = false;
-      }
-    });
   }
 
   private beforeDestroy() {
