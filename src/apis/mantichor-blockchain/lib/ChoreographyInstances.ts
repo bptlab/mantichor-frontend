@@ -4,7 +4,7 @@ import { Mapping, Instance, Model } from '@/interfaces/Project';
 // tslint:disable-next-line: max-classes-per-file
 export class ChoreographyInstances {
   // region public static methods
-  public static baseUrl = 'http://localhost:7320';
+  public static baseUrl = process.env.VUE_APP_ADAPTER_BASE_URL;
 
   public static async create(model: Model, mappings: Mapping[]): Promise<Instance> {
     const instanceResponse = await ApiUtils.postJsonResource(`${this.baseUrl}/choreographies`, { xml: model.bpmnXML });
