@@ -16,7 +16,7 @@
         <li v-if="isModeler" class="add" @click="addNewProject()">
           <h1>+</h1>
         </li>
-        <li v-if="isModeler" class="download" @click="openUrlImportModal()">
+        <li class="download" @click="openUrlImportModal()">
           <h1>
             <font-awesome-icon icon="cloud-download-alt" />
           </h1>
@@ -50,7 +50,7 @@ export default class Sidebar extends Vue {
   }
 
   public openUrlImportModal(): void {
-    this.$modal.show('url-import-modal');
+    this.$modal.show('url-import-modal', { projectmanagement: this.projectmanagement });
   }
 
   public addNewProject(): void {

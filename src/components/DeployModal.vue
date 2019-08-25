@@ -1,5 +1,5 @@
 <template>
-  <modal name="deploy-modal">
+  <modal name="deploy-modal" @before-open="beforeOpen">
     <div class="vue-dialog dialog">
       <div class="dialog-content">
         <h1 class="dialog-title">Deploy Project</h1>
@@ -47,12 +47,20 @@ export default {
       mapping: [],
     };
   },
-  mounted: async function() {
-    this.mapping = this.$modelmanagement.activeProject.getParticipants();
-    this.mapping.map(participant => participant.role = participant.name);
-    this.accounts = await ChoreographyInstances.getAccounts();
-  },
+  // mounted: async function() {
+  //   this.mapping = this.$modelmanagement.activeProject.getParticipants();
+  //   this.mapping.map((participant) => participant.role = participant.name);
+  //   this.accounts = await ChoreographyInstances.getAccounts();
+  // },
   methods: {
+    beforeOpen(event) {
+      this.getAccounts();
+    },
+    async getAccounts() {
+      this.mapping = this.$modelmanagement.activeProject.getParticipants();
+      this.mapping.map((participant) => participant.role = participant.name);
+      this.accounts = await ChoreographyInstances.getAccounts();
+    },
     async deployProject() {
       if (this.deploying) { return; }
       for (const participant of this.mapping) {
