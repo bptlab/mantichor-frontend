@@ -132,7 +132,6 @@ export default class ExecutionView extends Vue {
       const eventBus = this.modeler.get('eventBus');
       if ( !this.eventBusHandler ) {
         this.eventBusHandler = eventBus.on('selection.changed', () => {
-          console.log('EVENT!');
           const selectedElements = this.modeler.get('selection').get();
           if (selectedElements.length > 0) {
             const selectedElement = selectedElements[0];
