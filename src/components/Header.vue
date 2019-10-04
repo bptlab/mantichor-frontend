@@ -1,7 +1,9 @@
 <template>
   <header>
+    <div class="sidebar-header">
+      <img alt="Mantichor logo" src="../assets/logo.svg">
+    </div>
     <router-link to="/model">Model</router-link>
-    <router-link to="/execution">Execution</router-link>
   </header>
 </template>
 
@@ -22,6 +24,19 @@ header {
   height: @element-size;
   padding: 0;
   border-bottom: 4px solid @secondary;
+
+  .sidebar-header {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-around;
+    height: @element-size;
+    width: @element-size;
+    img {
+      height: 30px;
+      width: auto;
+    }
+  }
 
   a {
     flex-grow: 1;

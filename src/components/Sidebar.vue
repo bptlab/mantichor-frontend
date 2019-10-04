@@ -3,26 +3,6 @@
     <div class="sidebar-header">
       <img alt="Mantichor logo" src="../assets/logo.svg">
     </div>
-    <nav>
-      <ul>
-        <li
-          v-for="project in projectmanagement.projects"
-          :class="{active: projectmanagement.activeProject ? project.id == projectmanagement.activeProject.id : false}"
-          :key="project.id"
-          @click="projectmanagement.activeProject = project"
-        >
-          <h1>{{ project.initials }}</h1>
-        </li>
-        <li v-if="isModeler" class="add" @click="addNewProject()">
-          <h1>+</h1>
-        </li>
-        <li class="download" @click="openUrlImportModal()">
-          <h1>
-            <font-awesome-icon icon="cloud-download-alt" />
-          </h1>
-        </li>
-      </ul>
-    </nav>
   </aside>
 </template>
 

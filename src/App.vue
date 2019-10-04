@@ -48,7 +48,6 @@ body {
   text-align: center;
   background-color: #fff;
   color: #252527;
-  margin-left: 80px;
 }
 #nav {
   background-color: #252527;

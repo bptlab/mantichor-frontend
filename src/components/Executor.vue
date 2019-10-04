@@ -225,7 +225,7 @@ export default class ExecutionView extends Vue {
   top: 54px;
   right: 300px;
   bottom: 0;
-  left: 80px;
+  left: 0;
 }
 #canvas {
   height: 100%;

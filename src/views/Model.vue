@@ -1,6 +1,5 @@
 <template>
   <main class="model">
-    <Sidebar :isModeler="true" />
     <Modeler />
     <ul class="floating-buttons">
       <li @click="deploy()" class="green">Deploy</li>

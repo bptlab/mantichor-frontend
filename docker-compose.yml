@@ -4,7 +4,7 @@ services:
         image: bptlab/mantichor-frontend:latest
         ports:
             - 8080:80
-    mantichor-tezos-adapter:
-        image: bptlab/mantichor-tezos-adapter:latest
-        ports:
-            - 7320:7320
+    # mantichor-tezos-adapter:
+    #     image: bptlab/mantichor-tezos-adapter:latest
+    #     ports:
+    #         - 7320:7320

@@ -51,7 +51,7 @@
       </li>
     </ul>
 
-    <input id="inpLoadModel" type="file" name="name" accept=".bpmn, .xml" @change="loadModel()" />
+    <!-- <input id="inpLoadModel" type="file" name="name" accept=".bpmn, .xml" @change="loadModel()" /> -->
   </section>
 </template>
 
@@ -230,7 +230,7 @@ export default class Modeler extends Vue {
   top: 54px;
   right: 0;
   bottom: 0;
-  left: 80px;
+  left: 0;
 }
 
 section.modeler {

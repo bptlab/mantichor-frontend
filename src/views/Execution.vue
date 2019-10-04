@@ -1,6 +1,5 @@
 <template>
   <div class="model">
-    <Sidebar />
     <Executor />
   </div>
 </template>
