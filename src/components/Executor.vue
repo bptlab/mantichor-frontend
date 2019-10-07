@@ -185,11 +185,11 @@ export default class ExecutionView extends Vue {
         canvas.addMarker(tasks[0], 'enabled');
       } catch (error) {
         this.$notify({
-            type: 'error',
-            title: 'Error',
-            text: 'Could not highlight enabled tasks. Possibly, there are no executable task.',
-            duration: 4000,
-          });
+          type: 'error',
+          title: 'Error',
+          text: 'Could not highlight enabled tasks. Possibly, there are no executable task.',
+          duration: 4000,
+        });
       }
     });
   }

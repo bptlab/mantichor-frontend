@@ -1,14 +1,16 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <Header/>
-      <project-settings-modal/>
-      <url-import-modal/>
-      <deploy-modal/>
-      <share-modal/>
-      <v-dialog/>
+    <div id="content">
+      <div id="nav">
+        <Header/>
+        <project-settings-modal/>
+        <url-import-modal/>
+        <deploy-modal/>
+        <share-modal/>
+        <v-dialog/>
+      </div>
+      <router-view/>
     </div>
-    <router-view/>
     <notifications class="notify"/>
   </div>
 </template>
@@ -36,22 +38,43 @@ export default class App extends Vue { }
 
 <style lang="less">
 @import "styles.less";
+
+div#content {
+  display: flex;
+  flex-direction: column;
+
+  > :nth-child(2) {
+    flex-grow: 1;
+  }
+}
+
 body {
   margin: 0;
   padding: 0;
   background-color: #252527;
 }
-#app {
+
+#app, #content {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   background-color: #fff;
   color: #252527;
+
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  min-width: 600px;
+  min-height: 400px;
 }
+
 #nav {
   background-color: #252527;
 }
+
 .notify {
   margin-right: 20px;
   margin-top: 40px;

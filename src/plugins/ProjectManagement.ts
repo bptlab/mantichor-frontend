@@ -72,7 +72,7 @@ export class ProjectManagement<T extends ProjectObject> {
     if (this.projects.length > 0) {
       this.activeProject = this.projects[0];
     } else {
-      //this.addProject(new Model());
+      // this.addProject(new Model());
     }
     this.saveProjects();
   }

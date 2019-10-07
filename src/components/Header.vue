@@ -3,7 +3,7 @@
     <div class="sidebar-header">
       <img alt="Mantichor logo" src="../assets/logo.svg">
     </div>
-    <router-link to="/model">Model</router-link>
+    <!-- <router-link to="/model">Model</router-link> -->
   </header>
 </template>
 
