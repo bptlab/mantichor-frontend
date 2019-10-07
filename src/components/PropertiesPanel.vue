@@ -6,11 +6,12 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { BaseElement } from 'bpmn-moddle';
 
 @Component
 export default class PropertiesPanel extends Vue {
   private modeler: any;
-  private selection: any = null;
+  private selection: BaseElement = null;
 
   private async mounted() {
     this.$root.$on('selectionChanged', (selection: any) => {

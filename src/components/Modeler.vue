@@ -57,21 +57,23 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import ChoreoModeler from 'chor-js/lib/Modeler';
 import Project from '@/interfaces/Project';
+import { BaseElement } from 'bpmn-moddle';
+
 import 'diagram-js/assets/diagram-js.css';
 import 'bpmn-js/dist/assets/bpmn-font/css/bpmn.css';
-import 'chor-js/assets/font/include/css/choreography.css';
+import 'chor-js/assets/icons/include/css/choreography.css';
+import 'chor-js/assets/styles/chor-js.css';
 
 import blank from 'raw-loader!@/resources/testDiagram.bpmn';
 
 @Component
 export default class Modeler extends Vue {
   private modeler!: any;
-  private selection!: any;
+  private selection!: BaseElement;
 
   private async renderModel(xml: string) {
     try {
-      await this.modeler.setXML(xml);
-      this.modeler.displayChoreography({});
+      await this.modeler.importXML(xml, {});
       this.resetZoom();
     } catch (error) {
       this.$notify({
