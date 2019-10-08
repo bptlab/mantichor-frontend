@@ -31,7 +31,7 @@ export class DefinitionStore {
         this.setDefinitions(definitions);
         resolve();
       });
-    })
+    });
   }
 
 }
