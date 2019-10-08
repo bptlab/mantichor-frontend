@@ -71,9 +71,9 @@ export default class Modeler extends Vue {
   private modeler!: any;
   private selection!: BaseElement;
 
-  private async renderModel(xml: string) {
+  private async renderModel() {
     try {
-      await this.modeler.importXML(xml, {});
+      await this.modeler.importDefinitions(this.$definitionsStore.getDefinitions());
       this.resetZoom();
     } catch (error) {
       this.$notify({
@@ -131,30 +131,6 @@ export default class Modeler extends Vue {
     }, 500);
   }
 
-  private openLocal() {
-    document.getElementById('inpLoadModel')!.click();
-  }
-
-  private loadModel() {
-    const reader = new FileReader();
-    const fileInput = document.getElementById('inpLoadModel') as HTMLInputElement;
-
-    const files = fileInput.files;
-    const file = files === null ? undefined : files[0];
-
-    reader.addEventListener('load', () => {
-      const newXML = reader.result;
-      if (typeof newXML === 'string') {
-        this.renderModel(newXML);
-      }
-    }, false);
-
-    if (file) {
-      reader.readAsText(file);
-      this.$modelmanagement.saveProjects();
-    }
-  }
-
   private resetZoom() {
     this.modeler.get('canvas').zoom('fit-viewport');
   }
@@ -193,7 +169,7 @@ export default class Modeler extends Vue {
       },
     });
 
-    this.renderModel(blank);
+    this.renderModel();
 
     const eventBus = this.modeler.get('eventBus');
     const events = [

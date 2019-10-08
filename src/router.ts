@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Model from '@/views/Model.vue';
-import Execution from '@/views/Execution.vue';
+import Landing from '@/views/Landing.vue';
 
 Vue.use(Router);
 
@@ -9,12 +9,12 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/model',
+      redirect: '/landing',
     },
     {
-      path: '/execution',
-      name: 'execution',
-      component: Execution,
+      path: '/landing',
+      name: 'landing',
+      component: Landing,
     },
     {
       path: '/model',

@@ -1,10 +1,6 @@
 <template>
   <main class="model">
     <Modeler />
-    <!-- <ul class="floating-buttons">
-      <li @click="deploy()" class="green">Deploy</li>
-      <li @click="remove()" class="red">Delete</li>
-    </ul> -->
     <PropertiesPanel />
   </main>
 </template>
@@ -25,9 +21,8 @@ export default class Model extends Vue {
   private async deploy() {
     this.$modal.show('deploy-modal');
   }
-  private remove() {
-    if (!this.$modelmanagement.activeProject) { return; }
-    this.$modelmanagement.removeProject(this.$modelmanagement.activeProject);
+
+  private mounted() {
   }
 }
 </script>

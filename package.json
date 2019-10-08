@@ -14,7 +14,7 @@
     "@fortawesome/vue-fontawesome": "^0.1.6",
     "@types/bpmn-moddle": "^5.1.2",
     "bpmn-moddle": "^6.0.0",
-    "chor-js": "^0.4.1",
+    "chor-js": "^0.4.2",
     "fast-xml-parser": "^3.12.17",
     "raw-loader": "^2.0.0",
     "vue": "^2.6.10",

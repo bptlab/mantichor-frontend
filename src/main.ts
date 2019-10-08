@@ -3,6 +3,7 @@ import App from './App.vue';
 import router from './router';
 import Notifications from 'vue-notification';
 import ProjectManagement from '@/plugins/ProjectManagement';
+import DefinitionsStore from '@/plugins/DefinitionsStore';
 import VModal from 'vue-js-modal';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
@@ -38,6 +39,7 @@ Vue.config.productionTip = false;
 
 Vue.use(Notifications);
 Vue.use(ProjectManagement);
+Vue.use(DefinitionsStore);
 Vue.use(VModal, { dialog: true });
 
 new Vue({
