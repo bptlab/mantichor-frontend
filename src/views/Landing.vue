@@ -87,10 +87,6 @@ main.landing {
         font-weight: bold;
         background-color: @secondary;
       }
-
-      &.divider {
-
-      }
     }
   }
 }
