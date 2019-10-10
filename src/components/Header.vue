@@ -1,9 +1,17 @@
 <template>
   <header>
-    <div class="sidebar-header">
-      <img alt="Mantichor logo" src="../assets/logo.svg">
-    </div>
-    <!-- <router-link to="/model">Model</router-link> -->
+    <router-link to="/landing">
+      <div class="sidebar-header">
+        <img alt="Mantichor logo" src="../assets/logo.svg">
+      </div>
+    </router-link>
+    <router-link to="/account-manager">
+      <div class="sidebar-header">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="50" r="30" fill="green" />
+        </svg>
+      </div>
+    </router-link>
   </header>
 </template>
 
@@ -39,7 +47,7 @@ header {
   }
 
   a {
-    flex-grow: 1;
+    flex-grow: 0;
     font-weight: bold;
     color: #ffffff;
     height: @element-size;
