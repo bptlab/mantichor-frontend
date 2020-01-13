@@ -1,23 +1,19 @@
 <template>
   <main class="model">
-    <Sidebar :isModeler="true" />
     <Modeler />
-    <ul class="floating-buttons">
-      <li @click="deploy()" class="green">Deploy</li>
-      <li @click="remove()" class="red">Delete</li>
-    </ul>
+    <PropertiesPanel />
   </main>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
-import Sidebar from '@/components/Sidebar.vue';
+import PropertiesPanel from '@/components/PropertiesPanel.vue';
 import Modeler from '@/components/Modeler.vue';
 import { ChoreographyInstances } from '../apis/mantichor-blockchain/mantichor-blockchain';
 
 @Component({
   components: {
-    Sidebar,
+    PropertiesPanel,
     Modeler,
   },
 })
@@ -25,9 +21,8 @@ export default class Model extends Vue {
   private async deploy() {
     this.$modal.show('deploy-modal');
   }
-  private remove() {
-    if (!this.$modelmanagement.activeProject) { return; }
-    this.$modelmanagement.removeProject(this.$modelmanagement.activeProject);
+
+  private mounted() {
   }
 }
 </script>
@@ -36,36 +31,38 @@ export default class Model extends Vue {
 @import "../styles.less";
 
 main.model {
-  .floating-buttons {
-    position: fixed;
-    bottom: @spacing;
-    right: @spacing * 5;
-    margin: 0;
-    padding: 0;
-    display: flex;
+  display: flex;
 
-    & > * {
-      box-shadow: 0 0 0.25em 0.1em @shadow;
-      border-radius: @border-radius;
-      padding: 10px;
-      cursor: pointer;
-      font-size: 1em;
-      color: @light;
-      font-weight: bold;
-      margin-right: @spacing;
-    }
+  // .floating-buttons {
+  //   position: fixed;
+  //   bottom: @spacing;
+  //   right: @spacing * 5;
+  //   margin: 0;
+  //   padding: 0;
+  //   display: flex;
 
-    & > *:last-child {
-      margin-right: 0;
-    }
+  //   & > * {
+  //     box-shadow: 0 0 0.25em 0.1em @shadow;
+  //     border-radius: @border-radius;
+  //     padding: 10px;
+  //     cursor: pointer;
+  //     font-size: 1em;
+  //     color: @light;
+  //     font-weight: bold;
+  //     margin-right: @spacing;
+  //   }
 
-    .green {
-      background-color: @accent;
-    }
+  //   & > *:last-child {
+  //     margin-right: 0;
+  //   }
 
-    .red {
-      background-color: #cc1414;
-    }
-  }
+  //   .green {
+  //     background-color: @accent;
+  //   }
+
+  //   .red {
+  //     background-color: #cc1414;
+  //   }
+  // }
 }
 </style>

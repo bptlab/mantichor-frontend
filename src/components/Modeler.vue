@@ -1,8 +1,7 @@
 <template>
-  <section class="modeler">
-    <div id="canvas"></div>
+  <div id="canvas"></div>
 
-    <ul class="io-control io-project-tools">
+    <!-- <ul class="io-control io-project-tools">
       <li>
         <button title="open BPMN diagram from local file system" @click="openLocal()">
           <font-awesome-icon icon="folder-open" />
@@ -49,33 +48,32 @@
           <font-awesome-icon icon="minus" />
         </button>
       </li>
-    </ul>
+    </ul> -->
 
-    <input id="inpLoadModel" type="file" name="name" accept=".bpmn, .xml" @change="loadModel()" />
-  </section>
+    <!-- <input id="inpLoadModel" type="file" name="name" accept=".bpmn, .xml" @change="loadModel()" /> -->
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import ChoreoModeler from 'chor-js/lib/Modeler';
 import Project from '@/interfaces/Project';
+import { BaseElement } from 'bpmn-moddle';
+
 import 'diagram-js/assets/diagram-js.css';
 import 'bpmn-js/dist/assets/bpmn-font/css/bpmn.css';
-import 'chor-js/assets/font/include/css/choreography.css';
+import 'chor-js/assets/icons/include/css/choreography.css';
+import 'chor-js/assets/styles/chor-js.css';
+
+import blank from 'raw-loader!@/resources/testDiagram.bpmn';
 
 @Component
 export default class Modeler extends Vue {
   private modeler!: any;
+  private selection!: BaseElement;
 
-  @Watch('$modelmanagement.activeProject')
-  private onChangeProject(project: Project) {
-    this.renderModel(project.bpmnXML);
-  }
-
-  private async renderModel(xml: string) {
+  private async renderModel() {
     try {
-      await this.modeler.setXML(xml);
-      this.modeler.displayChoreography({});
+      await this.modeler.importDefinitions(this.$definitionsStore.getDefinitions());
       this.resetZoom();
     } catch (error) {
       this.$notify({
@@ -133,30 +131,6 @@ export default class Modeler extends Vue {
     }, 500);
   }
 
-  private openLocal() {
-    document.getElementById('inpLoadModel')!.click();
-  }
-
-  private loadModel() {
-    const reader = new FileReader();
-    const fileInput = document.getElementById('inpLoadModel') as HTMLInputElement;
-
-    const files = fileInput.files;
-    const file = files === null ? undefined : files[0];
-
-    reader.addEventListener('load', () => {
-      const newXML = reader.result;
-      if (typeof newXML === 'string') {
-        this.renderModel(newXML);
-      }
-    }, false);
-
-    if (file) {
-      reader.readAsText(file);
-      this.$modelmanagement.saveProjects();
-    }
-  }
-
   private resetZoom() {
     this.modeler.get('canvas').zoom('fit-viewport');
   }
@@ -195,9 +169,7 @@ export default class Modeler extends Vue {
       },
     });
 
-    if (this.$modelmanagement.activeProject) {
-      this.renderModel(this.$modelmanagement.activeProject.bpmnXML);
-    }
+    this.renderModel();
 
     const eventBus = this.modeler.get('eventBus');
     const events = [
@@ -217,6 +189,18 @@ export default class Modeler extends Vue {
         })();
       });
     });
+
+    // Initialize Event Handler
+    eventBus.on('selection.changed', (context: any) => {
+      let newSelection = context.newSelection || null;
+      if (Array.isArray(newSelection)) {
+        newSelection = newSelection[0];
+      }
+      if (this.selection !== newSelection) {
+        this.selection = newSelection;
+        this.$root.$emit('selectionChanged', this.selection);
+      }
+    });
   }
 }
 </script>
@@ -226,63 +210,6 @@ export default class Modeler extends Vue {
 
 #canvas {
   background-color: @light;
-  position: fixed;
-  top: 54px;
-  right: 0;
-  bottom: 0;
-  left: 80px;
-}
-
-section.modeler {
-  ul {
-    list-style: none;
-    margin: 0;
-    padding: 5px;
-    font-size: 22px;
-    color: @primary-variant;
-
-    li {
-      display: flex;
-      padding: 6px;
-      justify-content: center;
-      align-items: center;
-      button {
-        background-color: transparent;
-      }
-    }
-
-    button {
-      padding: 0;
-      border: 0;
-      font-size: inherit;
-    }
-
-    .hr {
-      width: 100%;
-      padding: 0;
-      margin: 5px 0;
-      border-bottom: solid 1px #cccccc;
-    }
-
-    .vr {
-      height: 38px;
-      padding: 0;
-      margin: 0 5px;
-      border-right: solid 1px #cccccc;
-    }
-  }
-
-  .io-zoom {
-    position: fixed;
-    right: @spacing;
-    bottom: @spacing * 5;
-  }
-
-  .io-project-tools {
-    position: fixed;
-    top: @spacing * 3.5;
-    right: @spacing;
-    display: flex;
-  }
+  flex-grow: 1;
 }
 </style>
