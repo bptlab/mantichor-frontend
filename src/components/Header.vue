@@ -5,13 +5,6 @@
         <img alt="Mantichor logo" src="../assets/logo.svg">
       </div>
     </router-link>
-    <router-link to="/account-manager">
-      <div class="sidebar-header">
-        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="50" cy="50" r="30" fill="green" />
-        </svg>
-      </div>
-    </router-link>
   </header>
 </template>
 
